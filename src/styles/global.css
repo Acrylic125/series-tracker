@@ -24,3 +24,29 @@
 .mw-5 {
   max-width: 1280px;
 }
+
+.ol-input {
+  outline: none !important;
+  border: none !important;
+  border-bottom: 0.1em solid black !important;
+}
+
+.font-size-1 {
+  font-size: 1.2rem;
+}
+
+.font-size-2 {
+  font-size: 1.4rem;
+}
+
+.font-size-3 {
+  font-size: 1.6rem;
+}
+
+.font-size-4 {
+  font-size: 1.8rem;
+}
+
+.font-size-5 {
+  font-size: 2rem;
+}
