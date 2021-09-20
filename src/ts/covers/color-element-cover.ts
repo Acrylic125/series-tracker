@@ -74,3 +74,5 @@ export function randColorsSameCaseSpecified(caseNumber: number, ...colors: Color
     }
     return arr;
 }
+
+console.log(randColor(BRIGHT_DEFAULT));
