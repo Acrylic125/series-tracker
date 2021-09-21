@@ -33,7 +33,10 @@ export function deducePath(path: string) {
 
 export async function createFile(path: string) {
     var deduced = deducePath(path);
-    await fs.promises.mkdir(deduced.directory);
+    console.log("dir: " + deduced.directory);
+    if (deduced.directory !== '')
+        await fs.promises.mkdir(deduced.directory);
+    await fs.promises.writeFile(path, '');
 }
 
 // Resolves whether a new file was created.
@@ -54,3 +57,7 @@ export function createFileIfNotExist(path: string) {
     });
     return complete;
 }
+
+(async function create() {
+    createFileIfNotExist('./hello.txt')
+})();
