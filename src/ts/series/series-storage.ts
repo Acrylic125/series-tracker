@@ -18,7 +18,7 @@ export class SeriesStorage {
 
     public async importSeries() {
         const data = await this.getFileData();
-
+        
     }
 
 }
