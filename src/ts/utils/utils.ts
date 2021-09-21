@@ -1,5 +1,6 @@
 import fs, { mkdir } from 'fs';
 import { sep } from 'path';
+import { Stream } from 'stream';
 
 export function randInt(min: number, max: number) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
@@ -25,30 +26,38 @@ export function deducePath(path: string) {
         for (let i = 0; i < splitPathLength - 1; i++) 
             directory += (splitPath[i] + sep);
     } 
-    console.log(splitPathLength + ' Test: ' + directory);
     return {
         directory: directory,
         file: splitPath[splitPathLength - 1]
     };
 }
 
-export async function createFile(path: string) {
+export type FileInputType = string | NodeJS.ArrayBufferView | Iterable<string | NodeJS.ArrayBufferView> | AsyncIterable<string | NodeJS.ArrayBufferView> | Stream;
+
+export interface FileCreationOptions {
+    defaultContent: FileInputType
+}
+
+export const DEFAULT_FILE_CREATION_OPTIONS: FileCreationOptions = {
+    defaultContent: ''
+}
+
+export async function createFile(path: string, options: FileCreationOptions = DEFAULT_FILE_CREATION_OPTIONS) {
     var deduced = deducePath(path);
-    console.log("dir: " + deduced.directory);
     if (deduced.directory !== '')
         await fs.promises.mkdir(deduced.directory, {
             recursive: true
         });
-    await fs.promises.writeFile(path, '');
+    await fs.promises.writeFile(path, options.defaultContent);
 }
 
 // Resolves whether a new file was created.
-export function createFileIfNotExist(path: string) {
+export function createFileIfNotExist(path: string, options: FileCreationOptions = DEFAULT_FILE_CREATION_OPTIONS) {
     const complete = new Promise<boolean>((resolve, error) => {
         fs.stat(path, async (err) => {
             if (err) {
                 if (err.code === 'ENOENT') {
-                    await createFile(path);
+                    await createFile(path, options);
                     resolve(true);
                 } else {
                     error(err);

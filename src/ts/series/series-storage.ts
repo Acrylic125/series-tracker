@@ -1,11 +1,15 @@
 import { readFile } from 'fs';
+import { createFileIfNotExist } from '../utils/utils';
 
 export class SeriesStorage {
 
-    constructor(public collectionFilePath: string) {}
+    constructor(public collectionFilePath: string = "C:\\Users\\bened\\Desktop\\ent\\test.json") {}
 
     public async getFileDataBuffer() {
-        const buff = await new Promise<Buffer>((resolve) => {
+        const buff = await new Promise<Buffer>(async (resolve) => {
+            await createFileIfNotExist(this.collectionFilePath, {
+                defaultContent: '{}'
+            });
             readFile(this.collectionFilePath, (err, data) => 
                 resolve(data));
         });
@@ -23,5 +27,9 @@ export class SeriesStorage {
 
 }
 
-const seriesCollection = new SeriesStorage("");
-export default seriesCollection;
+const seriesStorage = new SeriesStorage();
+export default seriesStorage;
+
+(async function testFileData() {
+    console.log(await seriesStorage.getFileData());    
+})();
