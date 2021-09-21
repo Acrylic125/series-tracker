@@ -1,4 +1,4 @@
-import { readFile } from 'fs';
+import fs from 'fs';
 import { createFileIfNotExist, JSON_FILE_CREATION_OPTIONS } from '../utils/utils';
 import { Series } from './series';
 
@@ -14,7 +14,7 @@ export class SeriesStorage {
     public async getFileDataBuffer() {
         const buff = await new Promise<Buffer>(async (resolve) => {
             await this.createFileIfNotExist();
-            readFile(this.collectionFilePath, (err, data) => 
+            fs.readFile(this.collectionFilePath, (err, data) => 
                 resolve(data));
         });
         return buff;
@@ -26,12 +26,18 @@ export class SeriesStorage {
 
     public async importSeries() {
         const data = await this.getFileData();
-        
+        const series = data['series'];
+        if (series) {
+            
+        }
     }
 
-    public async exportSeries() {
+    public async saveToFile() {
         await this.createFileIfNotExist();
-        
+        var data = {
+            series: Object.fromEntries(this.seriesMap)
+        };
+        fs.promises.writeFile(this.collectionFilePath, JSON.stringify(data, null, 4));
     }
 
 }
