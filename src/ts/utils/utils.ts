@@ -40,7 +40,10 @@ export interface FileCreationOptions {
 
 export const DEFAULT_FILE_CREATION_OPTIONS: FileCreationOptions = {
     defaultContent: ''
-}
+};
+export const JSON_FILE_CREATION_OPTIONS: FileCreationOptions = {
+    defaultContent: '{}'
+};
 
 export async function createFile(path: string, options: FileCreationOptions = DEFAULT_FILE_CREATION_OPTIONS) {
     var deduced = deducePath(path);
