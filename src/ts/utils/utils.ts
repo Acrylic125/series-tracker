@@ -22,9 +22,10 @@ export function deducePath(path: string) {
     const splitPathLength = splitPath.length;
     var directory = '';
     if (splitPathLength > 1) {
-        for (let i = 0; i < length - 1; i++) 
+        for (let i = 0; i < splitPathLength - 1; i++) 
             directory += (splitPath[i] + sep);
     } 
+    console.log(splitPathLength + ' Test: ' + directory);
     return {
         directory: directory,
         file: splitPath[splitPathLength - 1]
@@ -35,7 +36,9 @@ export async function createFile(path: string) {
     var deduced = deducePath(path);
     console.log("dir: " + deduced.directory);
     if (deduced.directory !== '')
-        await fs.promises.mkdir(deduced.directory);
+        await fs.promises.mkdir(deduced.directory, {
+            recursive: true
+        });
     await fs.promises.writeFile(path, '');
 }
 
@@ -58,6 +61,3 @@ export function createFileIfNotExist(path: string) {
     return complete;
 }
 
-(async function create() {
-    createFileIfNotExist('./hello.txt')
-})();
