@@ -19,9 +19,8 @@ const createWindow = () => {
     resizable: true,
     fullscreen: false,
     webPreferences: {
-      nativeWindowOpen: true,
-      nodeIntegration: true
-    }
+      preload: path.join(__dirname, `js${path.sep}preload.js`),
+    },
   });
   // and load the index.html of the app.
   window.loadFile(path.join(__dirname, 'index.html'));

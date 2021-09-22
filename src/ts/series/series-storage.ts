@@ -43,5 +43,12 @@ export class SeriesStorage {
 }
 
 const seriesStorage = new SeriesStorage();
+seriesStorage.seriesMap.set('abc', {
+    id: "abc",
+    title: "A REALLY long title",
+    colorStripColor: "#417151",
+    items: []
+});
+console.log("Test");
 export default seriesStorage;
 
