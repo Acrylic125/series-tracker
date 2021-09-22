@@ -4,7 +4,7 @@ import { Series } from './series';
 
 export class SeriesStorage {
 
-    constructor(public collectionFilePath: string = "C:\\Users\\bened\\Desktop\\ent\\test.json",
+    constructor(public collectionFilePath: string = "D:\\apps\\test.json",
                 public seriesMap: Map<string, Series> = new Map()) {}
 
     private async createFileIfNotExist() {
@@ -45,6 +45,3 @@ export class SeriesStorage {
 const seriesStorage = new SeriesStorage();
 export default seriesStorage;
 
-(async function testFileData() {
-    console.log(await seriesStorage.getFileData());    
-})();
