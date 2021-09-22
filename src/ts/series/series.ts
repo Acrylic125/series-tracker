@@ -4,4 +4,5 @@ export interface Series {
     title: string
     id: string
     items: SeriesItem[]
+    colorStripColor: string
 }
