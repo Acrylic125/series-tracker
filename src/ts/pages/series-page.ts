@@ -7,22 +7,16 @@ function newSeriesCard(ser: any, template: HTMLTemplateElement): Node {
     const { colorStripColor, title } = ser;
     if (seriesCard) {
         if (seriesCard instanceof HTMLElement) {
-            const colorStrips = seriesCard.getElementsByClassName(SERIES_CARD_COLOR_STRIP);
-            const titles = seriesCard.getElementsByClassName(SERIES_CARD_TITLE);
-            
-            // Color strips
-            for (let i = 0; i < colorStrips.length; i++) {
-                const colorStripElement = colorStrips[i];
-                if (colorStripElement instanceof HTMLElement) 
-                    colorStripElement.style.backgroundColor = colorStripColor;
-            }
-
-            // Titles
-            for (let i = 0; i < titles.length; i++) {
-                const titleElement = titles[i];
-                if (titleElement instanceof HTMLElement) 
-                    titleElement.innerText = title;
-            }
+            seriesCard.querySelectorAll(SERIES_CARD_COLOR_STRIP)
+                .forEach((colorStripElement) => {
+                    if (colorStripElement instanceof HTMLElement) 
+                        colorStripElement.style.backgroundColor = colorStripColor;
+                });
+            seriesCard.querySelectorAll(SERIES_CARD_TITLE)
+                .forEach((titleElement) => {
+                    if (titleElement instanceof HTMLElement) 
+                        titleElement.innerText = title;
+                });
         }
         return seriesCard;
     } else {

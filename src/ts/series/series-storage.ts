@@ -1,4 +1,5 @@
 import fs from 'fs';
+import { randColor, BRIGHT_DEFAULT } from '../covers/color-element-cover';
 import { createFileIfNotExist, JSON_FILE_CREATION_OPTIONS } from '../utils/utils';
 import { Series } from './series';
 
@@ -37,18 +38,21 @@ export class SeriesStorage {
         var data = {
             series: Object.fromEntries(this.seriesMap)
         };
-        fs.promises.writeFile(this.collectionFilePath, JSON.stringify(data, null, 4));
+        await fs.promises.writeFile(this.collectionFilePath, JSON.stringify(data, null, 4));
     }
 
 }
 
 const seriesStorage = new SeriesStorage();
-seriesStorage.seriesMap.set('abc', {
-    id: "abc",
-    title: "A REALLY long title",
-    colorStripColor: "#417151",
-    items: []
-});
-console.log("Test");
+for (let i = 0; i < 10000; i++) {
+    seriesStorage.seriesMap.set('abc-' + i, {
+        id: "abca-" + i,
+        title: "A REALLY long title " + i,
+        colorStripColor: `#${randColor(BRIGHT_DEFAULT)}`,
+        items: []
+    });
+}
+seriesStorage.saveToFile();
+
 export default seriesStorage;
 
