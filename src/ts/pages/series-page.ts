@@ -2,22 +2,31 @@ const SERIES_CARDS_ID = 'series-cards';
 const SERIES_CARD_COLOR_STRIP = 'series-card__color-strip';
 const SERIES_CARD_TITLE = 'series-card__title';
 
-function newSeriesCard(ser: any, template: HTMLTemplateElement): Node {
-    const seriesCard = template.content.firstElementChild?.cloneNode(true);
+function initialiseSeriesCard(seriesCard: HTMLElement, ser: any) {
     const { colorStripColor, title } = ser;
-    if (seriesCard) {
-        if (seriesCard instanceof HTMLElement) {
-            seriesCard.querySelectorAll(SERIES_CARD_COLOR_STRIP)
+
+    seriesCard.querySelectorAll(`.${SERIES_CARD_COLOR_STRIP}`)
                 .forEach((colorStripElement) => {
                     if (colorStripElement instanceof HTMLElement) 
                         colorStripElement.style.backgroundColor = colorStripColor;
                 });
-            seriesCard.querySelectorAll(SERIES_CARD_TITLE)
+
+    seriesCard.querySelectorAll(`.${SERIES_CARD_TITLE}`)
                 .forEach((titleElement) => {
                     if (titleElement instanceof HTMLElement) 
                         titleElement.innerText = title;
                 });
-        }
+
+    seriesCard.onclick = (event) => {
+        console.log(title);
+    };
+}
+
+function newSeriesCard(ser: any, template: HTMLTemplateElement): Node {
+    const seriesCard = template.content.firstElementChild?.cloneNode(true);
+    if (seriesCard) {
+        if (seriesCard instanceof HTMLElement) 
+            initialiseSeriesCard(seriesCard, ser);
         return seriesCard;
     } else {
         throw Error(`${template} failed to be replicated from.`);
@@ -45,14 +54,12 @@ function newSeriesCard(ser: any, template: HTMLTemplateElement): Node {
 
         seriesCards.innerHTML = '';
         (series.getSeriesStorageMap() as Map<string, any>).forEach((ser) => 
-            seriesCards.appendChild(
-                newSeriesCard(ser, cardTemplate)
-            )
+            seriesCards.appendChild(newSeriesCard(ser, cardTemplate))
         );
     } else {
         console.error(`No element with id, ${SERIES_CARDS_ID}`);
     }
 })();
 
-
+// Declarations
 var series: any;

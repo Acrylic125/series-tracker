@@ -1,5 +1,5 @@
 import fs from 'fs';
-import { randColor, BRIGHT_DEFAULT } from '../covers/color-element-cover';
+import { randColor, BRIGHT_DEFAULT } from '../utils/colors';
 import { createFileIfNotExist, JSON_FILE_CREATION_OPTIONS } from '../utils/utils';
 import { Series } from './series';
 
@@ -44,7 +44,7 @@ export class SeriesStorage {
 }
 
 const seriesStorage = new SeriesStorage();
-for (let i = 0; i < 10000; i++) {
+for (let i = 0; i < 10; i++) {
     seriesStorage.seriesMap.set('abc-' + i, {
         id: "abca-" + i,
         title: "A REALLY long title " + i,
