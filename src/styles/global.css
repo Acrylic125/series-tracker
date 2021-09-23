@@ -4,6 +4,19 @@
   margin: 0;
   padding: 0px;
   min-width: 360px;
+  user-select: none;
+}
+
+::-webkit-scrollbar {
+  display: none;
+}
+
+.drag {
+  -webkit-app-region: drag;
+}
+
+.no-drag {
+  -webkit-app-region: no-drag;
 }
 
 .mw-1 {

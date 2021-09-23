@@ -3,7 +3,7 @@ import { randInt, rgbToHex } from "./utils";
 /**
  * These options act as constants for 2 components of the
  * RGB values. The 3rd component is a variant between 0 and
- * 255. This ensures a constant 'tone' of the color generated.
+ * 255. This ensures a constant shade of the color generated.
  * 
  * Example:
  * alphaConstant = 125, betaConstant = 15
@@ -33,7 +33,7 @@ export const DARK_DEFAULT: ColorOption = {
 export function randColor(color: ColorOption, caseNumber = randInt(1, 6)) {
     const variant = randInt(0, 255);
     const { alphaConstant, betaConstant } = color;
-    console.log(caseNumber);
+
     switch (caseNumber) {
         case 1:
             return rgbToHex(alphaConstant, betaConstant, variant);
@@ -59,8 +59,7 @@ export function randColorsSameCase(...colors: ColorOption[]) {
 export function randColorsSameCaseSpecified(caseNumber: number, ...colors: ColorOption[]) {
     const size = colors.length;
     const arr = new Array<string>(size);
-    for (let i = 0; i < size; i++) {
+    for (let i = 0; i < size; i++) 
         arr[i] = randColor(colors[i], caseNumber);
-    }
     return arr;
 }
