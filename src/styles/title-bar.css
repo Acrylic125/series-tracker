@@ -1,9 +1,45 @@
+:root {
+  --title-bar-color: #1a1a1f;
+  --title-bar-text-color: white;
+  --title-bar-select-button-color: #333344;
+}
+
 .title-bar {
   width: 100%;
   position: fixed;
-  height: 2em;
-  background-color: #1a1a17;
+  background-color: var(--title-bar-color);
   z-index: 1000;
+}
+
+.title-bar button {
+  border: none;
+  height: 2em;
+  color: var(--title-bar-text-color);
+  background-color: transparent;
+  padding-left: 0.75em;
+  padding-right: 0.75em;
+}
+
+.title-bar button:hover {
+  background-color: var(--title-bar-select-button-color);
+}
+
+.title-bar button.title-bar__close-button:hover {
+  background-color: red;
+}
+
+.title-bar__app-buttons,
+.title-bar__window-buttons {
+  display: flex;
+  flex-direction: row;
+}
+
+.title-bar__app-buttons {
+  float: left;
+}
+
+.title-bar__window-buttons {
+  float: right;
 }
 
 #content {
