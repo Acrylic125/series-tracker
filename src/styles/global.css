@@ -5,9 +5,11 @@
   padding: 0px;
   min-width: 360px;
   user-select: none;
+  background-color: black;
 }
 
 body {
+  background-color: white;
   margin: 0;
   padding: 0;
   overflow: hidden;
@@ -50,8 +52,8 @@ body {
 }
 
 .ol-input {
-  outline: none !important;
-  border: none !important;
+  outline: none;
+  border: none;
   border-bottom: 0.1em solid black !important;
 }
 
@@ -73,4 +75,9 @@ body {
 
 .font-size-5 {
   font-size: 2rem;
+}
+
+ul,
+ol {
+  list-style: none;
 }

@@ -1,25 +1,53 @@
+.series-cards {
+  width: clamp(10em, 100%, 45em);
+}
+
 .series-card {
   width: 100%;
   background-color: #efefef;
   display: flex;
   flex-direction: row;
+  border-radius: 1em;
+  margin-top: 1em;
+  opacity: 0.75;
 }
 
 .series-card:hover {
-  outline: 1.5px solid black;
-}
-
-.series-card > * {
-  width: 100%;
-  padding: 0.5em;
+  opacity: 1;
 }
 
 .series-card > .series-card__color-strip {
   flex: 1;
   max-width: 1em;
   background-color: greenyellow;
+  border-radius: 1em 0em 0em 1em;
 }
 
-.series-card > .series-card__title {
+.series-card__content {
   flex: 14;
+  padding-left: 1em;
+  display: flex;
+  flex-direction: column;
+}
+
+.series-card__content--title {
+  margin-bottom: 0;
+  font-weight: bold;
+  font-size: 120%;
+}
+
+.series-card__content--tags {
+  margin-top: 0;
+  padding: 1em 0em;
+  font-size: 80%;
+}
+
+.series-card__tag {
+  display: inline;
+  width: fit-content;
+  padding: 0.25em 1em 0.25em 1em;
+  margin-right: 0.5em;
+  background-color: cadetblue;
+  color: white;
+  border-radius: 0.5em;
 }

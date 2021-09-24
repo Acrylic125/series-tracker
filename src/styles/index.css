@@ -12,7 +12,8 @@
 }
 
 .side-bar {
-  width: clamp(5em, 25vw, 20em);
+  flex: 1;
+  max-width: 20em;
   height: calc(100vh - var(--title-bar-height));
   background-color: var(--side-bar-color);
   color: var(--side-bar-text-color);
@@ -29,7 +30,7 @@
   margin: 0;
   font-size: 160%;
   max-width: 60%;
-  padding: 5%;
+  padding: 10%;
 }
 
 .side-bar__buttons {
@@ -46,8 +47,7 @@
   border: none;
   color: var(--side-bar-text-color);
   font-size: 100%;
-  font-weight: bold;
-  padding: 0.5em 5%;
+  padding: 0.5em 10%;
 }
 
 .side-bar__buttons button.selected {
@@ -60,4 +60,10 @@
 
 .side-bar__buttons button.selected:hover {
   background-color: var(--side-bar-buttons-selected-hover-color);
+}
+
+.content-stage {
+  flex: 3;
+  height: calc(100vh - var(--title-bar-height));
+  padding: 2em;
 }
