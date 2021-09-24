@@ -34,13 +34,20 @@
   height: 100%;
   background-color: var(--side-bar-buttons);
   padding: 1.5em 0;
+  border-radius: 1.5em;
 }
 
 .side-bar__buttons button {
+  text-align: left;
+  width: 100%;
   background-color: transparent;
   border: none;
   color: var(--side-bar-text-color);
   font-size: 100%;
   font-weight: bold;
   padding: 0.5em 5%;
+}
+
+.side-bar__buttons button.selected {
+  background-color: var(--side-bar-buttons-selected-color);
 }
