@@ -7,6 +7,8 @@
   --side-bar-buttons: #2f2f3f;
   --side-bar-buttons-text-color: white;
   --side-bar-buttons-selected-color: #277bb8;
+  --side-bar-buttons-hover-color: #545474;
+  --side-bar-buttons-selected-hover-color: #248fdb;
 }
 
 .side-bar {
@@ -50,4 +52,12 @@
 
 .side-bar__buttons button.selected {
   background-color: var(--side-bar-buttons-selected-color);
+}
+
+.side-bar__buttons button:hover {
+  background-color: var(--side-bar-buttons-hover-color);
+}
+
+.side-bar__buttons button.selected:hover {
+  background-color: var(--side-bar-buttons-selected-hover-color);
 }
