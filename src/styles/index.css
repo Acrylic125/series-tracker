@@ -1,32 +1,46 @@
 @import url("./global.css");
+@import url("./title-bar.css");
 
-.header-1 {
-  padding-top: 1em;
-  padding-bottom: 1em;
+:root {
+  --side-bar-color: #2a2a35;
+  --side-bar-text-color: white;
+  --side-bar-buttons: #2f2f3f;
+  --side-bar-buttons-text-color: white;
+  --side-bar-buttons-selected-color: #277bb8;
 }
 
-.series-card {
-  width: 100%;
-  background-color: #efefef;
+.side-bar {
+  width: clamp(5em, 25vw, 20em);
+  height: calc(100vh - var(--title-bar-height));
+  background-color: var(--side-bar-color);
+  color: var(--side-bar-text-color);
+  display: flex;
+  flex-direction: column;
+}
+
+#content {
   display: flex;
   flex-direction: row;
 }
 
-.series-card:hover {
-  outline: 1.5px solid black;
+.side-bar__title {
+  margin: 0;
+  font-size: 160%;
+  max-width: 60%;
+  padding: 5%;
 }
 
-.series-card > * {
-  width: 100%;
-  padding: 0.5em;
+.side-bar__buttons {
+  height: 100%;
+  background-color: var(--side-bar-buttons);
+  padding: 1.5em 0;
 }
 
-.series-card > .series-card__color-strip {
-  flex: 1;
-  max-width: 1em;
-  background-color: greenyellow;
-}
-
-.series-card > .series-card__title {
-  flex: 14;
+.side-bar__buttons button {
+  background-color: transparent;
+  border: none;
+  color: var(--side-bar-text-color);
+  font-size: 100%;
+  font-weight: bold;
+  padding: 0.5em 5%;
 }

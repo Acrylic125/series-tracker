@@ -1,0 +1,25 @@
+.series-card {
+  width: 100%;
+  background-color: #efefef;
+  display: flex;
+  flex-direction: row;
+}
+
+.series-card:hover {
+  outline: 1.5px solid black;
+}
+
+.series-card > * {
+  width: 100%;
+  padding: 0.5em;
+}
+
+.series-card > .series-card__color-strip {
+  flex: 1;
+  max-width: 1em;
+  background-color: greenyellow;
+}
+
+.series-card > .series-card__title {
+  flex: 14;
+}
