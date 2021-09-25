@@ -1,6 +1,6 @@
-import { Series } from "../series/series";
-import seriesStorage from "../series/series-storage";
-import { ContentStage } from "./content-stage";
+import { Series } from "../../series/series";
+import seriesStorage from "../../series/series-storage";
+import { ContentStage } from "../content-stage";
 
 //         <div class="series-card">
 //           <span class="series-card__color-strip"></span>
@@ -73,7 +73,7 @@ export function createSeriesCard(document: Document, series: Series) {
     return seriesCardElement;
 }
 
-const contentCStage: ContentStage = {
+const collectionContentStage: ContentStage = {
     content(document: Document): Node {
         const fragment = new DocumentFragment();
         const iterator = seriesStorage.seriesMap.values();
@@ -83,4 +83,4 @@ const contentCStage: ContentStage = {
     }
 }
 
-export default contentCStage;
+export default collectionContentStage;

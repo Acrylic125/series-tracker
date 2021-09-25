@@ -22,7 +22,7 @@ const createWindow = () => {
     frame: false,
     autoHideMenuBar: true,
     webPreferences: {
-      preload: path.join(__dirname, `js${path.sep}preload.js`),
+      preload: path.join(__dirname, 'js', 'preloader', 'preload.js'),
     },
   });
   // and load the index.html of the app.
