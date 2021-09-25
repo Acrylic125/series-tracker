@@ -62,7 +62,7 @@
   background-color: var(--side-bar-buttons-selected-hover-color);
 }
 
-.content-stage {
+#content-stage {
   flex: 3;
   height: calc(100vh - var(--title-bar-height));
   padding: 2em;

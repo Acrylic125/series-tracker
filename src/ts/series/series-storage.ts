@@ -49,7 +49,8 @@ for (let i = 0; i < 10; i++) {
         id: "abca-" + i,
         title: "A REALLY long title " + i,
         colorStripColor: `#${randColor(BRIGHT_DEFAULT)}`,
-        items: []
+        items: [],
+        tags: []
     });
 }
 seriesStorage.saveToFile();

@@ -1,7 +1,4 @@
 import { contextBridge } from 'electron';
-import seriesStorage from '../series/series-storage';
-import contentStagePreload from './content-stage-preload';
+import contentStages from './content-stage-preload';
 
-contextBridge.exposeInMainWorld('series', {
-    contentStagePreload
-});
+contextBridge.exposeInMainWorld('contentStages', contentStages);

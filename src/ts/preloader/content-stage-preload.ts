@@ -1,6 +1,6 @@
 import collectionContentStage from "../content-stage/stages/colleciton-cstage";
 
-const contentStagePreload = {
+const contentStages = {
     collectionContentStage
 }
-export default contentStagePreload;
+export default contentStages;
