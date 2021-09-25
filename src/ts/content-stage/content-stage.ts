@@ -1,3 +1,3 @@
 export interface ContentStage {
-    content(document: Document): HTMLElement
+    content(document: Document, contentStageElement: HTMLElement): Node
 }
