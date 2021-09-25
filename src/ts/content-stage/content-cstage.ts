@@ -1,5 +1,5 @@
-import { createContext } from "vm";
 import { Series } from "../series/series";
+import seriesStorage from "../series/series-storage";
 import { ContentStage } from "./content-stage";
 
 //         <div class="series-card">
@@ -74,8 +74,12 @@ export function createSeriesCard(document: Document, series: Series) {
 }
 
 const contentCStage: ContentStage = {
-    content(document: Document, contentStageElement: HTMLElement): Node {
-        
+    content(document: Document): Node {
+        const fragment = new DocumentFragment();
+        const iterator = seriesStorage.seriesMap.values();
+        for (const series of iterator) 
+            fragment.appendChild(createSeriesCard(document, series));
+        return fragment;
     }
 }
 
