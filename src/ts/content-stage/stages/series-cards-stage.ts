@@ -1,5 +1,7 @@
 import { Series } from "../../series/series";
 import seriesStorage from "../../series/series-storage";
+import { testFilter } from "../../utils/filter";
+import { hideElement, showElement } from "../../utils/html-utils";
 import { ContentStage, getContentStageElement } from "../content-stage";
 
 const SERIES_CARD_COLOR_STRIP = 'series-card__color-strip';
@@ -98,35 +100,63 @@ function createLoadMore() {
     return loadMore;
 }
 
+class SeriesCardsStageState {
+    private filterString: string = '';
+    private iterator?: Iterator<Series>;
+    private filterElement: HTMLInputElement;
+    private seriesCardsElement: HTMLElement;
+    private loadMoreElement: HTMLButtonElement;
+
+    constructor() {
+        const fragment = new DocumentFragment(),
+              stage = createSeriesCardsStage();
+        this.filterElement = createSeriesCardsFilter();
+        this.seriesCardsElement = createSeriesCards();
+        this.loadMoreElement = createLoadMore();
+        
+        stage.appendChild(this.filterElement);
+        stage.appendChild(this.seriesCardsElement);
+        stage.appendChild(this.loadMoreElement);
+        
+        fragment.appendChild(stage);
+        getContentStageElement().appendChild(fragment);
+    }
+
+    public async refreshFilter() {
+        hideElement(this.loadMoreElement);
+        this.iterator = seriesStorage.seriesMap.values();
+        await this.continueFilter();
+        showElement(this.loadMoreElement);
+    }
+
+    private async continueFilter(resultsLimit = 15) {
+        const { iterator, filterString, seriesCardsElement } = this
+        if (iterator) {
+            var searches = 0;
+            const next = async () => {
+                const result = iterator.next();
+                if (result.done || searches >= resultsLimit) 
+                    return;
+                const series = result.value;
+                if (!filterString || testFilter(series, filterString)) {
+                    seriesCardsElement.appendChild(createSeriesCard(series));
+                    searches++;
+                } 
+                next();
+            };
+            await next();
+        }
+    }
+}
+
 interface SeriesCardsStage extends ContentStage {
-    iterator?: Iterator<Series>
-    fragment?: DocumentFragment
-    filterElement?: HTMLInputElement
-    seriesCardsElement?: HTMLElement
-    loadMoreElement?: HTMLButtonElement
+    state?: SeriesCardsStageState
 }
 
 const seriesCardsStage: SeriesCardsStage = {
-    onInitialise() {
-        const iterator = seriesStorage.seriesMap.values(),
-              fragment = new DocumentFragment(),
-              stage = createSeriesCardsStage(),
-              filterElement = createSeriesCardsFilter(),
-              seriesCardsElement = createSeriesCards(),
-              loadMoreElement = createLoadMore();
-        this.iterator = iterator;
-        this.fragment = fragment;
-        this.filterElement = filterElement;
-        this.seriesCardsElement = seriesCardsElement;
-        this.loadMoreElement = loadMoreElement;
-        
-        for (const series of iterator) 
-            seriesCardsElement.appendChild(createSeriesCard(series));
-        stage.appendChild(filterElement);
-        stage.appendChild(seriesCardsElement);
-        stage.appendChild(loadMoreElement);
-        fragment.appendChild(stage);
-        getContentStageElement().appendChild(fragment);
+    async onInitialise() {
+        this.state = new SeriesCardsStageState();
+        await this.state.refreshFilter();
     },
     onUpdate() {
         
