@@ -1,6 +1,6 @@
-import collectionContentStage from "../content-stage/stages/colleciton-cstage";
+import seriesCardsStage from "../content-stage/stages/series-cards-stage";
 
 const contentStages = {
-    collectionContentStage
+    seriesCardsStage
 }
 export default contentStages;

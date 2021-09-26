@@ -1,4 +1,4 @@
-contentStages.collectionContentStage.onInitialise();
+contentStages.seriesCardsStage.onInitialise();
 
 // Declarations 
 var contentStages: any;

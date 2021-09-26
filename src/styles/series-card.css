@@ -2,9 +2,9 @@
   width: clamp(10em, 100%, 45em);
 }
 
-.series-cards__filter,
 .series-cards {
   width: 100%;
+  padding: 0;
 }
 
 .series-card {
@@ -58,5 +58,7 @@
 }
 
 #series-cards__filter {
+  width: 50%;
   font-size: 150%;
+  margin-bottom: 1em;
 }

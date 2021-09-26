@@ -21,8 +21,7 @@ const SERIES_CARD = 'series-card';
 
 const SERIES_CARDS_STAGE = "series-cards-stage";
 const SERIES_CARDS_FILTER_ID= "series-cards__filter";
-const SERIES_CARDS_COLLECTION = "series-cards__collection";
-
+const SERIES_CARDS = "series-cards";
 
 // <span class="series-card__color-strip"></span>
 export function createSeriesCardColorStrip(color: string) {
@@ -78,29 +77,53 @@ export function createSeriesCard(series: Series) {
     return seriesCardElement;
 } 
 
-// <ol class="series-card__collection">
-// </ol>
-export function createSeriesCardCollection() {
+// <ol class="series-cards"> </ol>
+export function createSeriesCards() {
     const seriesCardCollection = document.createElement('ol');
-    seriesCardCollection.classList.add(SERIES_CARD);
+    seriesCardCollection.classList.add(SERIES_CARDS);
     return seriesCardCollection;
 } 
+
+// <div class="series-cards-stage"> </div>
+export function createSeriesCardsStage() {
+    const seriesCardsStage = document.createElement('div');
+    seriesCardsStage.classList.add(SERIES_CARDS_STAGE);
+    return seriesCardsStage;
+}
+
+//   <input id="series-cards__filter" class="ol-input" placeholder="Filter">
+function createSeriesCardsFilter() {
+    const seriesCardsFilter = document.createElement('input');
+    seriesCardsFilter.classList.add('ol-input');
+    seriesCardsFilter.id = SERIES_CARDS_FILTER_ID;
+    seriesCardsFilter.placeholder = 'Filter';
+    return seriesCardsFilter;
+}
 
 interface SeriesCardsStage extends ContentStage {
     iterator?: Iterator<Series>
     fragment?: DocumentFragment
     filterElement?: HTMLInputElement
+    seriesCardsElement?: HTMLElement
 }
 
 const seriesCardsStage: SeriesCardsStage = {
     onInitialise() {
         const iterator = seriesStorage.seriesMap.values(),
-              fragment = new DocumentFragment();
+              fragment = new DocumentFragment(),
+              filterElement = createSeriesCardsFilter(),
+              seriesCardsElement = createSeriesCards(),
+              stage = createSeriesCardsStage();
         this.iterator = iterator;
         this.fragment = fragment;
+        this.filterElement = filterElement;
+        this.seriesCardsElement = seriesCardsElement;
         
         for (const series of iterator) 
-            fragment.appendChild(createSeriesCard(series));
+            seriesCardsElement.appendChild(createSeriesCard(series));
+        stage.appendChild(filterElement);
+        stage.appendChild(seriesCardsElement);
+        fragment.appendChild(stage);
         getContentStageElement().appendChild(fragment);
     },
     onUpdate() {
