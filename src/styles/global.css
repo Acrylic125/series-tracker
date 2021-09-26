@@ -95,6 +95,25 @@ body {
   width: 100%;
 }
 
+.circle {
+  border-radius: 50%;
+}
+
+.center-horz {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.load-more {
+  width: 2em;
+  height: 2em;
+  font-size: 150%;
+  font-weight: bold;
+  border: none;
+  background-color: #4a4a4f;
+  color: white;
+}
+
 ul,
 ol {
   list-style: none;
