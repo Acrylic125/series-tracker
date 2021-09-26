@@ -113,7 +113,10 @@ class SeriesCardsStageState {
         this.filterElement = createSeriesCardsFilter();
         this.seriesCardsElement = createSeriesCards();
         this.loadMoreElement = createLoadMore();
-        
+        this.loadMoreElement.onclick = () => {
+            this.continueFilter();
+        }
+
         stage.appendChild(this.filterElement);
         stage.appendChild(this.seriesCardsElement);
         stage.appendChild(this.loadMoreElement);
@@ -125,17 +128,20 @@ class SeriesCardsStageState {
     public async refreshFilter() {
         hideElement(this.loadMoreElement);
         this.iterator = seriesStorage.seriesMap.values();
+        this.filterString = '3';
         await this.continueFilter();
         showElement(this.loadMoreElement);
     }
 
-    private async continueFilter(resultsLimit = 15) {
+    private async continueFilter(resultsLimit = 20) {
         const { iterator, filterString, seriesCardsElement } = this
         if (iterator) {
             var searches = 0;
             const next = async () => {
+                if (searches >= resultsLimit) 
+                    return;
                 const result = iterator.next();
-                if (result.done || searches >= resultsLimit) 
+                if (result.done) 
                     return;
                 const series = result.value;
                 if (!filterString || testFilter(series, filterString)) {

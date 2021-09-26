@@ -6,5 +6,6 @@ export interface Filterable {
 
 export function testFilter(filterable: Filterable, filterString: string) {
     return filterable.getIdentifiers()
-                     .some((identifier) => (filterString.includes(identifier)));
+                     .some((identifier) => 
+                           (identifier.includes(filterString)));
 }

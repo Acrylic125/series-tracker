@@ -44,7 +44,7 @@ export class SeriesStorage {
 }
 
 const seriesStorage = new SeriesStorage();
-for (let i = 0; i < 10; i++) {
+for (let i = 0; i < 100; i++) {
     seriesStorage.seriesMap.set('abc-' + i, {
         id: "abca-" + i,
         title: "A REALLY long title " + i,
@@ -52,7 +52,7 @@ for (let i = 0; i < 10; i++) {
         items: [],
         tags: [],
         getIdentifiers() {
-            return [ this.id, ...this.tags ]
+            return [ this.title, this.id, ...this.tags ]
         }
     });
 }
