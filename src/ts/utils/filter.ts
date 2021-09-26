@@ -7,5 +7,5 @@ export interface Filterable {
 export function testFilter(filterable: Filterable, filterString: string) {
     return filterable.getIdentifiers()
                      .some((identifier) => 
-                           (identifier.includes(filterString)));
+                           (identifier.toLocaleLowerCase().includes(filterString)));
 }

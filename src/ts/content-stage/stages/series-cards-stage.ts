@@ -113,9 +113,7 @@ class SeriesCardsStageState {
         this.filterElement = createSeriesCardsFilter();
         this.seriesCardsElement = createSeriesCards();
         this.loadMoreElement = createLoadMore();
-        this.loadMoreElement.onclick = () => {
-            this.continueFilter();
-        }
+        this.initElementEvents();
 
         stage.appendChild(this.filterElement);
         stage.appendChild(this.seriesCardsElement);
@@ -125,10 +123,27 @@ class SeriesCardsStageState {
         getContentStageElement().appendChild(fragment);
     }
 
+    private initElementEvents() {
+        this.loadMoreElement.onclick = () => 
+            this.continueFilter();
+
+        var doFilterCheck = true;
+        this.filterElement.onkeyup = () => {
+            if (doFilterCheck) {
+                doFilterCheck = false;
+                setTimeout(async () => {
+                    this.filterString = this.filterElement.value.toLocaleLowerCase();
+                    await this.refreshFilter();
+                    doFilterCheck = true;
+                }, 500);
+            }
+        }
+    }
+
     public async refreshFilter() {
+        this.seriesCardsElement.innerHTML = '';
         hideElement(this.loadMoreElement);
         this.iterator = seriesStorage.seriesMap.values();
-        this.filterString = '3';
         await this.continueFilter();
         showElement(this.loadMoreElement);
     }
