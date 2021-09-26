@@ -64,6 +64,7 @@
 
 #content-stage {
   flex: 3;
-  height: calc(100vh - var(--title-bar-height));
   padding: 2em;
+  /* Overflow Correction */
+  height: calc(100vh - var(--title-bar-height) - 4rem);
 }

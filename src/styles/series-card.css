@@ -9,7 +9,7 @@
   flex-direction: row;
   border-radius: 1em;
   margin-top: 1em;
-  opacity: 0.75;
+  opacity: 0.5;
 }
 
 .series-card:hover {

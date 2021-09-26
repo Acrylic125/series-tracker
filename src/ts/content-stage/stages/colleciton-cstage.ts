@@ -21,7 +21,7 @@ const SERIES_CARD = 'series-card';
 
 // <span class="series-card__color-strip"></span>
 export function createSeriesCardColorStrip(color: string) {
-    const colorStripElement = window.document.createElement('span');
+    const colorStripElement = document.createElement('span');
     colorStripElement.classList.add(SERIES_CARD_COLOR_STRIP);
     colorStripElement.style.backgroundColor = color;
     return colorStripElement;
@@ -29,7 +29,7 @@ export function createSeriesCardColorStrip(color: string) {
 
 // <p class="series-card__content--title"></p>
 export function createSeriesCardTitle(title: string) {
-    const titleElement = window.document.createElement('p');
+    const titleElement = document.createElement('p');
     titleElement.classList.add(SERIES_CARD_TITLE);
     titleElement.innerText = title;
     return titleElement;
@@ -37,7 +37,7 @@ export function createSeriesCardTitle(title: string) {
 
 //  <li class="series-card__tag"> </li>
 export function createSeriesCardTag(tagName: string) {
-    const tagElement = window.document.createElement('li');
+    const tagElement = document.createElement('li');
     tagElement.classList.add(SERIES_CARD_TAG);
     tagElement.innerText = tagName;
     return tagElement;
@@ -45,7 +45,7 @@ export function createSeriesCardTag(tagName: string) {
 
 // <ol class="series-card__content--tags"> </ol>
 export function createSeriesCardTags(...tags: string[]) {
-    const tagElement = window.document.createElement('ol');
+    const tagElement = document.createElement('ol');
     tagElement.classList.add(SERIES_CARD_TAGS);
     tags.forEach((tag) => 
         tagElement.appendChild(createSeriesCardTag(tag)));
@@ -54,7 +54,7 @@ export function createSeriesCardTags(...tags: string[]) {
 
 // <span class="series-card__content"> </span>
 export function createSeriesCardContent(title: string, ...tags: string[]) {
-    const contentElement = window.document.createElement('span');
+    const contentElement = document.createElement('span');
     contentElement.classList.add(SERIES_CARD_CONTENT);
     contentElement.appendChild(createSeriesCardTitle(title));
     contentElement.appendChild(createSeriesCardTags(...tags));
@@ -66,29 +66,40 @@ export function createSeriesCardContent(title: string, ...tags: string[]) {
 //   <span class="series-card__content"> </span>
 // </div>
 export function createSeriesCard(series: Series) {
-    const seriesCardElement = window.document.createElement('div');
+    const seriesCardElement = document.createElement('div');
     seriesCardElement.classList.add(SERIES_CARD);
     seriesCardElement.appendChild(createSeriesCardColorStrip(series.colorStripColor));
     seriesCardElement.appendChild(createSeriesCardContent(series.title));
     return seriesCardElement;
+} 
+
+interface CollectionContentStage extends ContentStage {
+    iterator?: Iterator<Series>
+    fragment?: DocumentFragment
+
 }
 
-const collectionContentStage: ContentStage = {
-    content() {
-        const fragment = new DocumentFragment();
-        const iterator = seriesStorage.seriesMap.values();
+export class CollectionContentIterator {
+    
+}
+
+// 
+const collectionContentStage: CollectionContentStage = {
+    onInitialise() {
+        const iterator = seriesStorage.seriesMap.values(),
+              fragment = new DocumentFragment();
+        this.iterator = iterator;
+        this.fragment = fragment;
+        
         for (const series of iterator) 
             fragment.appendChild(createSeriesCard(series));
         getContentStageElement().appendChild(fragment);
+    },
+    onUpdate() {
+        
+    },
+    onTerminate() {
+
     }
-}
-
+};
 export default collectionContentStage;
-
-interface DocumentFunction {
-    create(type: string): Node
-}
-
-export function testDocumentFunction(func: DocumentFunction) {
-    console.log(func, " Hello World!");
-}

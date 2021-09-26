@@ -1,7 +1,5 @@
+console.log(contentStages.collectionContentStage);
+contentStages.collectionContentStage.onInitialise();
 
-const contentStageElement = document.getElementById('content-stage');
-contentStages.collectionContentStage.content(document, contentStageElement)
-
-
-// Declarations
+// Declarations 
 var contentStages: any;

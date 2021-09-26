@@ -3,6 +3,7 @@
 
 <head>
   <meta charset="UTF-8">
+  <meta http-equiv="Content-Security-Policy" content="script-src 'self';">
   <title>Hello World!</title>
   <link rel="stylesheet" href="./styles/index.css">
   <link rel="stylesheet" href="./styles/series-card.css">
@@ -42,56 +43,9 @@
       </ol>
     </div>
     <!-- Main content stage. -->
-    <div id="content-stage" class="content-stage scrollable-y">
-      <!-- <div class="series-cards">
-        <div class="series-card">
-          <span class="series-card__color-strip"></span>
-          <span class="series-card__content">
-            <p class="series-card__content--title">
-              Lorem ipsum dolor sit amet consectetur, adipisicing elit. Porro, facilis.
-            </p>
-            <ol class="series-card__content--tags">
-              <li class="series-card__tag">
-                test
-              </li>
-              <li class="series-card__tag">
-                Lorem, ipsum dolor.
-              </li>
-            </ol>
-          </span>
-        </div>
-      </div> -->
+    <div id="content-stage" class="scrollable-y">
     </div>
   </section>
-  <!-- <header>
-    <span class="drag title-bar">T</span>
-  </header>
-  <section id="content" class="px-5">
-    <div class="mx-auto py-2 mw-3 w-100">
-      <input class="col-11 d-block my-5 font-size-4 ol-input" placeholder="Filter" type="text">
-    </div>
-    <div id="series-cards" data-cardtemplate="series-card-template"
-      class="container-fluid series-cards w-100 mw-4 mx-auto px-5">
-      <template id="series-card-template">
-        <div class="series-card my-2">
-          <span class="series-card__color-strip"></span>
-          <p class="series-card__title p-3 font-weight-bold"></p>
-        </div>
-      </template>
-    </div>
-  </section>
-  <div class="c-modal">
-    <div class="c-modal__header">
-      <h5 class="c-modal__title">
-        Hello
-      </h5>
-      <button class="c-modal__buttons--close">&times;</button>
-    </div>
-    <div class="c-modal__body">
-      Lorem ipsum dolor sit amet consectetur adipisicing elit. Nulla, expedita.
-    </div>
-  </div>
-  <div class="c-modal__overlay"></div> -->
 </body>
 
 </html>
