@@ -10,3 +10,16 @@ export function htmlToElement(document: Document, html: string) {
     template.innerHTML = html;
     return template.content.firstChild;
 }
+
+const HIDDEN = 'hidden';
+export function hideElement<T extends HTMLElement>(element: T) {
+    element.classList.add(HIDDEN);
+}
+
+export function showElement<T extends HTMLElement>(element: T) {
+    element.classList.remove(HIDDEN);
+}
+
+export function isElementHidden<T extends HTMLElement>(element: T) {
+    return element.classList.contains(HIDDEN);
+}

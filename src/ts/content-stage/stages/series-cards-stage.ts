@@ -2,16 +2,6 @@ import { Series } from "../../series/series";
 import seriesStorage from "../../series/series-storage";
 import { ContentStage, getContentStageElement } from "../content-stage";
 
-//         <div class="series-card">
-//           <span class="series-card__color-strip"></span>
-//           <span class="series-card__content">
-//             <p class="series-card__content--title"> </p>
-//             <ol class="series-card__content--tags">
-//               <li class="series-card__tag"> </li>
-//             </ol>
-//           </span>
-//         </div>
-
 const SERIES_CARD_COLOR_STRIP = 'series-card__color-strip';
 const SERIES_CARD_TITLE = 'series-card__content--title';
 const SERIES_CARD_TAG = 'series-card__tag';
@@ -51,8 +41,9 @@ export function createSeriesCardTag(tagName: string) {
 export function createSeriesCardTags(...tags: string[]) {
     const tagElement = document.createElement('ol');
     tagElement.classList.add(SERIES_CARD_TAGS);
-    tags.forEach((tag) => 
-        tagElement.appendChild(createSeriesCardTag(tag)));
+    if (tags.length > 0)
+        tags.forEach((tag) => 
+            tagElement.appendChild(createSeriesCardTag(tag)));
     return tagElement;
 }
 
@@ -73,7 +64,7 @@ export function createSeriesCard(series: Series) {
     const seriesCardElement = document.createElement('li');
     seriesCardElement.classList.add(SERIES_CARD);
     seriesCardElement.appendChild(createSeriesCardColorStrip(series.colorStripColor));
-    seriesCardElement.appendChild(createSeriesCardContent(series.title));
+    seriesCardElement.appendChild(createSeriesCardContent(series.title, ...series.tags));
     return seriesCardElement;
 } 
 
@@ -100,29 +91,40 @@ function createSeriesCardsFilter() {
     return seriesCardsFilter;
 }
 
+function createLoadMore() {
+    const loadMore = document.createElement('button');
+    loadMore.classList.add('load-more', 'center-horz', 'circle');
+    loadMore.innerText = '\u21E3';
+    return loadMore;
+}
+
 interface SeriesCardsStage extends ContentStage {
     iterator?: Iterator<Series>
     fragment?: DocumentFragment
     filterElement?: HTMLInputElement
     seriesCardsElement?: HTMLElement
+    loadMoreElement?: HTMLButtonElement
 }
 
 const seriesCardsStage: SeriesCardsStage = {
     onInitialise() {
         const iterator = seriesStorage.seriesMap.values(),
               fragment = new DocumentFragment(),
+              stage = createSeriesCardsStage(),
               filterElement = createSeriesCardsFilter(),
               seriesCardsElement = createSeriesCards(),
-              stage = createSeriesCardsStage();
+              loadMoreElement = createLoadMore();
         this.iterator = iterator;
         this.fragment = fragment;
         this.filterElement = filterElement;
         this.seriesCardsElement = seriesCardsElement;
+        this.loadMoreElement = loadMoreElement;
         
         for (const series of iterator) 
             seriesCardsElement.appendChild(createSeriesCard(series));
         stage.appendChild(filterElement);
         stage.appendChild(seriesCardsElement);
+        stage.appendChild(loadMoreElement);
         fragment.appendChild(stage);
         getContentStageElement().appendChild(fragment);
     },
