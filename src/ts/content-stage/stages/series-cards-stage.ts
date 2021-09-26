@@ -19,6 +19,11 @@ const SERIES_CARD_TAGS = 'series-card__content--tags';
 const SERIES_CARD_CONTENT = 'series-card__content';
 const SERIES_CARD = 'series-card';
 
+const SERIES_CARDS_STAGE = "series-cards-stage";
+const SERIES_CARDS_FILTER_ID= "series-cards__filter";
+const SERIES_CARDS_COLLECTION = "series-cards__collection";
+
+
 // <span class="series-card__color-strip"></span>
 export function createSeriesCardColorStrip(color: string) {
     const colorStripElement = document.createElement('span');
@@ -61,30 +66,33 @@ export function createSeriesCardContent(title: string, ...tags: string[]) {
     return contentElement;
 }
 
-// <div class="series-card">
+// <li class="series-card">
 //   <span class="series-card__color-strip"> </span>
 //   <span class="series-card__content"> </span>
-// </div>
+// </li>
 export function createSeriesCard(series: Series) {
-    const seriesCardElement = document.createElement('div');
+    const seriesCardElement = document.createElement('li');
     seriesCardElement.classList.add(SERIES_CARD);
     seriesCardElement.appendChild(createSeriesCardColorStrip(series.colorStripColor));
     seriesCardElement.appendChild(createSeriesCardContent(series.title));
     return seriesCardElement;
 } 
 
-interface CollectionContentStage extends ContentStage {
+// <ol class="series-card__collection">
+// </ol>
+export function createSeriesCardCollection() {
+    const seriesCardCollection = document.createElement('ol');
+    seriesCardCollection.classList.add(SERIES_CARD);
+    return seriesCardCollection;
+} 
+
+interface SeriesCardsStage extends ContentStage {
     iterator?: Iterator<Series>
     fragment?: DocumentFragment
-
+    filterElement?: HTMLInputElement
 }
 
-export class CollectionContentIterator {
-    
-}
-
-// 
-const collectionContentStage: CollectionContentStage = {
+const seriesCardsStage: SeriesCardsStage = {
     onInitialise() {
         const iterator = seriesStorage.seriesMap.values(),
               fragment = new DocumentFragment();
@@ -102,4 +110,4 @@ const collectionContentStage: CollectionContentStage = {
 
     }
 };
-export default collectionContentStage;
+export default seriesCardsStage;

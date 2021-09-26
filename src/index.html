@@ -23,9 +23,9 @@
     </span>
   </header>
   <!-- Main Content -->
-  <section id="content">
+  <main>
     <!-- Side Bar -->
-    <div class="side-bar">
+    <aside class="side-bar">
       <h1 class="side-bar__title">Series<br>Tracker</h1>
       <ol class="side-bar__buttons scrollable-y">
         <li>
@@ -41,11 +41,14 @@
           <button>Tags</button>
         </li>
       </ol>
-    </div>
+    </aside>
     <!-- Main content stage. -->
-    <div id="content-stage" class="scrollable-y">
-    </div>
-  </section>
+    <section id="content-stage" class="scrollable-y">
+      <div class="flow-row">
+        <input id="series-cards__filter" class="ol-input w-80" placeholder="Filter">
+      </div>
+    </section>
+  </main>
 </body>
 
 </html>

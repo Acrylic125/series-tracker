@@ -50,7 +50,10 @@ for (let i = 0; i < 10; i++) {
         title: "A REALLY long title " + i,
         colorStripColor: `#${randColor(BRIGHT_DEFAULT)}`,
         items: [],
-        tags: []
+        tags: [],
+        getIdentifiers() {
+            return [ this.id, ...this.tags ]
+        }
     });
 }
 seriesStorage.saveToFile();

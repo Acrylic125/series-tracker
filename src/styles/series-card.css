@@ -1,5 +1,10 @@
-.series-cards {
+.series-cards-stage {
   width: clamp(10em, 100%, 45em);
+}
+
+.series-cards__filter,
+.series-cards {
+  width: 100%;
 }
 
 .series-card {
@@ -50,4 +55,8 @@
   background-color: cadetblue;
   color: white;
   border-radius: 0.5em;
+}
+
+#series-cards__filter {
+  font-size: 150%;
 }

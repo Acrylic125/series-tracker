@@ -43,7 +43,7 @@
   float: right;
 }
 
-#content {
+main {
   width: 100%;
   padding-top: var(--title-bar-height);
 }
