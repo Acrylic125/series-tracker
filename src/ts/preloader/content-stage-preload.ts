@@ -1,6 +1,6 @@
-import seriesCardsStage from "../content-stage/stages/series-cards-stage";
+import { useStageByID, useStage } from '../content-stage/content-stage-manager';
 
 const contentStages = {
-    seriesCardsStage
+    useStageByID, useStage
 }
 export default contentStages;

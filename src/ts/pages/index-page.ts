@@ -1,4 +1,4 @@
-contentStages.seriesCardsStage.onInitialise();
+contentStages.useStageByID('series-cards');
 
 // Declarations 
 var contentStages: any;
