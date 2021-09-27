@@ -101,6 +101,7 @@ function createLoadMore() {
     return loadMore;
 }
 
+// Planning to refactor.
 class SeriesCardsStageState {
     private filterString: string = '';
     private generator?: Generator<Series>;

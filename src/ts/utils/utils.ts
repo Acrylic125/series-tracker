@@ -72,3 +72,11 @@ export function createFileIfNotExist(path: string, options: FileCreationOptions 
     });
     return complete;
 }
+
+export function toComparableString(str: string) {
+    return str.toLocaleLowerCase();
+}
+
+export function toID(id: string) {
+    return id.toLocaleLowerCase();
+}
