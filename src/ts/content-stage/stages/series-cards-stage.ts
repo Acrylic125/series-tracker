@@ -178,6 +178,7 @@ class SeriesCardsStageProcess {
                 if (!filterString || testFilter(series, filterString)) {
                     seriesCardsFragmnet.appendChild(createSeriesCard(series));
                     searches++;
+                    this.c++;
                 } 
                 next();
             };
@@ -187,11 +188,13 @@ class SeriesCardsStageProcess {
         this.checkLoadMoreComplete();
     }
 
+    private c = 1;
+
     private checkLoadMoreComplete() {
         const generator = this.generator;
         if (generator) {
             const peek = peekGenerator(generator);
-            if (!peek.peekResult.done) {
+            if (peek.peekResult.value) {
                 showElement(this.elements.loadMoreElement);
                 this.generator = peek.newGenerator();
             } else {
@@ -215,7 +218,7 @@ const seriesCardsStage: SeriesCardsStage = {
         await this.state.freshLoad();
     },
     reload() {
-        
+
     },
     terminate() {
 
