@@ -129,7 +129,7 @@ function createSeriesCardsStageElements(): SeriesCardsStageElements {
 }
 
 // Planning to refactor.
-class SeriesCardsStageState {
+class SeriesCardsStageProcess {
     private filterString: string = '';
     private generator?: Generator<Series>;
 
@@ -140,7 +140,7 @@ class SeriesCardsStageState {
     private initElementEvents() {
         const { loadMoreElement, filterElement } = this.elements;
         loadMoreElement.onclick = () => 
-            this.continueFilter();
+            this.loadMore();
 
         var doFilterCheck = true;
         filterElement.onkeyup = () => {
@@ -148,30 +148,30 @@ class SeriesCardsStageState {
                 doFilterCheck = false;
                 setTimeout(async () => {
                     this.filterString = toComparableString(filterElement.value);
-                    await this.refreshFilter();
+                    await this.freshLoad();
                     doFilterCheck = true;
                 }, 500);
             }
         }
     }
 
-    public async refreshFilter() {
+    public async freshLoad() {
         this.elements.seriesCardsElement.innerHTML = '';
         this.generator = iteratorToGenerator(seriesStorage.seriesMap.values());
-        await this.continueFilter();
+        await this.loadMore();
     }
 
-    private async continueFilter(resultsLimit = 40) {
+    private async loadMore(resultsLimit = 25) {
         hideElement(this.elements.loadMoreElement);
-        const { generator: iterator, filterString } = this;
+        const { generator, filterString } = this;
         const { seriesCardsElement } = this.elements;
-        if (iterator) {
+        if (generator) {
             var searches = 0;
             const seriesCardsFragmnet = new DocumentFragment();
             const next = async () => {
                 if (searches >= resultsLimit) 
                     return;
-                const result = iterator.next();
+                const result = generator.next();
                 const series = result.value;
                 if (!series || result.done)  
                     return;
@@ -184,23 +184,26 @@ class SeriesCardsStageState {
             await next();
             seriesCardsElement.appendChild(seriesCardsFragmnet);
         }
-        this.checkLoadMoreReveal();
+        this.checkLoadMoreComplete();
     }
 
-    private checkLoadMoreReveal() {
+    private checkLoadMoreComplete() {
         const generator = this.generator;
         if (generator) {
             const peek = peekGenerator(generator);
-            this.generator = peek.newGenerator();
-            if (!peek.peekResult.done) 
+            if (!peek.peekResult.done) {
                 showElement(this.elements.loadMoreElement);
+                this.generator = peek.newGenerator();
+            } else {
+                this.generator = undefined;
+            }
         }
     }
 
 }
 
 interface SeriesCardsStage extends ContentStage {
-    state?: SeriesCardsStageState,
+    state?: SeriesCardsStageProcess,
     elements?: SeriesCardsStageElements
 }
 
@@ -208,8 +211,8 @@ const seriesCardsStage: SeriesCardsStage = {
     async initialise() {
         this.elements = createSeriesCardsStageElements();
         getContentStageElement().appendChild(this.elements.toFragment());
-        this.state = new SeriesCardsStageState(this.elements);
-        await this.state.refreshFilter();
+        this.state = new SeriesCardsStageProcess(this.elements);
+        await this.state.freshLoad();
     },
     reload() {
         
