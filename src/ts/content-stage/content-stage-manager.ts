@@ -9,7 +9,7 @@ export function getContentStageElement() {
 }
 
 export function useStage(stage: ContentStage) {
-    stage.onInitialise();
+    stage.initialise();
 }
 
 export function useStageByID(id: string) {

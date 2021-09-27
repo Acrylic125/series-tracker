@@ -3,7 +3,9 @@ import seriesStorage from "../../series/series-storage";
 import { testFilter } from "../../utils/filter";
 import { iteratorToGenerator, peekGenerator } from "../../utils/generator";
 import { hideElement, showElement } from "../../utils/html-utils";
-import { ContentStage, getContentStageElement } from "../content-stage";
+import { toComparableString } from "../../utils/utils";
+import { ContentStage } from "../content-stage";
+import { getContentStageElement } from '../content-stage-manager';
 
 const SERIES_CARD_COLOR_STRIP = 'series-card__color-strip';
 const SERIES_CARD_TITLE = 'series-card__content--title';
@@ -101,40 +103,51 @@ function createLoadMore() {
     return loadMore;
 }
 
+interface SeriesCardsStageElements {
+    readonly filterElement: HTMLInputElement;
+    readonly seriesCardsElement: HTMLElement;
+    readonly loadMoreElement: HTMLButtonElement;
+    toFragment(): DocumentFragment
+}
+
+function createSeriesCardsStageElements(): SeriesCardsStageElements {
+    return {
+        filterElement: createSeriesCardsFilter(),
+        seriesCardsElement: createSeriesCards(),
+        loadMoreElement: createLoadMore(),
+        toFragment() {
+            const fragment = new DocumentFragment(),
+                  stage = createSeriesCardsStage();
+            stage.appendChild(this.filterElement);
+            stage.appendChild(this.seriesCardsElement);
+            stage.appendChild(this.loadMoreElement);
+                  
+            fragment.appendChild(stage);
+            return fragment;
+        }
+    }
+}
+
 // Planning to refactor.
 class SeriesCardsStageState {
     private filterString: string = '';
     private generator?: Generator<Series>;
-    private filterElement: HTMLInputElement;
-    private seriesCardsElement: HTMLElement;
-    private loadMoreElement: HTMLButtonElement;
 
-    constructor() {
-        const fragment = new DocumentFragment(),
-              stage = createSeriesCardsStage();
-        this.filterElement = createSeriesCardsFilter();
-        this.seriesCardsElement = createSeriesCards();
-        this.loadMoreElement = createLoadMore();
+    constructor(private elements: SeriesCardsStageElements) {
         this.initElementEvents();
-
-        stage.appendChild(this.filterElement);
-        stage.appendChild(this.seriesCardsElement);
-        stage.appendChild(this.loadMoreElement);
-        
-        fragment.appendChild(stage);
-        getContentStageElement().appendChild(fragment);
     }
 
     private initElementEvents() {
-        this.loadMoreElement.onclick = () => 
+        const { loadMoreElement, filterElement } = this.elements;
+        loadMoreElement.onclick = () => 
             this.continueFilter();
 
         var doFilterCheck = true;
-        this.filterElement.onkeyup = () => {
+        filterElement.onkeyup = () => {
             if (doFilterCheck) {
                 doFilterCheck = false;
                 setTimeout(async () => {
-                    this.filterString = this.filterElement.value.toLocaleLowerCase();
+                    this.filterString = toComparableString(filterElement.value);
                     await this.refreshFilter();
                     doFilterCheck = true;
                 }, 500);
@@ -143,16 +156,18 @@ class SeriesCardsStageState {
     }
 
     public async refreshFilter() {
-        this.seriesCardsElement.innerHTML = '';
+        this.elements.seriesCardsElement.innerHTML = '';
         this.generator = iteratorToGenerator(seriesStorage.seriesMap.values());
         await this.continueFilter();
     }
 
     private async continueFilter(resultsLimit = 40) {
-        hideElement(this.loadMoreElement);
-        const { generator: iterator, filterString, seriesCardsElement } = this
+        hideElement(this.elements.loadMoreElement);
+        const { generator: iterator, filterString } = this;
+        const { seriesCardsElement } = this.elements;
         if (iterator) {
             var searches = 0;
+            const seriesCardsFragmnet = new DocumentFragment();
             const next = async () => {
                 if (searches >= resultsLimit) 
                     return;
@@ -161,12 +176,13 @@ class SeriesCardsStageState {
                 if (!series || result.done)  
                     return;
                 if (!filterString || testFilter(series, filterString)) {
-                    seriesCardsElement.appendChild(createSeriesCard(series));
+                    seriesCardsFragmnet.appendChild(createSeriesCard(series));
                     searches++;
                 } 
                 next();
             };
             await next();
+            seriesCardsElement.appendChild(seriesCardsFragmnet);
         }
         this.checkLoadMoreReveal();
     }
@@ -177,25 +193,28 @@ class SeriesCardsStageState {
             const peek = peekGenerator(generator);
             this.generator = peek.newGenerator();
             if (!peek.peekResult.done) 
-                showElement(this.loadMoreElement);
+                showElement(this.elements.loadMoreElement);
         }
     }
 
 }
 
 interface SeriesCardsStage extends ContentStage {
-    state?: SeriesCardsStageState
+    state?: SeriesCardsStageState,
+    elements?: SeriesCardsStageElements
 }
 
 const seriesCardsStage: SeriesCardsStage = {
-    async onInitialise() {
-        this.state = new SeriesCardsStageState();
+    async initialise() {
+        this.elements = createSeriesCardsStageElements();
+        getContentStageElement().appendChild(this.elements.toFragment());
+        this.state = new SeriesCardsStageState(this.elements);
         await this.state.refreshFilter();
     },
-    onUpdate() {
+    reload() {
         
     },
-    onTerminate() {
+    terminate() {
 
     }
 };
