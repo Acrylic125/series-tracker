@@ -1,6 +1,7 @@
 import { Series } from "../../series/series";
 import seriesStorage from "../../series/series-storage";
 import { testFilter } from "../../utils/filter";
+import { iteratorToGenerator, peekGenerator } from "../../utils/generator";
 import { hideElement, showElement } from "../../utils/html-utils";
 import { ContentStage, getContentStageElement } from "../content-stage";
 
@@ -102,7 +103,7 @@ function createLoadMore() {
 
 class SeriesCardsStageState {
     private filterString: string = '';
-    private iterator?: Iterator<Series>;
+    private generator?: Generator<Series>;
     private filterElement: HTMLInputElement;
     private seriesCardsElement: HTMLElement;
     private loadMoreElement: HTMLButtonElement;
@@ -142,23 +143,22 @@ class SeriesCardsStageState {
 
     public async refreshFilter() {
         this.seriesCardsElement.innerHTML = '';
-        hideElement(this.loadMoreElement);
-        this.iterator = seriesStorage.seriesMap.values();
+        this.generator = iteratorToGenerator(seriesStorage.seriesMap.values());
         await this.continueFilter();
-        showElement(this.loadMoreElement);
     }
 
-    private async continueFilter(resultsLimit = 20) {
-        const { iterator, filterString, seriesCardsElement } = this
+    private async continueFilter(resultsLimit = 40) {
+        hideElement(this.loadMoreElement);
+        const { generator: iterator, filterString, seriesCardsElement } = this
         if (iterator) {
             var searches = 0;
             const next = async () => {
                 if (searches >= resultsLimit) 
                     return;
                 const result = iterator.next();
-                if (result.done) 
-                    return;
                 const series = result.value;
+                if (!series || result.done)  
+                    return;
                 if (!filterString || testFilter(series, filterString)) {
                     seriesCardsElement.appendChild(createSeriesCard(series));
                     searches++;
@@ -167,7 +167,19 @@ class SeriesCardsStageState {
             };
             await next();
         }
+        this.checkLoadMoreReveal();
     }
+
+    private checkLoadMoreReveal() {
+        const generator = this.generator;
+        if (generator) {
+            const peek = peekGenerator(generator);
+            this.generator = peek.newGenerator();
+            if (!peek.peekResult.done) 
+                showElement(this.loadMoreElement);
+        }
+    }
+
 }
 
 interface SeriesCardsStage extends ContentStage {
