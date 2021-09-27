@@ -73,3 +73,15 @@ export function createFileIfNotExist(path: string, options: FileCreationOptions 
     return complete;
 }
 
+export function peekIterator<T, TReturn, TNext>(iterator: Generator<T, TReturn, TNext>) {
+    const peekResult = iterator.next();
+
+    function* newIterator() {
+        yield peekResult.value;
+        yield* iterator;
+    }
+
+    return {
+        peekResult, newIterator
+    };
+}
