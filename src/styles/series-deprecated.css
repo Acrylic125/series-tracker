@@ -1,0 +1,90 @@
+/* DEPRECATED DESIGN! (This is here for future references.) */
+/* HTML: 
+      <div class="series-items">
+        <div class="series-add-item">
+          <span class="series-add-item__plus">+</span>
+          <p>Click to Create New</p>
+        </div>
+        <div class="series-item">
+          <div class="series-item__banner">
+            <div class="series-item__banner--icon"></div>
+          </div>
+          <div class="series-item__content">
+            <p class="series-item__content--title">SAO Season 4, Alicilisation</p>
+            <!-- <p class="series-item__content--status">Episode 14.5</p> -->
+          </div>
+        </div>
+        <div class="series-item"></div>
+        <div class="series-item"></div>
+      </div> 
+*/
+
+.series-items {
+  width: 100%;
+  display: grid;
+  margin-top: 3em;
+  grid-template-columns: repeat(auto-fill, minmax(8em, 1fr));
+  row-gap: 1em;
+  column-gap: 1em;
+}
+
+.series-add-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  color: #666;
+}
+
+.series-add-item__plus {
+  font-weight: bolder;
+  font-size: 250%;
+}
+
+.series-add-item > p {
+  max-width: 8em;
+}
+
+.series-add-item,
+.series-item {
+  background-color: #dfdfdf;
+  opacity: 0.55;
+  aspect-ratio: 1 / 1.33;
+  border-radius: 2em;
+}
+
+.series-add-item:hover,
+.series-item:hover {
+  opacity: 1;
+}
+
+.series-item__banner {
+  width: 100%;
+  aspect-ratio: 1 / 0.33;
+  background-color: #e16c00;
+  border-radius: 2em 2em 0em 0em;
+}
+
+.series-item__banner--icon {
+  width: 35%;
+  aspect-ratio: 1 / 1;
+  border-radius: 50%;
+  background-color: #f7973f;
+  transform: translateY(50%);
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.series-item__content {
+  text-align: center;
+  padding: 3em 1em 1em 1em;
+}
+
+.series-item__content--status {
+  font-weight: lighter;
+}
+
+.series-item__content--title {
+  font-weight: bold;
+}
