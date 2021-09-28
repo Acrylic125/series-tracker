@@ -7,3 +7,34 @@ export function createTag(tagName: string) {
     tagElement.innerText = tagName;
     return tagElement;
 }
+
+const TOOLTIP = 'tooltip';
+const TOOLTIP_TITLE = 'tooltip__title';
+const TOOLTIP_TEXT = 'tooltip__text';
+
+export interface Tooltip {
+    title?: string,
+    text?: string
+}
+
+// <div class="tooltip">
+//   <p class="tooltip__title">Load More</p>
+//   <p class="tooltip__text">Click to load more</p>
+// </div>
+export function createTooltip(tooltip: Tooltip) {
+    const tooltipElement = document.createElement('div');
+    tooltipElement.classList.add('tooltip');
+    if (tooltip.title) {
+        const title = document.createElement('p');
+        title.classList.add(TOOLTIP_TITLE);
+        title.innerText = tooltip.title;
+        tooltipElement.appendChild(title);
+    }
+    if (tooltip.text) {
+        const text = document.createElement('p');
+        text.classList.add(TOOLTIP_TEXT);
+        text.innerText = tooltip.text;
+        tooltipElement.appendChild(text);
+    }
+    return tooltipElement;
+}
