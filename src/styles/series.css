@@ -1,22 +1,29 @@
 .series-items {
   width: 100%;
   display: grid;
-  margin-top: 1em;
-  grid-template-columns: repeat(auto-fit, minmax(9em, 1fr));
+  margin-top: 3em;
+  grid-template-columns: repeat(auto-fill, minmax(12em, 1fr));
   row-gap: 1em;
   column-gap: 1em;
 }
 
 .series-add-item {
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
+  text-align: center;
+  color: #666;
 }
 
 .series-add-item__plus {
   font-weight: bolder;
   font-size: 250%;
-  color: #666;
+}
+
+.series-add-item > p {
+  max-width: 8em;
+  margin-top: 0em;
 }
 
 .series-add-item,
