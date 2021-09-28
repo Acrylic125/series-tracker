@@ -1,1 +1,29 @@
+.series-items {
+  width: 100%;
+  padding: 2em;
+  display: flex;
+  flex-wrap: wrap;
+  row-gap: 2em;
+  column-gap: 2em;
+}
 
+.series-add-item {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.series-add-item__plus {
+  font-weight: bolder;
+  font-size: 250%;
+  color: #666;
+}
+
+.series-add-item,
+.series-item {
+  background-color: #dfdfdf;
+  opacity: 0.55;
+  width: 12em;
+  height: 18em;
+  border-radius: 2em;
+}
