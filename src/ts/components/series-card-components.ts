@@ -1,4 +1,4 @@
-import { Series } from "../../series/series";
+import { Series } from "../series/series";
 
 const SERIES_CARD_COLOR_STRIP = 'series-card__color-strip';
 const SERIES_CARD_TITLE = 'series-card__content--title';

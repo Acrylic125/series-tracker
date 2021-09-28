@@ -123,6 +123,13 @@ body {
   display: none;
 }
 
+.line {
+  width: 100%;
+  height: 0.35em;
+  background-color: red;
+  border-radius: 0.1em;
+}
+
 ul,
 ol {
   list-style: none;
