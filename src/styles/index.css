@@ -9,6 +9,7 @@
   --side-bar-buttons-selected-color: #277bb8;
   --side-bar-buttons-hover-color: #545474;
   --side-bar-buttons-selected-hover-color: #248fdb;
+  --breadcrumbs-color: #efefef;
 }
 
 .side-bar {
@@ -67,4 +68,25 @@ main {
   padding: 2em;
   /* Overflow Correction */
   height: calc(100vh - var(--title-bar-height) - 4rem);
+}
+
+.breadcrumbs {
+  padding: 1em 0em;
+  background-color: var(--breadcrumbs-color);
+  width: 100%;
+  margin-bottom: 2em;
+  border-radius: 1em;
+}
+
+.breadcrumbs > a,
+.breadcrumbs > p {
+  display: inline;
+}
+
+.breadcrumbs > a {
+  padding: 0.5em;
+}
+
+.breadcrumbs > a.selected {
+  font-weight: bold;
 }
