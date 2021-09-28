@@ -47,16 +47,6 @@
   font-size: 80%;
 }
 
-.series-card__tag {
-  display: inline;
-  width: fit-content;
-  padding: 0.25em 1em 0.25em 1em;
-  margin-right: 0.5em;
-  background-color: cadetblue;
-  color: white;
-  border-radius: 0.5em;
-}
-
 #series-cards__filter {
   width: 50%;
   font-size: 150%;

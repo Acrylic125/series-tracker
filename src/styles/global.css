@@ -138,3 +138,13 @@ ol {
 p {
   margin: 0;
 }
+
+.tag {
+  display: inline;
+  width: fit-content;
+  padding: 0.25em 1em 0.25em 1em;
+  margin-right: 0.5em;
+  background-color: cadetblue;
+  color: white;
+  border-radius: 0.5em;
+}
