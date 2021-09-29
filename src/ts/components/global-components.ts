@@ -39,6 +39,11 @@ export function createTooltip(tooltip: Tooltip) {
     return tooltipElement;
 }
 
+export function bindTooltipTo(tooltipRegion: HTMLElement, tooltip: Tooltip) {
+    tooltipRegion.classList.add('tooltip-region');
+    tooltipRegion.appendChild(createTooltip(tooltip));
+}
+
 export interface ActionButton {
     tooltip?: Tooltip,
     innerText: string,
@@ -47,12 +52,10 @@ export interface ActionButton {
 
 export function createActionButton(actionButton: ActionButton) {
     const actionButtonElement = document.createElement('button');
-    if (actionButton.circular) 
-        actionButtonElement.classList.add('circle');
-    if (actionButton.tooltip) {
-        actionButtonElement.classList.add('tooltip-region');
-        actionButtonElement.appendChild(createTooltip(actionButton.tooltip));
-    }
+    actionButtonElement.classList.add('action-button',
+                                      (actionButton.circular) ? 'circle' : 'rounded');
     actionButtonElement.innerText = actionButton.innerText;
+    if (actionButton.tooltip) 
+        bindTooltipTo(actionButtonElement, actionButton.tooltip);
     return actionButtonElement;
 }

@@ -7,7 +7,7 @@ import { toComparableString } from "../../utils/utils";
 import { createSeriesCard } from "../../components/series-card-components";
 import { ContentStage } from "../content-stage";
 import { getContentStageElement } from '../content-stage-manager';
-import { createTooltip } from "../../components/global-components";
+import { ActionButton, createActionButton, createTooltip } from "../../components/global-components";
 
 const SERIES_CARDS_STAGE = "series-cards-stage";
 const SERIES_CARDS_FILTER_ID = "series-cards__filter";
@@ -36,14 +36,18 @@ function createSeriesCardsFilter() {
     return seriesCardsFilter;
 }
 
-function createLoadMore() {
-    const loadMore = document.createElement('button');
-    loadMore.classList.add('load-more', 'center-horz', 'circle', 'tooltip-region');
-    loadMore.innerText = '\u21E3';
-    loadMore.appendChild(createTooltip({
+const loadMoreActionButton: ActionButton = {
+    tooltip: {
         title: "Load More",
         text: "Click to load more"
-    }));
+    },
+    circular: true,
+    innerText: '\u21E3'
+}
+
+function createLoadMore() {
+    const loadMore = createActionButton(loadMoreActionButton);
+    loadMore.classList.add('center-horz');
     return loadMore;
 }
 

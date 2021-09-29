@@ -101,6 +101,10 @@ body {
   border-radius: 50%;
 }
 
+.rounded {
+  border-radius: min(20%, 1em);
+}
+
 .center-horz {
   margin-left: auto;
   margin-right: auto;
