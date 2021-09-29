@@ -197,3 +197,9 @@ p {
 .tooltip-region:hover .tooltip {
   visibility: visible;
 }
+
+.rel-0 {
+  position: relative;
+  width: 0;
+  height: 0;
+}

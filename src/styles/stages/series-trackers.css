@@ -5,12 +5,37 @@
 
 .series-tracker-groups {
   padding: 0em;
+  display: grid;
+  row-gap: 1em;
+  column-gap: 1em;
+  grid-template-columns: 1fr 1fr;
 }
 
 .series-tracker-group {
-  background-color: #efefef;
-  padding: 1em;
-  margin-bottom: 1em;
+  width: 100%;
+  height: fit-content;
+  background-color: #6842b8;
+  overflow: hidden;
+  border-radius: 2em;
+}
+
+.series-tracker-group__bg {
+  z-index: 1;
+}
+
+.series-tracker-group__bg--circle {
+  position: absolute;
+  background-color: #7c50d8;
+  width: 2em;
+  border-radius: 50%;
+  aspect-ratio: 1 / 1;
+}
+
+.series-tracker-group__content {
+  position: relative;
+  color: white;
+  z-index: 22;
+  padding: 1em 1em 3em 1em;
 }
 
 .series-tracker-group__title {
