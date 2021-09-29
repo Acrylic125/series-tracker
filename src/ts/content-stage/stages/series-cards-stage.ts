@@ -7,9 +7,8 @@ import { toComparableString } from "../../utils/utils";
 import { createSeriesCard } from "../../components/series-card-components";
 import { ContentStage } from "../content-stage";
 import { getContentStageElement } from '../content-stage-manager';
-import { ActionButton, createActionButton, createTooltip } from "../../components/global-components";
+import { ActionButton, createActionButton, createBoundedStageContent } from "../../components/global-components";
 
-const SERIES_CARDS_STAGE = "series-cards-stage";
 const SERIES_CARDS_FILTER_ID = "series-cards__filter";
 const SERIES_CARDS = "series-cards";
 
@@ -18,13 +17,6 @@ export function createSeriesCards() {
     const seriesCardCollection = document.createElement('ol');
     seriesCardCollection.classList.add(SERIES_CARDS);
     return seriesCardCollection;
-}
-
-// <div class="series-cards-stage"> </div>
-export function createSeriesCardsStage() {
-    const seriesCardsStage = document.createElement('div');
-    seriesCardsStage.classList.add(SERIES_CARDS_STAGE);
-    return seriesCardsStage;
 }
 
 //   <input id="series-cards__filter" class="ol-input" placeholder="Filter">
@@ -49,7 +41,6 @@ const loadMoreActionButton: ActionButton = {
 function createLoadMore() {
     const loadMore = createActionButton(loadMoreActionButton);
     loadMore.classList.add('center-horz');
-    
     return loadMore;
 }
 
@@ -67,12 +58,12 @@ function createSeriesCardsStageElements(): SeriesCardsStageElements {
         loadMoreElement: createLoadMore(),
         toFragment() {
             const fragment = new DocumentFragment(),
-                stage = createSeriesCardsStage();
-            stage.appendChild(this.filterElement);
-            stage.appendChild(this.seriesCardsElement);
-            stage.appendChild(this.loadMoreElement);
+                  stageContent = createBoundedStageContent();
+            stageContent.appendChild(this.filterElement);
+            stageContent.appendChild(this.seriesCardsElement);
+            stageContent.appendChild(this.loadMoreElement);
 
-            fragment.appendChild(stage);
+            fragment.appendChild(stageContent);
             return fragment;
         }
     }
@@ -111,7 +102,7 @@ class SeriesCardsStageProcess {
         await this.loadMore();
     }
 
-    private async loadMore(resultsLimit = 25) {
+    private async loadMore(resultsLimit = 10) {
         hideElement(this.elements.loadMoreElement);
         const { generator, filterString } = this;
         const { seriesCardsElement } = this.elements;

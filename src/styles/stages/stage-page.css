@@ -67,6 +67,10 @@ main {
   height: calc(100vh - var(--title-bar-height) - 4rem);
 }
 
+.bounded-stage-content {
+  width: clamp(10em, 100%, 45em);
+}
+
 .breadcrumbs {
   padding: 1em 0em;
   background-color: var(--breadcrumbs-color);

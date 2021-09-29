@@ -7,7 +7,9 @@
   <title>Hello World!</title>
   <link rel="stylesheet" href="./styles/global.css">
   <link rel="stylesheet" href="./styles/title-bar.css">
-  <link rel="stylesheet" href="./styles/index.css">
+  <link rel="stylesheet" href="./styles/stages/stage-page.css">
+  <link rel="stylesheet" href="./styles/stages/series-cards.css">
+  <link rel="stylesheet" href="./styles/stages/series-trackers.css">
   <link rel="stylesheet" href="./styles/series-cards.css">
   <link rel="stylesheet" href="./styles/series-trackers.css">
   <script defer src="./js/pages/index-page.js"></script>
@@ -48,11 +50,35 @@
     </aside>
     <!-- Main content stage. -->
     <section id="content-stage" class="scrollable-y">
-      <h1>
-        A Really Really Long title just because it can be.
-      </h1>
-      <div class="line"></div>
-      <button class="action-button rounded-1 center-horz" style="width: 2em; height: 2em;">&plus;</button>
+      <div class="bounded-stage-content">
+        <h1>
+          A Really Really Long title just because it can be.
+        </h1>
+        <div class="line"></div>
+        <button class="action-button rounded-1 center-horz create-tracker-group"
+          style="width: 2em; height: 2em;">&plus;</button>
+        <ul class="series-trackers">
+          <li class="series-tracker-group rounded-2">
+            <p class="series-tracker-group__title">Seasons</p>
+            <table class="series-tracker-group__table">
+              <tbody>
+                <tr>
+                  <td class="series-tracker-group__table--title">Season 1</td>
+                  <td class="series-tracker-group__table--status">Episode 24</td>
+                </tr>
+                <tr>
+                  <td class="series-tracker-group__table--title">Season 1</td>
+                  <td class="series-tracker-group__table--status">Episode 24</td>
+                </tr>
+                <tr>
+                  <td class="series-tracker-group__table--title">Season 1</td>
+                  <td class="series-tracker-group__table--status">Episode 24</td>
+                </tr>
+              </tbody>
+            </table>
+          </li>
+        </ul>
+      </div>
     </section>
   </main>
 </body>

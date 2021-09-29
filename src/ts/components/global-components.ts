@@ -64,3 +64,12 @@ export function createActionButton(actionButton: ActionButton) {
     }
     return actionButtonElement;
 }
+
+const BOUNDED_STAGE_CONTENT = 'bounded-stage-content';
+
+// <div class="bounded-stage-content"> </div>
+export function createBoundedStageContent() {
+    const boundedStageContent = document.createElement('div');
+    boundedStageContent.classList.add(BOUNDED_STAGE_CONTENT);
+    return boundedStageContent;
+}
