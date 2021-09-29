@@ -6,6 +6,8 @@
   min-width: 360px;
   user-select: none;
   background-color: black;
+
+  --main-action-button-color: #4a4a4f;
 }
 
 body {
@@ -104,18 +106,17 @@ body {
   margin-right: auto;
 }
 
-.load-more {
+.action-button {
   display: block;
-  width: 2em;
-  height: 2em;
+  padding: 0.5em;
   font-size: 150%;
   font-weight: bold;
   border: none;
-  background-color: #4a4a4f;
+  background-color: var(--main-action-button-color);
   color: white;
 }
 
-.load-more:hover {
+.action-button:hover {
   background-color: #8a8a8f;
 }
 
@@ -154,8 +155,6 @@ p {
   position: absolute;
   text-align: left;
   max-width: 30rem;
-  max-height: 6rem;
-  overflow-y: auto;
   padding: 0.5em 1em;
   border-radius: 0.5em;
   background-color: #1a1a1f;

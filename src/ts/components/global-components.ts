@@ -23,7 +23,7 @@ export interface Tooltip {
 // </div>
 export function createTooltip(tooltip: Tooltip) {
     const tooltipElement = document.createElement('div');
-    tooltipElement.classList.add('tooltip');
+    tooltipElement.classList.add(TOOLTIP);
     if (tooltip.title) {
         const title = document.createElement('p');
         title.classList.add(TOOLTIP_TITLE);
@@ -37,4 +37,22 @@ export function createTooltip(tooltip: Tooltip) {
         tooltipElement.appendChild(text);
     }
     return tooltipElement;
+}
+
+export interface ActionButton {
+    tooltip?: Tooltip,
+    innerText: string,
+    circular?: boolean
+}
+
+export function createActionButton(actionButton: ActionButton) {
+    const actionButtonElement = document.createElement('button');
+    if (actionButton.circular) 
+        actionButtonElement.classList.add('circle');
+    if (actionButton.tooltip) {
+        actionButtonElement.classList.add('tooltip-region');
+        actionButtonElement.appendChild(createTooltip(actionButton.tooltip));
+    }
+    actionButtonElement.innerText = actionButton.innerText;
+    return actionButtonElement;
 }
