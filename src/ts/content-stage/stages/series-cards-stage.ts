@@ -41,13 +41,15 @@ const loadMoreActionButton: ActionButton = {
         title: "Load More",
         text: "Click to load more"
     },
+    innerText: '\u21E3',
     circular: true,
-    innerText: '\u21E3'
+    singular: true
 }
 
 function createLoadMore() {
     const loadMore = createActionButton(loadMoreActionButton);
     loadMore.classList.add('center-horz');
+    
     return loadMore;
 }
 

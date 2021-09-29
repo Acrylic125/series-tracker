@@ -47,15 +47,20 @@ export function bindTooltipTo(tooltipRegion: HTMLElement, tooltip: Tooltip) {
 export interface ActionButton {
     tooltip?: Tooltip,
     innerText: string,
-    circular?: boolean
+    circular?: boolean,
+    singular?: boolean
 }
 
 export function createActionButton(actionButton: ActionButton) {
     const actionButtonElement = document.createElement('button');
     actionButtonElement.classList.add('action-button',
-                                      (actionButton.circular) ? 'circle' : 'rounded');
+                                      (actionButton.circular) ? 'circle' : 'rounded-1');
     actionButtonElement.innerText = actionButton.innerText;
     if (actionButton.tooltip) 
         bindTooltipTo(actionButtonElement, actionButton.tooltip);
+    if (actionButton.singular) {
+        actionButtonElement.style.width = '2em';
+        actionButtonElement.style.height = '2em';    
+    }
     return actionButtonElement;
 }
