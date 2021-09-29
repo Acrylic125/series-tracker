@@ -20,7 +20,8 @@ async function addTooltipListener(tooltipRegion: HTMLElement) {
         const x = event.pageX;
         const y = event.pageY;
         toolTips.forEach((tooltip) => {
-            tooltip.style.left = x + "px";
+            const { width } = tooltip.getBoundingClientRect();
+            tooltip.style.left = (x - (width * 0.5)) + "px";
             tooltip.style.top = y + "px";
        });
     }
