@@ -1,3 +1,4 @@
+import { reloadScripts } from "../html-loaded/preloaders/html-preloaders";
 import { ContentStage } from "./content-stage";
 import stageRegistry from "./registry/stage-registry";
 
@@ -8,14 +9,15 @@ export function getContentStageElement() {
     return contentStageElement;
 }
 
-export function useStage(stage: ContentStage) {
-    stage.initialise();
+export async function useStage(stage: ContentStage) {
+    await stage.initialise();
 }
 
-export function useStageByID(id: string) {
+export async function useStageByID(id: string) {
     const resultStage = stageRegistry.getStage(id);
     if (resultStage) {
-        useStage(resultStage);
+        await useStage(resultStage);
+        await reloadScripts();
     } else {
         console.warn(`Stage with id, ${id} was not found.`);
     }

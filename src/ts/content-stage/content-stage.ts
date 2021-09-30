@@ -1,5 +1,3 @@
 export interface ContentStage {
-    initialise(): void
-    reload(): void
-    terminate(): void
+    initialise(): Promise<void>
 }
