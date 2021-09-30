@@ -80,22 +80,15 @@ export function createSeriesTrackerContent(seriesTrackerContent: SeriesTrackerCo
     return contentElement;
 }
 
-export interface SeriesTrackerBackgroundCircle<T extends HTMLElement = HTMLElement> {
-    element: T
-    percentRelativePosition: Position
-}
-
 // <div class="series-tracker__bg">
 //   <div class="series-tracker__bg--circle" style="top: 5em; left: 8em;"></div>
 //   <div class="series-tracker__bg--circle" style="width: 3em; top: 2em; left: 1em;"></div>
 // </div>
 // <div class="series-tracker__bg--circle" style="top: 5em; left: 8em;"></div>
-export function createSeriesTrackerBackgroundCircle(color: string, percentRelativePosition: Position): SeriesTrackerBackgroundCircle {
+export function createSeriesTrackerBackgroundCircle(color: string, percentRelativePosition: Position) {
     const circle = document.createElement('p');
     circle.style.backgroundColor = color;
     circle.classList.add('series-tracker__bg--circle');
-    return {
-        element: circle,
-        percentRelativePosition
-    };
+    
+    return circle;
 }

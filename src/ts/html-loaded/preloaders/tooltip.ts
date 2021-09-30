@@ -1,11 +1,11 @@
+import { setPosition } from "../../utils/html-utils";
+
 export async function initTooltipListeners() {
     document.querySelectorAll('.tooltip-region').forEach(async (tooltipRegion) => {
         if (tooltipRegion instanceof HTMLElement) 
             await addTooltipListener(tooltipRegion);
     });
 }
-
-initTooltipListeners();
 
 async function getTooltipsFromRegion(tooltipRegion: HTMLElement) {
     const toolTips: HTMLElement[] = new Array();
@@ -18,13 +18,13 @@ async function getTooltipsFromRegion(tooltipRegion: HTMLElement) {
 
 async function addTooltipListener(tooltipRegion: HTMLElement) {
     const toolTips = await getTooltipsFromRegion(tooltipRegion);
-    tooltipRegion.onmouseover = (event) => {
-        const x = event.pageX;
-        const y = event.pageY;
-        toolTips.forEach((tooltip) => {
+    if (toolTips.length > 0) {
+        const tooltip = toolTips[0];
+        tooltipRegion.onmouseover = (event) => {
             const { width } = tooltip.getBoundingClientRect();
-            tooltip.style.left = (x - (width * 0.5)) + "px";
-            tooltip.style.top = y + "px";
-       });
+            const x = (event.pageX - (width * 0.5));
+            const y = event.pageY + 5;
+            setPosition(tooltip, { x, y });
+        }
     }
 }

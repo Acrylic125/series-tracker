@@ -13,7 +13,7 @@ export function setPosition(eleemnt: HTMLElement, position: Position) {
     style.left = position.x + PX;
 }
 
-function loadHTML(window: BrowserWindow, html: string) {
+export function loadHTML(window: BrowserWindow, html: string) {
     window.loadURL("data:text/html;charset=utf-8," + encodeURI(html));    
 }
 

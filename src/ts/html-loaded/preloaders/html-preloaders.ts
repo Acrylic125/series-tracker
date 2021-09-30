@@ -1,5 +1,5 @@
 import { initTooltipListeners } from "./tooltip";
 
-export async function reloadScripts() {
+export async function reloadGlobalScripts() {
     initTooltipListeners();
 }
