@@ -7,7 +7,7 @@ import { toComparableString } from "../../utils/utils";
 import { createSeriesCard } from "../../components/series-card-components";
 import { ContentStage } from "../content-stage";
 import { getContentStageElement } from '../content-stage-manager';
-import { ActionButton, createActionButton, createBoundedStageContent } from "../../components/global-components";
+import { ActionButton, createActionButton, createBoundedStageContent, createHorzCenteredActionButton } from "../../components/global-components";
 
 const SERIES_CARDS_FILTER_ID = "series-cards__filter";
 const SERIES_CARDS = "series-cards";
@@ -39,9 +39,7 @@ const loadMoreActionButton: ActionButton = {
 }
 
 function createLoadMore() {
-    const loadMore = createActionButton(loadMoreActionButton);
-    loadMore.classList.add('center-horz');
-    return loadMore;
+    return createHorzCenteredActionButton(loadMoreActionButton);
 }
 
 interface SeriesCardsStageElements {
@@ -154,12 +152,6 @@ const seriesCardsStage: SeriesCardsStage = {
         getContentStageElement().appendChild(this.elements.toFragment());
         this.state = new SeriesCardsStageProcess(this.elements);
         await this.state.freshLoad();
-    },
-    reload() {
-
-    },
-    terminate() {
-
     }
 };
 export default seriesCardsStage;

@@ -65,6 +65,12 @@ export function createActionButton(actionButton: ActionButton) {
     return actionButtonElement;
 }
 
+export function createHorzCenteredActionButton(actionButton: ActionButton) {
+    const actionButtonElement = createActionButton(actionButton);
+    actionButtonElement.classList.add('center-horz');
+    return actionButtonElement;
+}
+
 const BOUNDED_STAGE_CONTENT = 'bounded-stage-content';
 
 // <div class="bounded-stage-content"> </div>

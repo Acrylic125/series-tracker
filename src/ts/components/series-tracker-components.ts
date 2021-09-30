@@ -85,10 +85,24 @@ export function createSeriesTrackerContent(seriesTrackerContent: SeriesTrackerCo
 //   <div class="series-tracker__bg--circle" style="width: 3em; top: 2em; left: 1em;"></div>
 // </div>
 // <div class="series-tracker__bg--circle" style="top: 5em; left: 8em;"></div>
-export function createSeriesTrackerBackgroundCircle(color: string, percentRelativePosition: Position) {
-    const circle = document.createElement('p');
+export function createSeriesTrackerBackgroundCircle(color: string, background: HTMLElement, percentRelativePosition: Position) {
+    const circle = document.createElement('div');
     circle.style.backgroundColor = color;
     circle.classList.add('series-tracker__bg--circle');
-    
     return circle;
+}
+
+export function createSeriesTrackerBackground(circleColor: string) {
+    const background = document.createElement('div');
+    background.classList.add('series-tracker__bg');
+    background.appendChild(createSeriesTrackerBackgroundCircle(circleColor, background, { x: 25, y: 32 }));
+    return background;
+}
+
+export function createSeriesTracker(circleColor: string, seriesTrackerContent: SeriesTrackerContent) {
+    const seriesTracker = document.createElement('div');
+    seriesTracker.classList.add('series-tracker');
+    seriesTracker.appendChild(createSeriesTrackerBackground(circleColor));
+    seriesTracker.appendChild(createSeriesTrackerContent(seriesTrackerContent));
+    return seriesTracker;
 }
