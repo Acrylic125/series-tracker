@@ -23,8 +23,15 @@ export function createSeriesTrackerTitle(title: string) {
     return titleElement;
 }
 
+export type ContentItemCallback = (contentItem: HTMLElement) => void;
+
+export interface ContentItem {
+    title?: string
+    callback?: ContentItemCallback
+}
+
 // <p class="series-tracker-group__content-item--title"> </p>
-export function createSeriesTrackerContentTitleItem(title: string) {
+export function createSeriesTrackerContentItemTitle(title: string) {
     const titleElement = document.createElement('p');
     titleElement.innerText = title;
     titleElement.classList.add('series-tracker-group__content-item--title');
@@ -32,7 +39,7 @@ export function createSeriesTrackerContentTitleItem(title: string) {
 }
 
 // <p class="series-tracker-group__content-item--status"> </p>
-export function createSeriesTrackerContentStatusItem(status: string) {
+export function createSeriesTrackerContentItemStatus(status: string) {
     const titleElement = document.createElement('p');
     titleElement.innerText = status;
     titleElement.classList.add('series-tracker-group__content-item--status');
@@ -42,8 +49,31 @@ export function createSeriesTrackerContentStatusItem(status: string) {
 // <li>
 //   <p class="series-tracker-group__content-item--title"> </p>
 // </li>
-export function createSeriesTrackerContentItem(title: string) {
-    const contentElement = document.createElement('li');
-    contentElement.appendChild(createSeriesTrackerContentTitleItem(title));
+export function createSeriesTrackerContentItem(contentItem: ContentItem) {
+    const contentItemElement = document.createElement('li');
+    const { title, callback } = contentItem;
+    if (title)
+        contentItemElement.appendChild(createSeriesTrackerContentItemTitle(title));
+    if (callback) 
+        callback(contentItemElement);
+    return contentItemElement;
+}
+
+export interface SeriesTrackerContent {
+    title?: string
+    contentItems?: ContentItem[]
+}
+
+export function createSeriesTrackerContent(seriesTrackerContent: SeriesTrackerContent) {
+    const { title, contentItems } = seriesTrackerContent;
+    const contentElement = document.createElement('article');
+    contentElement.classList.add('series-tracker-group__content');
+    if (title) 
+        contentElement.appendChild(createSeriesTrackerTitle(title));
+    const contentItemsElement = document.createElement('ul');
+    if (contentItems) 
+        contentItems.forEach((contentItem) => 
+            contentItemsElement.appendChild(createSeriesTrackerContentItem(contentItem))
+        );
     return contentElement;
 }
