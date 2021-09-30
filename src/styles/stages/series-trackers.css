@@ -25,6 +25,7 @@
 }
 
 .series-tracker__bg {
+  position: relative;
   z-index: 1;
 }
 

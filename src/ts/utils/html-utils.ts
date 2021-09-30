@@ -1,5 +1,18 @@
 import { BrowserWindow } from 'electron';
 
+export interface Position {
+    x: number,
+    y: number
+}
+
+export const PX = 'px';
+
+export function setPosition(eleemnt: HTMLElement, position: Position) {
+    const style = eleemnt.style;
+    style.top = position.y + PX;
+    style.left = position.x + PX;
+}
+
 function loadHTML(window: BrowserWindow, html: string) {
     window.loadURL("data:text/html;charset=utf-8," + encodeURI(html));    
 }

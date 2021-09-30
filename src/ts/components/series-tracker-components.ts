@@ -1,7 +1,7 @@
 
 /**
  *          <div class="series-tracker">
-              <div class="series-tracker__bg rel-0">
+              <div class="series-tracker__bg">
                 <div class="series-tracker__bg--circle"></div>
               </div>
               <article class="series-tracker__content">
@@ -15,6 +15,8 @@
               </article>
             </div>
  */
+
+import { Position } from "../utils/html-utils";
 
 // <header> </header>
 export function createSeriesTrackerTitle(title: string) {
@@ -76,4 +78,24 @@ export function createSeriesTrackerContent(seriesTrackerContent: SeriesTrackerCo
             contentItemsElement.appendChild(createSeriesTrackerContentItem(contentItem))
         );
     return contentElement;
+}
+
+export interface SeriesTrackerBackgroundCircle<T extends HTMLElement = HTMLElement> {
+    element: T
+    percentRelativePosition: Position
+}
+
+// <div class="series-tracker__bg">
+//   <div class="series-tracker__bg--circle" style="top: 5em; left: 8em;"></div>
+//   <div class="series-tracker__bg--circle" style="width: 3em; top: 2em; left: 1em;"></div>
+// </div>
+// <div class="series-tracker__bg--circle" style="top: 5em; left: 8em;"></div>
+export function createSeriesTrackerBackgroundCircle(color: string, percentRelativePosition: Position): SeriesTrackerBackgroundCircle {
+    const circle = document.createElement('p');
+    circle.style.backgroundColor = color;
+    circle.classList.add('series-tracker__bg--circle');
+    return {
+        element: circle,
+        percentRelativePosition
+    };
 }
