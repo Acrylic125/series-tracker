@@ -1,22 +1,22 @@
-.create-tracker-group {
+.create-series-tracker {
   margin-top: 1em;
   margin-bottom: 1em;
 }
 
-.series-tracker-groups {
+.series-trackers {
   padding: 0em;
   display: grid;
   column-gap: 1em;
   grid-template-columns: 1fr 1fr;
 }
 
-.series-tracker-groups > .column {
+.series-trackers > .column {
   display: flex;
   flex-direction: column;
   row-gap: 1em;
 }
 
-.series-tracker-group {
+.series-tracker {
   width: 100%;
   height: fit-content;
   background-color: #6842b8;
@@ -24,11 +24,11 @@
   border-radius: 2em;
 }
 
-.series-tracker-group__bg {
+.series-tracker__bg {
   z-index: 1;
 }
 
-.series-tracker-group__bg--circle {
+.series-tracker__bg--circle {
   position: absolute;
   background-color: #7c50d8;
   width: 30%;
@@ -36,59 +36,59 @@
   aspect-ratio: 1 / 1;
 }
 
-.series-tracker-group__content {
+.series-tracker__content {
   position: relative;
   color: white;
   z-index: 22;
   padding: 2em 2em 5em 2em;
 }
 
-.series-tracker-group__content > header {
+.series-tracker__content > header {
   font-weight: bold;
   margin-bottom: 0.5em;
   font-size: 150%;
 }
 
-.series-tracker-group__content > ol {
+.series-tracker__content > ol {
   padding: 0;
 }
 
-.series-tracker-group__content > ol > li {
+.series-tracker__content > ol > li {
   margin-bottom: 0.5em;
 }
 
-.series-tracker-group__content-item--tags {
+.series-tracker__content-item--tags {
   margin-top: 1em;
 }
 
-.series-tracker-group__content-item--title {
+.series-tracker__content-item--title {
   font-size: 120%;
 }
 
-.series-tracker-group__content-item--status {
+.series-tracker__content-item--status {
   font-weight: lighter;
 }
 
-.series-tracker-group__title {
+.series-tracker__title {
   font-weight: bold;
   font-size: 120%;
 }
 
-.series-tracker-group__table {
+.series-tracker__table {
   width: 100%;
 }
 
-.series-tracker-group__table {
+.series-tracker__table {
   border-spacing: 0 0.75em;
 }
 
-.series-tracker-group__table--title {
+.series-tracker__table--title {
   width: 25%;
   text-align: left;
   vertical-align: text-top;
 }
 
-.series-tracker-group__table--status {
+.series-tracker__table--status {
   font-weight: lighter;
   text-align: left;
   vertical-align: text-top;
