@@ -31,7 +31,7 @@
 .series-tracker-group__bg--circle {
   position: absolute;
   background-color: #7c50d8;
-  width: 2em;
+  width: 30%;
   border-radius: 50%;
   aspect-ratio: 1 / 1;
 }
