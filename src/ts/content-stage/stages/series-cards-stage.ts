@@ -56,7 +56,7 @@ function createSeriesCardsStageElements(): SeriesCardsStageElements {
             stageContent.appendChild(this.filterElement);
             stageContent.appendChild(this.seriesCardsElement);
             stageContent.appendChild(this.loadMoreElement);
-
+            
             fragment.appendChild(stageContent);
             return fragment;
         }
@@ -85,7 +85,7 @@ class SeriesCardsStageProcess {
                     this.filterString = toComparableString(filterElement.value);
                     await this.freshLoad();
                     doFilterCheck = true;
-                }, 500);
+                }, 250);
             }
         }
     }

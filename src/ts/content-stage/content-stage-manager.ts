@@ -9,15 +9,20 @@ export function getContentStageElement() {
     return contentStageElement;
 }
 
+function clearStage() {
+    getContentStageElement().innerHTML = '';
+}
+
 export async function useStage(stage: ContentStage) {
+    clearStage();
     await stage.initialise();
+    await reloadGlobalScripts();
 }
 
 export async function useStageByID(id: string) {
     const resultStage = stageRegistry.getStage(id);
     if (resultStage) {
         await useStage(resultStage);
-        await reloadGlobalScripts();
     } else {
         console.warn(`Stage with id, ${id} was not found.`);
     }

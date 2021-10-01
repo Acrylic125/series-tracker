@@ -2,6 +2,7 @@ import { ActionButton, createBoundedStageContent, createColorLine, createColumn,
 import { createSeriesTracker } from '../../components/series-tracker/series-tracker-components';
 import { Series, SeriesTracker } from '../../series/series';
 import { ContentStageElements, FragmentedContentStage } from '../content-stage';
+import { getContentStageElement } from '../content-stage-manager';
 
 const addSeriesTrackerButton: ActionButton = {
     tooltip: {
@@ -9,12 +10,14 @@ const addSeriesTrackerButton: ActionButton = {
         text: "Click to add series tracker, to track what this series has to offer."
     },
     innerText: '\u002B',
-    circular: true,
+    circular: false,
     singular: true
 }
 
 function createAddSeriesTrackerButton() {
-    return createHorzCenteredActionButton(addSeriesTrackerButton);
+    const addSeriesTracker = createHorzCenteredActionButton(addSeriesTrackerButton);
+    addSeriesTracker.classList.add('create-series-tracker');
+    return addSeriesTracker;
 }
 
 interface SeriesTrackerStageElements extends ContentStageElements {
@@ -63,8 +66,10 @@ function createSeriesTrackerStageElements(series: Series): SeriesTrackerStageEle
         toFragment() {
             const fragment = new DocumentFragment(),
                   stageContent = createBoundedStageContent();
+            this.seriesTrackers.addSeries(series);
             stageContent.appendChild(createInnerText('h1', series.title));
             stageContent.appendChild(this.colorLine);
+            stageContent.appendChild(createAddSeriesTrackerButton());
             stageContent.appendChild(this.seriesTrackers.element);
 
             fragment.appendChild(stageContent);
@@ -73,14 +78,11 @@ function createSeriesTrackerStageElements(series: Series): SeriesTrackerStageEle
     }
 }
 
-
 export function createSeriesStage(series: Series): FragmentedContentStage<SeriesTrackerStageElements> {
     return {
         async initialise() {
-            // this.elements = createSeriesCardsStageElements();
-            // getContentStageElement().appendChild(this.elements.toFragment());
-            // this.state = new SeriesCardsStageProcess(this.elements);
-            // await this.state.freshLoad();
+            this.elements = createSeriesTrackerStageElements(series);
+            getContentStageElement().appendChild(this.elements.toFragment());
         }
     };
 }

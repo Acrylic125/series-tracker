@@ -1,7 +1,7 @@
 import fs from 'fs';
 import { randColor, BRIGHT_DEFAULT } from '../utils/colors';
 import { createFileIfNotExist, JSON_FILE_CREATION_OPTIONS } from '../utils/utils';
-import { Series } from './series';
+import { createDummy, Series } from './series';
 
 export class SeriesStorage {
 
@@ -45,16 +45,8 @@ export class SeriesStorage {
 
 const seriesStorage = new SeriesStorage();
 for (let i = 0; i < 100; i++) {
-    seriesStorage.seriesMap.set('abc-' + i, {
-        id: "abca-" + i,
-        title: "A REALLY long title " + i,
-        colorStripColor: `#${randColor(BRIGHT_DEFAULT)}`,
-        items: [],
-        tags: [],
-        getIdentifiers() {
-            return [ this.title, this.id, ...this.tags ]
-        }
-    });
+    const dummy = createDummy("test-" + i);
+    seriesStorage.seriesMap.set(dummy.id, dummy);
 }
 seriesStorage.saveToFile();
 

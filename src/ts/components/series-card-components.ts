@@ -1,3 +1,5 @@
+import { useStage } from "../content-stage/content-stage-manager";
+import { createSeriesStage } from "../content-stage/stages/series-trackers-stage";
 import { Series } from "../series/series";
 import { createTag } from "./global-components";
 
@@ -51,5 +53,7 @@ export function createSeriesCard(series: Series) {
     seriesCardElement.classList.add(SERIES_CARD);
     seriesCardElement.appendChild(createSeriesCardColorStrip(series.colorStripColor));
     seriesCardElement.appendChild(createSeriesCardContent(series.title, ...series.tags));
+    seriesCardElement.onclick = async () => 
+        useStage(createSeriesStage(series));
     return seriesCardElement;
 }
