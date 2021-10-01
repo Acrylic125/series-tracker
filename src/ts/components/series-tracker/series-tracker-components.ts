@@ -16,26 +16,24 @@
             </div>
  */
 
+import { SeriesTracker } from "../../series/series";
 import { Position } from "../../utils/html-utils";
-import { SeriesTrackerContentItem } from "./series-tracker-content-item";
 import { createInnerText } from "../global-components";
-import { SeriesTrackerContent } from "../../series/series";
 
 // <header> </header>
 export function createSeriesTrackerHeader(title: string) {
     return createInnerText('header', title);
 }
 
-export function createSeriesTrackerContent(seriesTrackerContent: SeriesTrackerContent) {
-    const { title, items } = seriesTrackerContent;
+export function createSeriesTrackerContent(seriesTracker: SeriesTracker) {
+    const { title, items } = seriesTracker;
     const contentElement = document.createElement('article');
     contentElement.classList.add('series-tracker__content');
-    if (title) 
-        contentElement.appendChild(createSeriesTrackerHeader(title));
-    const contentItemsElement = document.createElement('ul');
-    if (items) 
-        items.forEach((contentItem) => 
-            contentItemsElement.appendChild(contentItem.toComponent()));
+    contentElement.appendChild(createSeriesTrackerHeader(title));
+    const contentItemsElement = document.createElement('ol');
+    items.forEach((contentItem) => 
+        contentItemsElement.appendChild(contentItem.toComponent()));
+    contentElement.appendChild(contentItemsElement);
     return contentElement;
 }
 
@@ -58,10 +56,10 @@ export function createSeriesTrackerBackground(circleColor: string) {
     return background;
 }
 
-export function createSeriesTracker(circleColor: string, seriesTrackerContent: SeriesTrackerContent) {
-    const seriesTracker = document.createElement('div');
-    seriesTracker.classList.add('series-tracker');
-    seriesTracker.appendChild(createSeriesTrackerBackground(circleColor));
-    seriesTracker.appendChild(createSeriesTrackerContent(seriesTrackerContent));
-    return seriesTracker;
+export function createSeriesTracker(seriesTracker: SeriesTracker) {
+    const seriesTrackerElement = document.createElement('div');
+    seriesTrackerElement.classList.add('series-tracker');
+    seriesTrackerElement.appendChild(createSeriesTrackerBackground(seriesTracker.circleColor));
+    seriesTrackerElement.appendChild(createSeriesTrackerContent(seriesTracker));
+    return seriesTrackerElement;
 }

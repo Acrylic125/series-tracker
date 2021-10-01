@@ -49,7 +49,7 @@ export class SeriesTrackers {
     }
 
     public addSeriesTracker(seriesTracker: SeriesTracker) {
-        this.addElement(createSeriesTracker(seriesTracker.baseColor, seriesTracker.content));
+        this.addElement(createSeriesTracker(seriesTracker));
     }
 
     public addSeries(series: Series) {
