@@ -1,6 +1,6 @@
-import { ActionButton, createColorLine, createColumns, createHorzCenteredActionButton } from '../../components/global-components';
+import { ActionButton, createBoundedStageContent, createColorLine, createColumns, createHorzCenteredActionButton, createInnerText } from '../../components/global-components';
 import { Series } from '../../series/series';
-import { ContentStage, ContentStageElements, FragmentedContentStage } from '../content-stage';
+import { ContentStageElements, FragmentedContentStage } from '../content-stage';
 
 const addSeriesTrackerButton: ActionButton = {
     tooltip: {
@@ -16,22 +16,26 @@ function createAddSeriesTrackerButton() {
     return createHorzCenteredActionButton(addSeriesTrackerButton);
 }
 
-interface SeriesTrackersElements extends ContentStageElements {
-    readonly gridColumns: HTMLElement[]
+interface SeriesTrackerStageElements extends ContentStageElements {
+    readonly seriesTrackers: SeriesTrackers
     readonly addSeriesTracker: HTMLElement
     readonly colorLine: HTMLElement
 }
 
-function createSeriesTrackersElements(): SeriesTrackersElements {
+interface SeriesTrackers {
+    columns: HTMLElement[]
+}
+
+function createSeriesTrackerStageElements(series: Series): SeriesTrackerStageElements {
     return {
         gridColumns: createColumns(2),
-        colorLine: createColorLine('#ff4123'),
+        colorLine: createColorLine(series.colorStripColor),
         addSeriesTracker: createAddSeriesTrackerButton(),
         toFragment() {
             const fragment = new DocumentFragment(),
                   stageContent = createBoundedStageContent();
-            stageContent.appendChild(this.filterElement);
-            stageContent.appendChild(this.seriesCardsElement);
+            stageContent.appendChild(createInnerText('h1', series.title));
+            stageContent.appendChild(this.colorLine);
             stageContent.appendChild(this.loadMoreElement);
 
             fragment.appendChild(stageContent);

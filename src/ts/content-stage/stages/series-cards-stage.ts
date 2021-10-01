@@ -5,24 +5,21 @@ import { iteratorToGenerator, peekGenerator } from "../../utils/generator";
 import { hideElement, showElement } from "../../utils/html-utils";
 import { toComparableString } from "../../utils/utils";
 import { createSeriesCard } from "../../components/series-card-components";
-import { ContentStage, ContentStageElements, FragmentedContentStage } from "../content-stage";
+import { ContentStageElements, FragmentedContentStage } from "../content-stage";
 import { getContentStageElement } from '../content-stage-manager';
-import { ActionButton, createActionButton, createBoundedStageContent, createHorzCenteredActionButton } from "../../components/global-components";
+import { ActionButton, createBoundedStageContent, createElementWithClasses, createHorzCenteredActionButton } from "../../components/global-components";
 
 const SERIES_CARDS_FILTER_ID = "series-cards__filter";
 const SERIES_CARDS = "series-cards";
 
 // <ol class="series-cards"> </ol>
 export function createSeriesCards() {
-    const seriesCardCollection = document.createElement('ol');
-    seriesCardCollection.classList.add(SERIES_CARDS);
-    return seriesCardCollection;
+    return createElementWithClasses('ol', SERIES_CARDS);
 }
 
 //   <input id="series-cards__filter" class="ol-input" placeholder="Filter">
 function createSeriesCardsFilter() {
-    const seriesCardsFilter = document.createElement('input');
-    seriesCardsFilter.classList.add('ol-input');
+    const seriesCardsFilter = (createElementWithClasses('input', 'ol-input') as HTMLInputElement);
     seriesCardsFilter.id = SERIES_CARDS_FILTER_ID;
     seriesCardsFilter.placeholder = 'Filter';
     return seriesCardsFilter;

@@ -1,9 +1,8 @@
 const TAG = 'tag';
 
-//  <li class="series-card__tag"> </li>
+//  <span class="series-card__tag"> </span>
 export function createTag(tagName: string) {
-    const tagElement = document.createElement('li');
-    tagElement.classList.add(TAG);
+    const tagElement = createElementWithClasses('span', TAG);
     tagElement.innerText = tagName;
     return tagElement;
 }
@@ -75,16 +74,12 @@ const BOUNDED_STAGE_CONTENT = 'bounded-stage-content';
 
 // <div class="bounded-stage-content"> </div>
 export function createBoundedStageContent() {
-    const boundedStageContent = document.createElement('div');
-    boundedStageContent.classList.add(BOUNDED_STAGE_CONTENT);
-    return boundedStageContent;
+    return createDivWithClasses(BOUNDED_STAGE_CONTENT);
 }
 
 // <div class="column"> </div>
 export function createColumn() {
-    const column = document.createElement('div');
-    column.classList.add('column');
-    return column;
+    return createDivWithClasses('column');
 }
 
 export function createColumns(columns: number) {
@@ -100,4 +95,20 @@ export function createColorLine(color: string) {
     line.classList.add('line');
     line.style.backgroundColor = color;
     return line;
+}
+
+export function createInnerText(element: string, text: string) {
+    const innerText = document.createElement(element);
+    innerText.innerText = text;
+    return innerText;
+}
+
+export function createElementWithClasses(element: string, ...classes: string[]) {
+    const elementWithClasses = document.createElement(element);
+    elementWithClasses.classList.add(...classes);
+    return elementWithClasses;
+}
+
+export function createDivWithClasses(...classes: string[]) {
+    return createElementWithClasses('div', ...classes);
 }
