@@ -1,4 +1,5 @@
-import { ActionButton, createBoundedStageContent, createColorLine, createColumns, createHorzCenteredActionButton, createInnerText } from '../../components/global-components';
+import { ActionButton, createBoundedStageContent, createColorLine, createColumns, createDivWithClasses, createHorzCenteredActionButton, createInnerText } from '../../components/global-components';
+import { createSeriesTracker } from '../../components/series-tracker-components';
 import { Series } from '../../series/series';
 import { ContentStageElements, FragmentedContentStage } from '../content-stage';
 
@@ -22,13 +23,30 @@ interface SeriesTrackerStageElements extends ContentStageElements {
     readonly colorLine: HTMLElement
 }
 
-interface SeriesTrackers {
-    columns: HTMLElement[]
+export class SeriesTrackers {
+    public columns: HTMLElement[] = createColumns(2);
+    public element: HTMLElement = createDivWithClasses('series-trackers');
+    private currentColumn = 0;
+
+    private addElement(elemenet: HTMLElement) {
+        const columns = this.columns;
+        var col = this.currentColumn++;
+        if (col >= columns.length) 
+            col = 0;
+        columns[col].appendChild(elemenet);
+    }
+
+    public addSeriesTracker(series: Series) {
+        this.addElement(createSeriesTracker(series.title, {
+            
+        }));
+    }
+
 }
 
 function createSeriesTrackerStageElements(series: Series): SeriesTrackerStageElements {
     return {
-        gridColumns: createColumns(2),
+        seriesTrackers: new SeriesTrackers(),
         colorLine: createColorLine(series.colorStripColor),
         addSeriesTracker: createAddSeriesTrackerButton(),
         toFragment() {

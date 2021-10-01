@@ -1,4 +1,4 @@
-import { reloadScripts } from "../html-loaded/preloaders/html-preloaders";
+import { reloadGlobalScripts } from "../html-loaded/preloaders/html-preloaders";
 import { ContentStage } from "./content-stage";
 import stageRegistry from "./registry/stage-registry";
 
@@ -17,7 +17,7 @@ export async function useStageByID(id: string) {
     const resultStage = stageRegistry.getStage(id);
     if (resultStage) {
         await useStage(resultStage);
-        await reloadScripts();
+        await reloadGlobalScripts();
     } else {
         console.warn(`Stage with id, ${id} was not found.`);
     }
