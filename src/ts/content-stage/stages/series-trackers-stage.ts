@@ -1,5 +1,5 @@
 import { ActionButton, createBoundedStageContent, createColorLine, createColumns, createDivWithClasses, createHorzCenteredActionButton, createInnerText } from '../../components/global-components';
-import { createSeriesTracker } from '../../components/series-tracker-components';
+import { createSeriesTracker } from '../../components/series-tracker/series-tracker-components';
 import { Series } from '../../series/series';
 import { ContentStageElements, FragmentedContentStage } from '../content-stage';
 
@@ -37,9 +37,7 @@ export class SeriesTrackers {
     }
 
     public addSeriesTracker(series: Series) {
-        this.addElement(createSeriesTracker(series.title, {
-            
-        }));
+        
     }
 
 }

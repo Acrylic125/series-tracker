@@ -1,10 +1,20 @@
+import { SeriesTrackerContentItem } from '../components/series-tracker/series-tracker-content-item';
 import { Filterable } from '../utils/filter';
-import SeriesItem from './items/series-item';
 
 export interface Series extends Filterable {
     title: string
     id: string
     tags: string[] // Tag IDs
-    items: SeriesItem[]
+    trackers: SeriesTracker[]
     colorStripColor: string
+}
+
+export interface SeriesTracker {
+    title: string
+    content: SeriesTrackerContent
+}
+
+export interface SeriesTrackerContent {
+    title: string
+    items: SeriesTrackerContentItem[]
 }
