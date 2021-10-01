@@ -5,7 +5,7 @@ import { iteratorToGenerator, peekGenerator } from "../../utils/generator";
 import { hideElement, showElement } from "../../utils/html-utils";
 import { toComparableString } from "../../utils/utils";
 import { createSeriesCard } from "../../components/series-card-components";
-import { ContentStage } from "../content-stage";
+import { ContentStage, ContentStageElements, FragmentedContentStage } from "../content-stage";
 import { getContentStageElement } from '../content-stage-manager';
 import { ActionButton, createActionButton, createBoundedStageContent, createHorzCenteredActionButton } from "../../components/global-components";
 
@@ -42,11 +42,10 @@ function createLoadMore() {
     return createHorzCenteredActionButton(loadMoreActionButton);
 }
 
-interface SeriesCardsStageElements {
-    readonly filterElement: HTMLInputElement;
-    readonly seriesCardsElement: HTMLElement;
-    readonly loadMoreElement: HTMLButtonElement;
-    toFragment(): DocumentFragment
+interface SeriesCardsStageElements extends ContentStageElements {
+    readonly filterElement: HTMLInputElement
+    readonly seriesCardsElement: HTMLElement
+    readonly loadMoreElement: HTMLButtonElement
 }
 
 function createSeriesCardsStageElements(): SeriesCardsStageElements {
@@ -141,9 +140,8 @@ class SeriesCardsStageProcess {
 
 }
 
-interface SeriesCardsStage extends ContentStage {
-    state?: SeriesCardsStageProcess,
-    elements?: SeriesCardsStageElements
+interface SeriesCardsStage extends FragmentedContentStage<SeriesCardsStageElements> {
+    state?: SeriesCardsStageProcess
 }
 
 const seriesCardsStage: SeriesCardsStage = {

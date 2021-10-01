@@ -1,6 +1,6 @@
 import { ActionButton, createColorLine, createColumns, createHorzCenteredActionButton } from '../../components/global-components';
 import { Series } from '../../series/series';
-import { ContentStage } from '../content-stage';
+import { ContentStage, ContentStageElements, FragmentedContentStage } from '../content-stage';
 
 const addSeriesTrackerButton: ActionButton = {
     tooltip: {
@@ -16,11 +16,10 @@ function createAddSeriesTrackerButton() {
     return createHorzCenteredActionButton(addSeriesTrackerButton);
 }
 
-interface SeriesTrackersElements {
+interface SeriesTrackersElements extends ContentStageElements {
     readonly gridColumns: HTMLElement[]
     readonly addSeriesTracker: HTMLElement
     readonly colorLine: HTMLElement
-    toFragment(): DocumentFragment
 }
 
 function createSeriesTrackersElements(): SeriesTrackersElements {
@@ -41,11 +40,8 @@ function createSeriesTrackersElements(): SeriesTrackersElements {
     }
 }
 
-interface SeriessStage extends ContentStage {
-    elements?: SeriesTrackersElements
-}
 
-export function createSeriesStage(series: Series): ContentStage {
+export function createSeriesStage(series: Series): FragmentedContentStage<SeriesTrackersElements> {
     return {
         async initialise() {
             // this.elements = createSeriesCardsStageElements();
