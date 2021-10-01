@@ -11,6 +11,7 @@ export interface Series extends Filterable {
 
 export interface SeriesTracker {
     title: string
+    baseColor: string
     content: SeriesTrackerContent
 }
 

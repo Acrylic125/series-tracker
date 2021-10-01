@@ -1,6 +1,6 @@
-import { ActionButton, createBoundedStageContent, createColorLine, createColumns, createDivWithClasses, createHorzCenteredActionButton, createInnerText } from '../../components/global-components';
+import { ActionButton, createBoundedStageContent, createColorLine, createColumn, createColumns, createDivWithClasses, createHorzCenteredActionButton, createInnerText } from '../../components/global-components';
 import { createSeriesTracker } from '../../components/series-tracker/series-tracker-components';
-import { Series } from '../../series/series';
+import { Series, SeriesTracker } from '../../series/series';
 import { ContentStageElements, FragmentedContentStage } from '../content-stage';
 
 const addSeriesTrackerButton: ActionButton = {
@@ -24,9 +24,18 @@ interface SeriesTrackerStageElements extends ContentStageElements {
 }
 
 export class SeriesTrackers {
-    public columns: HTMLElement[] = createColumns(2);
     public element: HTMLElement = createDivWithClasses('series-trackers');
+    private columns: HTMLElement[] = createColumns(2);
     private currentColumn = 0;
+
+    constructor() {
+        this.columns.forEach((column) => this.element.appendChild(column));
+    }
+
+    public addColumn(columns = 1) {
+        for (let i = 0; i < columns; i++) 
+            this.columns.push(createColumn());
+    }
 
     private addElement(elemenet: HTMLElement) {
         const columns = this.columns;
@@ -36,8 +45,12 @@ export class SeriesTrackers {
         columns[col].appendChild(elemenet);
     }
 
-    public addSeriesTracker(series: Series) {
-        
+    public addSeriesTracker(seriesTracker: SeriesTracker) {
+        this.addElement(createSeriesTracker(seriesTracker.baseColor, seriesTracker.content));
+    }
+
+    public addSeries(series: Series) {
+        series.trackers.forEach((tracker) => this.addSeriesTracker(tracker));
     }
 
 }
@@ -52,7 +65,7 @@ function createSeriesTrackerStageElements(series: Series): SeriesTrackerStageEle
                   stageContent = createBoundedStageContent();
             stageContent.appendChild(createInnerText('h1', series.title));
             stageContent.appendChild(this.colorLine);
-            stageContent.appendChild(this.loadMoreElement);
+            stageContent.appendChild(this.seriesTrackers.element);
 
             fragment.appendChild(stageContent);
             return fragment;
@@ -61,7 +74,7 @@ function createSeriesTrackerStageElements(series: Series): SeriesTrackerStageEle
 }
 
 
-export function createSeriesStage(series: Series): FragmentedContentStage<SeriesTrackersElements> {
+export function createSeriesStage(series: Series): FragmentedContentStage<SeriesTrackerStageElements> {
     return {
         async initialise() {
             // this.elements = createSeriesCardsStageElements();
