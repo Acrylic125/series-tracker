@@ -79,3 +79,25 @@ export function createBoundedStageContent() {
     boundedStageContent.classList.add(BOUNDED_STAGE_CONTENT);
     return boundedStageContent;
 }
+
+// <div class="column"> </div>
+export function createColumn() {
+    const column = document.createElement('div');
+    column.classList.add('column');
+    return column;
+}
+
+export function createColumns(columns: number) {
+    const columnElements = new Array<HTMLElement>(columns);
+    for (let i = 0; i < columns; i++)
+        columnElements[i] = createColumn();
+    return columnElements;
+}
+
+// <div class="line"></div>
+export function createColorLine(color: string) {
+    const line = document.createElement('div');
+    line.classList.add('line');
+    line.style.backgroundColor = color;
+    return line;
+}
