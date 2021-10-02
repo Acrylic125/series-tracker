@@ -214,6 +214,18 @@ p {
   height: 0;
 }
 
+@media only screen and (min-width: 350px) {
+  :root {
+    font-size: 75%;
+  }
+}
+
+@media only screen and (min-width: 600px) {
+  :root {
+    font-size: 100%;
+  }
+}
+
 @media only screen and (min-width: 900px) {
   :root {
     font-size: 125%;

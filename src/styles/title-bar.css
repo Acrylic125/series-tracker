@@ -2,7 +2,7 @@
   --title-bar-color: #1a1a1f;
   --title-bar-text-color: #a5a5b1;
   --title-bar-button-hover-color: #333344;
-  --title-bar-height: 2.5rem;
+  --title-bar-height: 35px;
 }
 
 .title-bar {
@@ -19,6 +19,7 @@
   background-color: transparent;
   padding-left: 0.85em;
   padding-right: 0.85em;
+  font-size: 15px;
 }
 
 .title-bar button:hover {
