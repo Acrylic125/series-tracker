@@ -73,7 +73,7 @@ function createSeriesTrackerStageElements(series: Series): SeriesTrackerStageEle
             stageContent.appendChild(this.colorLine);
             stageContent.appendChild(createAddSeriesTrackerButton());
             stageContent.appendChild(this.seriesTrackers.element);
-
+//
             fragment.appendChild(stageContent);
             return fragment;
         }
