@@ -1,3 +1,4 @@
+import { throws } from 'assert';
 import { v4 } from 'uuid';
 import { Position, setPosition } from '../../utils/html-utils';
 import { parseFloatOrDefault, parseFloatOrUndefined } from '../../utils/utils';
@@ -9,8 +10,9 @@ import { parseFloatOrDefault, parseFloatOrUndefined } from '../../utils/utils';
  */
 
 export interface AdaptiveResize {
-    dWidth: number
-    dHeight: number
+    adaptFrom: Element
+    percentWidth: number
+    percentHeight: number
 }
 
 export interface AdaptiveResizerElement {
@@ -20,7 +22,6 @@ export interface AdaptiveResizerElement {
 
 export interface AdaptiveResizer {
     resizeElements: AdaptiveResizerElement[]
-    adaptFrom: HTMLElement
     observer: ResizeObserver
 }
 
@@ -34,91 +35,66 @@ export function createPositionAdaptableElement(element: HTMLElement, relativePos
         relativePosition,
         adapt(adaptiveResize: AdaptiveResize) {
             setPosition(this.element, {
-                x: this.relativePosition.x * adaptiveResize.dWidth,
-                y: this.relativePosition.y * adaptiveResize.dHeight,
+                x: this.relativePosition.x * adaptiveResize.percentWidth,
+                y: this.relativePosition.y * adaptiveResize.percentHeight,
             });
         }
     }
 }
 
 export class AdaptiveResizers {
-    constructor(private resizers: Map)
-}
-
-// export interface AdaptiveResizer {
-//     terminate(): void
-//     resize
-//     resizeObserver: ResizeObserver
-// }
-
-// export interface AdaptiveResizerElementData {
-//     relativePosition?: Position
-//     relativeWidth?: number
-//     relativeHeight?: number
-// }
-
-// export interface AdaptiveResizerElement {
-//     element: HTMLElement
-//     adaptFrom: HTMLElement
-//     data: AdaptiveResizerElementData
-// }
-
-// export function extractAdaptiveSizeElementData(element: HTMLElement): AdaptiveResizerElementData {
-//     const { relwidth, relheight, relposx, relposy } = element.dataset;
-//     return {
-//         relativeWidth: parseFloatOrUndefined(relwidth),
-//         relativeHeight: parseFloatOrUndefined(relheight),
-//         relativePosition: (relposx || relposy) ? {
-//             x: parseFloatOrDefault(relposx, 0),
-//             y: parseFloatOrDefault(relposy, 0)
-//         } : undefined
-//     };
-// }
-
-// export function toAdaptiveSizeElement(adaptiveElement: AdaptiveResizerElement) {
-//     const { adaptFrom, element, data } = adaptiveElement;
-//     if (!adaptFrom.id)
-//         adaptFrom.id = v4();
-//     const dataset = element.dataset;
-
-//     (function mapData() {
-//         dataset.targetid = adaptFrom.id;
-//         dataset.relwidth = data.relativeWidth + '';
-//         dataset.relheight = data.relativeHeight + '';
-//         if (data.relativePosition) {
-//             dataset.relposx = data.relativePosition.x + '';
-//             dataset.relposy = data.relativePosition.y + '';
-//         }
-//     })();
-// }
-
-// export class AdaptiveObservers {
-
-//     constructor(private observers: Map<string, ResizeObserver>) {}
-
-//     public removeObserver(id: string) {
-//         const observers = this.observers;
-//         const observer = observers.get(id);
-//         if (observer) {
-//             observer.disconnect();
-//             observers.delete(id);
-//         }
-//     }
-
-//     public addObserver(id: string) {
-//         this.removeObserver(id);
-//         const rezizeObserver = new ResizeObserver((entries) => {
-//             const adaptFrom = document.getElementById(id);
-//             if (adaptFrom) {
-//                 const bb = adaptFrom.getBoundingClientRect();
-//                 const dWidth = bb.width * 0.01,
-//                       dHeight = bb.height * 0.01;
-//                 entries.forEach((entry) => {
+    constructor(private resizers: Map<string, AdaptiveResizer> = new Map()) {}
     
-//                 });
-//             }
-//         });
-//         this.observers.set(id, rezizeObserver);
-//     }
+    static createResizer(adaptFrom: HTMLElement): AdaptiveResizer {
+        const resizeElements: AdaptiveResizerElement[] = new Array();
+        const observer = new ResizeObserver((entries) => {
+            if (entries.length > 0) {
+                const adaptFrom = entries[0].target;
+                const bb = adaptFrom.getBoundingClientRect();
+                const resize: AdaptiveResize = {
+                    adaptFrom,
+                    percentWidth: bb.width / 100,
+                    percentHeight: bb.height / 100
+                };
+                resizeElements.forEach((adaptiveElement) => 
+                    adaptiveElement.adapt(resize));
+            }
+        });
+        observer.observe(adaptFrom);
+        return {
+            resizeElements, observer
+        };
+    }
 
-// }
+    static terminateResizer(resizer: AdaptiveResizer) {
+        resizer.observer.disconnect();
+    }
+
+    public addResizer(element: HTMLElement) {
+        var resizerkey = (element.dataset.resizerkey) ? element.dataset.resizerkey : v4();
+        var resizer = this.getResizer(resizerkey);
+        if (resizer) 
+            AdaptiveResizers.terminateResizer(resizer);
+        resizer = AdaptiveResizers.createResizer(element);
+        this.resizers.set(resizerkey, resizer);
+    }
+
+    public getResizer(key: string) {
+        return this.resizers.get(key);
+    }
+
+    public remove(key: string) {
+        const resizer = this.getResizer(key);
+        if (resizer) {
+            AdaptiveResizers.terminateResizer(resizer);
+            this.resizers.delete(key);
+        }
+    }
+
+    public removeAll() {
+        this.resizers.forEach((resizer) =>
+            AdaptiveResizers.terminateResizer(resizer));
+        this.resizers = new Map();
+    }
+
+}
