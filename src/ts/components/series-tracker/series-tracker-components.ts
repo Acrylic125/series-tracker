@@ -16,9 +16,10 @@
             </div>
  */
 
-import { toAdaptiveSize } from "../../html-loaded/preloaders/adaptive-size";
+import { } from "../../html-loaded/preloaders/adaptive-size";
 import { SeriesTracker } from "../../series/series";
 import { Position } from "../../utils/html-utils";
+import { randInt } from "../../utils/utils";
 import { createInnerText } from "../global-components";
 
 // <header> </header>
@@ -47,7 +48,8 @@ export function createSeriesTrackerBackgroundCircle(color: string, background: H
     const circle = document.createElement('div');
     circle.style.backgroundColor = color;
     circle.classList.add('series-tracker__bg--circle');
-    toAdaptiveSize(circle, background);
+    circle.style.width = randInt(10, 35) + '%';
+    // toAdaptiveSize(circle, background);
     return circle;
 }
 

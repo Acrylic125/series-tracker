@@ -80,3 +80,11 @@ export function toComparableString(str: string) {
 export function toID(id: string) {
     return id.toLocaleLowerCase();
 }
+
+export function parseFloatOrUndefined(val: string | undefined) {
+    return parseFloatOrDefault(val, 0);
+}
+
+export function parseFloatOrDefault<T>(val: string | undefined, defaultVal: T): number | T {
+    return (val) ? parseFloat(val) : defaultVal;
+}

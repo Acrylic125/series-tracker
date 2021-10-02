@@ -1,34 +1,25 @@
 import { useStage } from "../content-stage/content-stage-manager";
 import { createSeriesStage } from "../content-stage/stages/series-trackers-stage";
 import { Series } from "../series/series";
-import { createTag } from "./global-components";
-
-const SERIES_CARD_COLOR_STRIP = 'series-card__color-strip';
-const SERIES_CARD_TITLE = 'series-card__content--title';
-const SERIES_CARD_TAGS = 'series-card__content--tags';
-const SERIES_CARD_CONTENT = 'series-card__content';
-const SERIES_CARD = 'series-card';
+import { createElementWithClasses, createTag } from "./global-components";
 
 // <span class="series-card__color-strip"></span>
 export function createSeriesCardColorStrip(color: string) {
-    const colorStripElement = document.createElement('span');
-    colorStripElement.classList.add(SERIES_CARD_COLOR_STRIP);
+    const colorStripElement = createElementWithClasses('span', 'series-card__color-strip');
     colorStripElement.style.backgroundColor = color;
     return colorStripElement;
 }
 
 // <p class="series-card__content--title"></p>
 export function createSeriesCardTitle(title: string) {
-    const titleElement = document.createElement('p');
-    titleElement.classList.add(SERIES_CARD_TITLE);
+    const titleElement = createElementWithClasses('p', 'series-card__content--title');
     titleElement.innerText = title;
     return titleElement;
 }
 
 // <ol class="series-card__content--tags"> </ol>
 export function createSeriesCardTags(...tags: string[]) {
-    const tagElement = document.createElement('ol');
-    tagElement.classList.add(SERIES_CARD_TAGS);
+    const tagElement = createElementWithClasses('ol', 'series-card__content--tags');
     if (tags.length > 0)
         tags.forEach((tag) =>
             tagElement.appendChild(createTag(tag)));
@@ -37,8 +28,7 @@ export function createSeriesCardTags(...tags: string[]) {
 
 // <span class="series-card__content"> </span>
 export function createSeriesCardContent(title: string, ...tags: string[]) {
-    const contentElement = document.createElement('span');
-    contentElement.classList.add(SERIES_CARD_CONTENT);
+    const contentElement = createElementWithClasses('span', 'series-card__content');
     contentElement.appendChild(createSeriesCardTitle(title));
     contentElement.appendChild(createSeriesCardTags(...tags));
     return contentElement;
@@ -49,9 +39,8 @@ export function createSeriesCardContent(title: string, ...tags: string[]) {
 //   <span class="series-card__content"> </span>
 // </li>
 export function createSeriesCard(series: Series) {
-    const seriesCardElement = document.createElement('li');
+    const seriesCardElement = createElementWithClasses('li', 'series-card');
     seriesCardElement.id = series.id;
-    seriesCardElement.classList.add(SERIES_CARD);
     seriesCardElement.appendChild(createSeriesCardColorStrip(series.colorStripColor));
     seriesCardElement.appendChild(createSeriesCardContent(series.title, ...series.tags));
     seriesCardElement.onclick = async () => 
