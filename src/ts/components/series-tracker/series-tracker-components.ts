@@ -16,6 +16,7 @@
             </div>
  */
 
+import { toAdaptiveSize } from "../../html-loaded/preloaders/adaptive-size";
 import { SeriesTracker } from "../../series/series";
 import { Position } from "../../utils/html-utils";
 import { createInnerText } from "../global-components";
@@ -46,6 +47,7 @@ export function createSeriesTrackerBackgroundCircle(color: string, background: H
     const circle = document.createElement('div');
     circle.style.backgroundColor = color;
     circle.classList.add('series-tracker__bg--circle');
+    toAdaptiveSize(circle, background);
     return circle;
 }
 
@@ -58,6 +60,7 @@ export function createSeriesTrackerBackground(circleColor: string) {
 
 export function createSeriesTracker(seriesTracker: SeriesTracker) {
     const seriesTrackerElement = document.createElement('div');
+    seriesTrackerElement.id = seriesTracker.id;
     seriesTrackerElement.classList.add('series-tracker');
     seriesTrackerElement.appendChild(createSeriesTrackerBackground(seriesTracker.circleColor));
     seriesTrackerElement.appendChild(createSeriesTrackerContent(seriesTracker));

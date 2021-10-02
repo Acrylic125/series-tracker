@@ -1,8 +1,12 @@
+import { v4 } from 'uuid';
 import { createSeriesTrackerContentItemTitle, SeriesTrackerContentItem } from "./series-tracker-content-item";
 
 export class SeriesTrackerContentItemStatus implements SeriesTrackerContentItem {
+    
     constructor(public title: string,
-                public status: string) {}
+                public status: string,
+                public id: string = v4()) {
+    }
     
     public toComponent(): HTMLElement {
         const component = document.createElement('li');

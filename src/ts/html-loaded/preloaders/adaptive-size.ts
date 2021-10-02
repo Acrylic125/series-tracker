@@ -4,11 +4,16 @@ export interface AdaptiveResizer {
 }
 
 export function toAdaptiveSize(element: HTMLElement, adaptFrom: HTMLElement): AdaptiveResizer {
-    console.log(adaptFrom.getBoundingClientRect());
+    const resizeObserver = new ResizeObserver((entries) => {
+        entries.forEach((entry) => {
+            console.log(entry.target.getBoundingClientRect());
+        });
+    }); 
+    resizeObserver.observe(element);
     return {
         terminate() {
 
         }, 
-        resizeObserver: new ResizeObserver(() => {})
+        resizeObserver
     };
 }

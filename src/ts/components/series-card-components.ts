@@ -50,6 +50,7 @@ export function createSeriesCardContent(title: string, ...tags: string[]) {
 // </li>
 export function createSeriesCard(series: Series) {
     const seriesCardElement = document.createElement('li');
+    seriesCardElement.id = series.id;
     seriesCardElement.classList.add(SERIES_CARD);
     seriesCardElement.appendChild(createSeriesCardColorStrip(series.colorStripColor));
     seriesCardElement.appendChild(createSeriesCardContent(series.title, ...series.tags));

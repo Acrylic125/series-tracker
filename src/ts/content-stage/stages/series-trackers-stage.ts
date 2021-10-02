@@ -45,7 +45,7 @@ export class SeriesTrackers {
         var col = this.currentColumn++;
         if (col >= columns.length) {
             col = 0;
-            this.currentColumn = 0;
+            this.currentColumn = 1;
         }
         columns[col].appendChild(elemenet);
     }
