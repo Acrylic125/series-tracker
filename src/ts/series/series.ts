@@ -41,8 +41,6 @@ export function createDummy(id: string): Series {
                 circleColor: `#${randColor(DARK_DEFAULT)}`,
                 items: [
                     new SeriesTrackerContentItemStatus("Season 1", "Episode 3"),
-                    new SeriesTrackerContentItemStatus("Season 2", "Episode 3"),
-                    new SeriesTrackerContentItemStatus("Season 3", "Episode 3")
                 ]
             },
             {
@@ -50,9 +48,23 @@ export function createDummy(id: string): Series {
                 baseColor: `#${randColor(BRIGHT_DEFAULT)}`,
                 circleColor: `#${randColor(DARK_DEFAULT)}`,
                 items: [
-                    new SeriesTrackerContentItemStatus("Season 1", "Episode 3"),
-                    new SeriesTrackerContentItemStatus("Season 2", "Episode 3"),
-                    new SeriesTrackerContentItemStatus("Season 3", "Episode 3")
+                    new SeriesTrackerContentItemStatus("A really weird title", "Episode 4"),
+                ]
+            },
+            {
+                title: "Specials",
+                baseColor: `#${randColor(BRIGHT_DEFAULT)}`,
+                circleColor: `#${randColor(DARK_DEFAULT)}`,
+                items: [
+                    new SeriesTrackerContentItemStatus("A really weird title", "Episode 4"),
+                ]
+            },
+            {
+                title: "Specials",
+                baseColor: `#${randColor(BRIGHT_DEFAULT)}`,
+                circleColor: `#${randColor(DARK_DEFAULT)}`,
+                items: [
+                    new SeriesTrackerContentItemStatus("A really weird title", "Episode 4"),
                 ]
             }
         ],

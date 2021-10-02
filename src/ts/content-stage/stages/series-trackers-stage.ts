@@ -43,8 +43,10 @@ export class SeriesTrackers {
     private addElement(elemenet: HTMLElement) {
         const columns = this.columns;
         var col = this.currentColumn++;
-        if (col >= columns.length) 
+        if (col >= columns.length) {
             col = 0;
+            this.currentColumn = 0;
+        }
         columns[col].appendChild(elemenet);
     }
 
