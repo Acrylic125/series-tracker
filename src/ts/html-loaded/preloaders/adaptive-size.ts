@@ -1,7 +1,5 @@
-import { throws } from 'assert';
 import { v4 } from 'uuid';
 import { Position, setPosition } from '../../utils/html-utils';
-import { parseFloatOrDefault, parseFloatOrUndefined } from '../../utils/utils';
 
 /**
  * Adaptive Resizer works as an observer for elements which wishes to use
@@ -70,13 +68,36 @@ export class AdaptiveResizers {
         resizer.observer.disconnect();
     }
 
+    static getResizerKey(element: HTMLElement) {
+        const currentKey = element.dataset.resizerkey;
+        if (currentKey) 
+            return (currentKey as string);
+        const newKey = v4();
+        element.dataset.resizerkey = newKey;
+        return newKey;
+    }
+
+    public addResizerELement(resizerElement: AdaptiveResizerElement, adaptFrom: HTMLElement) {
+        const resizer = this.getOrAddResizer(adaptFrom);
+        resizer.resizeElements.push(resizerElement);
+    }
+
+    public getOrAddResizer(element: HTMLElement) {
+        const resizerkey = AdaptiveResizers.getResizerKey(element);
+        var resizer = this.getResizer(resizerkey);
+        if (resizer) 
+            return resizer;
+        return this.addResizer(element);
+    }
+
     public addResizer(element: HTMLElement) {
-        var resizerkey = (element.dataset.resizerkey) ? element.dataset.resizerkey : v4();
+        const resizerkey = AdaptiveResizers.getResizerKey(element);
         var resizer = this.getResizer(resizerkey);
         if (resizer) 
             AdaptiveResizers.terminateResizer(resizer);
         resizer = AdaptiveResizers.createResizer(element);
         this.resizers.set(resizerkey, resizer);
+        return resizer;
     }
 
     public getResizer(key: string) {
@@ -98,3 +119,6 @@ export class AdaptiveResizers {
     }
 
 }
+
+const adaptiveResizers = new AdaptiveResizers();
+export default adaptiveResizers;

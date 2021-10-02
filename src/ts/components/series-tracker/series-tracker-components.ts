@@ -16,11 +16,11 @@
             </div>
  */
 
-import { } from "../../html-loaded/preloaders/adaptive-size";
+import adaptiveResizers, { createPositionAdaptableElement } from "../../html-loaded/preloaders/adaptive-size";
 import { SeriesTracker } from "../../series/series";
 import { Position } from "../../utils/html-utils";
 import { randInt } from "../../utils/utils";
-import { createInnerText } from "../global-components";
+import { createDivWithClasses, createInnerText } from "../global-components";
 
 // <header> </header>
 export function createSeriesTrackerHeader(title: string) {
@@ -44,19 +44,24 @@ export function createSeriesTrackerContent(seriesTracker: SeriesTracker) {
 //   <div class="series-tracker__bg--circle" style="width: 3em; top: 2em; left: 1em;"></div>
 // </div>
 // <div class="series-tracker__bg--circle" style="top: 5em; left: 8em;"></div>
-export function createSeriesTrackerBackgroundCircle(color: string, background: HTMLElement, percentRelativePosition: Position) {
+export function createSeriesTrackerBackgroundCircle(color: string, seriesTrackerElement: HTMLElement, percentRelativePosition: Position) {
     const circle = document.createElement('div');
-    circle.style.backgroundColor = color;
+    // circle.style.backgroundColor = color;
     circle.classList.add('series-tracker__bg--circle');
-    circle.style.width = randInt(10, 35) + '%';
-    // toAdaptiveSize(circle, background);
+    circle.style.width = randInt(10, 25) + '%';
+    adaptiveResizers.addResizerELement(createPositionAdaptableElement(circle, {
+      x: randInt(35, 95),
+      y: randInt(10, 90)
+    }), seriesTrackerElement);
     return circle;
 }
 
-export function createSeriesTrackerBackground(circleColor: string) {
-    const background = document.createElement('div');
-    background.classList.add('series-tracker__bg');
-    background.appendChild(createSeriesTrackerBackgroundCircle(circleColor, background, { x: 25, y: 32 }));
+export function createSeriesTrackerBackground(circleColor: string, seriesTrackerElement: HTMLElement) {
+    const background = createDivWithClasses('series-tracker__bg');
+    const circles = randInt(2, 3);
+    for (let i = 0; i < circles; i++) {
+      background.appendChild(createSeriesTrackerBackgroundCircle(circleColor, seriesTrackerElement, { x: 25, y: 32 }));
+    }
     return background;
 }
 
@@ -64,7 +69,7 @@ export function createSeriesTracker(seriesTracker: SeriesTracker) {
     const seriesTrackerElement = document.createElement('div');
     seriesTrackerElement.id = seriesTracker.id;
     seriesTrackerElement.classList.add('series-tracker');
-    seriesTrackerElement.appendChild(createSeriesTrackerBackground(seriesTracker.circleColor));
+    seriesTrackerElement.appendChild(createSeriesTrackerBackground(seriesTracker.circleColor, seriesTrackerElement));
     seriesTrackerElement.appendChild(createSeriesTrackerContent(seriesTracker));
     return seriesTrackerElement;
 }
