@@ -53,9 +53,9 @@ export function toRGB(red: number, green: number, blue: number, alpha?: number):
         },
         toHex() {
             const dec = this.toDecimal();
-            if (dec < 65025) 
+            if (this.red == 0) 
                 return '00' + dec.toString(16);
-            else if (dec < 1048576)
+            else if (this.red <= 0xf)
                 return '0' + dec.toString(16);
             return dec.toString(16);
         },

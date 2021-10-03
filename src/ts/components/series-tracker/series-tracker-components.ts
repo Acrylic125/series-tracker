@@ -35,7 +35,6 @@ export interface BackgroundCircle {
 export function createSeriesTrackerBackgroundCircle(seriesTrackerElement: HTMLElement, backgroundCircle: BackgroundCircle) {
     const circle = document.createElement('div');
     circle.style.backgroundColor = backgroundCircle.color;
-    circle.dataset.actualcolor = backgroundCircle.color;
     circle.classList.add('series-tracker__bg--circle');
     circle.style.width = backgroundCircle.relativeSize + '%';
     adaptiveResizers.addResizerELement(createPositionAdaptableElement(circle, backgroundCircle.relativePosition), seriesTrackerElement);
@@ -66,7 +65,6 @@ export function createSeriesTrackerBackground(circleColor: string, seriesTracker
 export function createSeriesTracker(seriesTracker: SeriesTracker) {
     const seriesTrackerElement = document.createElement('div');
     seriesTrackerElement.style.backgroundColor = seriesTracker.baseColor;
-    seriesTrackerElement.dataset.actualcolor = seriesTracker.baseColor;
     seriesTrackerElement.id = seriesTracker.id;
     seriesTrackerElement.classList.add('series-tracker');
     seriesTrackerElement.appendChild(createSeriesTrackerBackground(seriesTracker.circleColor, seriesTrackerElement));
