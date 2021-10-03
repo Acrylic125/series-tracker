@@ -1,9 +1,9 @@
 import { throws } from "assert";
 import { clamp, randInt } from "./utils";
 
-export const RED_HEX = 2 << 15;
-export const GREEN_HEX = 2 << 7;
-export const BLUE_HEX = 1;
+export const BITS_4 = 2 << 23;
+export const BITS_3 = 2 << 15;
+export const BITS_2 = 2 << 7;
 
 export const LOWER_COLOR_VALUE = 0,
              UPPER_COLOR_VALUE = 255;
@@ -12,69 +12,63 @@ export function clampColorValue(value: number) {
     return Math.floor(clamp(LOWER_COLOR_VALUE, value, UPPER_COLOR_VALUE));
 }
 
-export function rgbToDec(rgb: RGB) {
-    return (rgb.red * RED_HEX) + (rgb.green * GREEN_HEX) + rgb.blue; 
+export interface Color {
+    toHex(): string
+    toPrefixedHex(prefix?: string): string
+    toDecimal(): number
+    brighten(percent: number): Color // where 0 is 0%, 1 is 100%
+    darken(percent: number): Color // where 0 is 0%, 1 is 100%
+    clone(): Color
 }
 
-export function rgbToHex(rgb: RGB) {
-    return rgbToDec(rgb).toString(16);
-}
-
-export interface RGB {
+export interface RGBColor extends Color {
+    // RGB values [0, 255]
     red: number
     green: number
     blue: number
-    set(red: number, green: number, blue: number): RGB
-    clone(): RGB
+    // Alpha value [0, 1]
+    alpha?: number
+    set(red: number, green: number, blue: number): RGBColor
+    setAlpha(alpha: number): void
+    brightenBase(percentRed: number, percentGreen: number, percentBlue: number): Color // where 0 is 0%, 1 is 100%
+    darkenBase(percentRed: number, percentGreen: number, percentBlue: number): Color // where 0 is 0%, 1 is 100%
+    clone(): RGBColor
 }
 
-export function toRGB(red: number, green: number, blue: number): RGB {
+export function toRGB(red: number, green: number, blue: number, alpha?: number): RGBColor {
     return {
         red: clampColorValue(red),
         green: clampColorValue(green),
         blue: clampColorValue(blue),
+        alpha,
         set(red: number, green: number, blue: number) {
             this.red = clampColorValue(red);
             this.green = clampColorValue(green);
             this.blue = clampColorValue(blue);
             return this;
         },
+        setAlpha(alpha: number) {
+            this.alpha = clamp(0, alpha, 1);
+        },
         clone() {
-            return toRGB(this.red, this.green, this.blue);
-        }
-    }
-}
-
-export interface Color {
-    rgb: RGB
-    toHex(): string
-    toPrefixedHex(prefix: string): string
-    toDecimal(): number
-    brightenBase(percentRed: number, percentGreen: number, percentBlue: number): Color // where 0 is 0%, 1 is 100%
-    darkenBase(percentRed: number, percentGreen: number, percentBlue: number): Color // where 0 is 0%, 1 is 100%
-    brighten(percent: number): Color // where 0 is 0%, 1 is 100%
-    darken(percent: number): Color // where 0 is 0%, 1 is 100%
-    clone(): Color
-}
-
-export function toColor(rgb: RGB): Color {
-    return {
-        rgb,
+            return toRGB(this.red, this.green, this.blue, this.alpha);
+        },
         toHex() {
-            return rgbToHex(rgb);
+            return this.toDecimal().toString(16);
         },
         toPrefixedHex(prefix: string = '#') {
             return prefix + this.toHex();
         },
         toDecimal() {
-            return rgbToDec(rgb);
+            const { red, green, blue, alpha } = this;
+            return (alpha) ? (red * BITS_4) + (green * BITS_3) + (blue * BITS_2) + Math.round((alpha * UPPER_COLOR_VALUE)) : 
+                             (red * BITS_3) + (green * BITS_2) + blue; 
         },
         brightenBase(percentRed: number, percentGreen: number, percentBlue: number) {
-            const rgb = this.rgb;
-            rgb.set(
-                rgb.red + (percentRed * rgb.red),
-                rgb.green + (percentGreen * rgb.green),
-                rgb.blue + (percentBlue * rgb.blue)
+            this.set(
+                this.red + (percentRed * this.red),
+                this.green + (percentGreen * this.green),
+                this.blue + (percentBlue * this.blue)
             )
             return this;
         },
@@ -86,12 +80,10 @@ export function toColor(rgb: RGB): Color {
         },
         darken(percent: number) {
             return this.darkenBase(percent, percent, percent);
-        },
-        clone() {
-            return toColor(this.rgb.clone());
         }
     }
 }
+
 
 /**
  * These options act as constants for 2 components of the
@@ -123,23 +115,22 @@ export const DARK_SHADE: ColorShadeOptions = {
     betaConstant: 26
 };
 
-export function randColorByShade(shadeOptions: ColorShadeOptions, shadeCase = randInt(1, 6)): Color {
+export function randColorByShade(shadeOptions: ColorShadeOptions, shadeCase = randInt(1, 6)): RGBColor {
     const variant = randInt(0, 255);
     const { alphaConstant, betaConstant } = shadeOptions;
-    var rgb;
     switch (shadeCase) {
         case 1:
-            return toColor(toRGB(alphaConstant, betaConstant, variant));
+            return toRGB(alphaConstant, betaConstant, variant);
         case 2:
-            return toColor(toRGB(alphaConstant, variant, betaConstant));
+            return toRGB(alphaConstant, variant, betaConstant);
         case 3:
-            return toColor(toRGB(variant, alphaConstant, betaConstant));
+            return toRGB(variant, alphaConstant, betaConstant);
         case 4:
-            return toColor(toRGB(betaConstant, alphaConstant, variant));
+            return toRGB(betaConstant, alphaConstant, variant);
         case 5:
-            return toColor(toRGB(betaConstant, variant, alphaConstant));
+            return toRGB(betaConstant, variant, alphaConstant);
         case 6:
-            return toColor(toRGB(variant, betaConstant, alphaConstant));
+            return toRGB(variant, betaConstant, alphaConstant);
         default:
             throw RangeError(`Case Number ${shadeCase} is out of range [1,6]!`); 
     }

@@ -25,10 +25,10 @@ export function createTracker(title: string, ...items: SeriesTrackerContentItem[
     return {
         id: v4(),
         title, items,
-        baseColor: color.toPrefixedHex('#'),
+        baseColor: color.toPrefixedHex(),
         circleColor: color.clone()
                           .brighten(0.2)
-                          .toPrefixedHex('#')
+                          .toPrefixedHex()
     };
 }
 
