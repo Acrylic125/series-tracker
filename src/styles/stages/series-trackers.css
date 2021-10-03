@@ -20,7 +20,7 @@
 .series-tracker {
   width: 100%;
   height: fit-content;
-  background-color: #6842b8;
+  /* background-color: #6842b8; */
   overflow: hidden;
   border-radius: 2em;
 }
@@ -33,7 +33,7 @@
 
 .series-tracker__bg--circle {
   position: absolute;
-  background-color: #7c50d8;
+  /* background-color: #7c50d8; */
   width: 30%;
   border-radius: 50%;
   aspect-ratio: 1 / 1;

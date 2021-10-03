@@ -29,7 +29,7 @@ export interface RGBColor extends Color {
     // Alpha value [0, 1]
     alpha?: number
     set(red: number, green: number, blue: number): RGBColor
-    setAlpha(alpha: number): void
+    setAlpha(alpha?: number): RGBColor
     brightenBase(percentRed: number, percentGreen: number, percentBlue: number): Color // where 0 is 0%, 1 is 100%
     darkenBase(percentRed: number, percentGreen: number, percentBlue: number): Color // where 0 is 0%, 1 is 100%
     clone(): RGBColor
@@ -37,24 +37,27 @@ export interface RGBColor extends Color {
 
 export function toRGB(red: number, green: number, blue: number, alpha?: number): RGBColor {
     return {
-        red: clampColorValue(red),
-        green: clampColorValue(green),
-        blue: clampColorValue(blue),
-        alpha,
+        red, green, blue, alpha,
         set(red: number, green: number, blue: number) {
             this.red = clampColorValue(red);
             this.green = clampColorValue(green);
             this.blue = clampColorValue(blue);
             return this;
         },
-        setAlpha(alpha: number) {
-            this.alpha = clamp(0, alpha, 1);
+        setAlpha(alpha?: number) {
+            this.alpha = (alpha) ? clamp(0, alpha, 1) : undefined;
+            return this;
         },
         clone() {
             return toRGB(this.red, this.green, this.blue, this.alpha);
         },
         toHex() {
-            return this.toDecimal().toString(16);
+            const dec = this.toDecimal();
+            if (dec < 65025) 
+                return '00' + dec.toString(16);
+            else if (dec < 1048576)
+                return '0' + dec.toString(16);
+            return dec.toString(16);
         },
         toPrefixedHex(prefix: string = '#') {
             return prefix + this.toHex();
@@ -82,6 +85,8 @@ export function toRGB(red: number, green: number, blue: number, alpha?: number):
             return this.darkenBase(percent, percent, percent);
         }
     }
+    .set(red, green, blue)
+    .setAlpha(alpha);
 }
 
 
