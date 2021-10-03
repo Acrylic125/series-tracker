@@ -76,3 +76,7 @@ export function parseFloatOrUndefined(val: string | undefined) {
 export function parseFloatOrDefault<T>(val: string | undefined, defaultVal: T): number | T {
     return (val) ? parseFloat(val) : defaultVal;
 }
+
+export function clamp(min: number, val: number, max: number) {
+    return Math.min(max, Math.max(min, val));
+}

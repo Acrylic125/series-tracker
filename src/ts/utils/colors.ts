@@ -1,15 +1,96 @@
-import { randInt } from "./utils";
+import { throws } from "assert";
+import { clamp, randInt } from "./utils";
 
 export const RED_HEX = 2 << 15;
 export const GREEN_HEX = 2 << 7;
 export const BLUE_HEX = 1;
 
-export function rgbToDec(r: number, g: number, b: number) {
-    return (r * RED_HEX) + (g * GREEN_HEX) + b; 
+export const LOWER_COLOR_VALUE = 0,
+             UPPER_COLOR_VALUE = 255;
+
+export function clampColorValue(value: number) {
+    return clamp(LOWER_COLOR_VALUE, value, UPPER_COLOR_VALUE);
 }
 
-export function rgbToHex(r: number, g: number, b: number) {
-    return rgbToDec(r, g, b).toString(16);
+export function rgbToDec(rgb: RGB) {
+    return (rgb.red * RED_HEX) + (rgb.green * GREEN_HEX) + rgb.blue; 
+}
+
+export function rgbToHex(rgb: RGB) {
+    return rgbToDec(rgb).toString(16);
+}
+
+export interface RGB {
+    red: number
+    green: number
+    blue: number
+    set(red: number, green: number, blue: number): RGB
+    clone(): RGB
+}
+
+export function toRGB(red: number, green: number, blue: number): RGB {
+    return {
+        red: clampColorValue(red),
+        green: clampColorValue(green),
+        blue: clampColorValue(blue),
+        set(red: number, green: number, blue: number) {
+            this.red = clampColorValue(red);
+            this.green = clampColorValue(green);
+            this.blue = clampColorValue(blue);
+            return this;
+        },
+        clone() {
+            return toRGB(this.red, this.green, this.blue);
+        }
+    }
+}
+
+export interface Color {
+    rgb: RGB
+    toHex(): string
+    toPrefixedHex(prefix: string): string
+    toDecimal(): number
+    brightenBase(percentRed: number, percentGreen: number, percentBlue: number): Color // where 0 is 0%, 1 is 100%
+    darkenBase(percentRed: number, percentGreen: number, percentBlue: number): Color // where 0 is 0%, 1 is 100%
+    brighten(percent: number): Color // where 0 is 0%, 1 is 100%
+    darken(percent: number): Color // where 0 is 0%, 1 is 100%
+    clone(): Color
+}
+
+export function toColor(rgb: RGB): Color {
+    return {
+        rgb,
+        toHex() {
+            return rgbToHex(rgb);
+        },
+        toPrefixedHex(prefix: string = '#') {
+            return prefix + this.toHex();
+        },
+        toDecimal() {
+            return rgbToDec(rgb);
+        },
+        brightenBase(percentRed: number, percentGreen: number, percentBlue: number) {
+            const rgb = this.rgb;
+            rgb.set(
+                rgb.red + (percentRed * UPPER_COLOR_VALUE),
+                rgb.green + (percentGreen * UPPER_COLOR_VALUE),
+                rgb.blue + (percentBlue * UPPER_COLOR_VALUE)
+            )
+            return this;
+        },
+        brighten(percent: number) {
+            return this.brightenBase(percent, percent, percent);
+        },
+        darkenBase(percentRed: number, percentGreen: number, percentBlue: number) {
+            return this.brightenBase(-percentRed, -percentGreen, -percentBlue)
+        },
+        darken(percent: number) {
+            return this.darkenBase(percent, percent, percent);
+        },
+        clone() {
+            return toColor(this.rgb.clone());
+        }
+    }
 }
 
 /**
@@ -28,74 +109,39 @@ export function rgbToHex(r: number, g: number, b: number) {
  * RGB_5 = 15, [0, 255], 125
  * RGB_6 = [0, 255], 15, 125
  */
- export interface ColorOption {
-    alphaConstant: number,
+ export interface ColorShadeOptions {
+    alphaConstant: number
     betaConstant: number
 }
 
-export const BRIGHT_DEFAULT: ColorOption = {
+export const BRIGHT_SHADE: ColorShadeOptions = {
     alphaConstant: 220,
     betaConstant: 20
 };
-export const DARK_DEFAULT: ColorOption = {
+export const DARK_SHADE: ColorShadeOptions = {
     alphaConstant: 184,
     betaConstant: 26
 };
 
-export interface RGB {
-    red: number
-    green: number
-    blue: number
-}
-
-export interface Color {
-    rgb: RGB
-    toHex(): string
-    toPrefixedHex(): string
-    toDecimal(): number
-    brighten(percent: number): void
-    darken(percent: number): void
-}
-
-export function newColor(rgb: RGB): Color {
-    return {
-        rgb,
-        toHex() {
-            return rgbToHex()
-        }
-    }
-}
-
-export function randColor(color: ColorOption, caseNumber = randInt(1, 6)) {
+export function randColorByShade(shadeOptions: ColorShadeOptions, shadeCase = randInt(1, 6)): Color {
     const variant = randInt(0, 255);
-    const { alphaConstant, betaConstant } = color;
-
-    switch (caseNumber) {
+    const { alphaConstant, betaConstant } = shadeOptions;
+    var rgb;
+    switch (shadeCase) {
         case 1:
-            return rgbToHex(alphaConstant, betaConstant, variant);
+            return toColor(toRGB(alphaConstant, betaConstant, variant));
         case 2:
-            return rgbToHex(alphaConstant, variant, betaConstant);
+            return toColor(toRGB(alphaConstant, variant, betaConstant));
         case 3:
-            return rgbToHex(variant, alphaConstant, betaConstant);
+            return toColor(toRGB(variant, alphaConstant, betaConstant));
         case 4:
-            return rgbToHex(betaConstant, alphaConstant, variant);
+            return toColor(toRGB(betaConstant, alphaConstant, variant));
         case 5:
-            return rgbToHex(betaConstant, variant, alphaConstant);
+            return toColor(toRGB(betaConstant, variant, alphaConstant));
         case 6:
-            return rgbToHex(variant, betaConstant, alphaConstant);
+            return toColor(toRGB(variant, betaConstant, alphaConstant));
         default:
-            throw RangeError(`Case Number ${caseNumber} is out of range [1,6]!`);     
+            throw RangeError(`Case Number ${shadeCase} is out of range [1,6]!`); 
     }
 }
 
-export function randColorsSameCase(...colors: ColorOption[]) {
-    return randColorsSameCaseSpecified(randInt(1, 6), ...colors);
-}
-
-export function randColorsSameCaseSpecified(caseNumber: number, ...colors: ColorOption[]) {
-    const size = colors.length;
-    const arr = new Array<string>(size);
-    for (let i = 0; i < size; i++) 
-        arr[i] = randColor(colors[i], caseNumber);
-    return arr;
-}
