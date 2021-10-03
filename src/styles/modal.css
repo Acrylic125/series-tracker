@@ -1,4 +1,30 @@
-.c-modal {
+.modal {
+  width: 100vw;
+  height: 100vh;
+  position: fixed;
+  z-index: 10000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #0000005f;
+  visibility: hidden;
+  top: 0;
+  left: 0;
+}
+
+.modal.active {
+  visibility: visible;
+}
+
+.modal__content {
+  width: 90%;
+  max-width: 35em;
+  height: 10em;
+  overflow: auto;
+  background-color: white;
+}
+
+/* .c-modal {
   position: fixed;
   top: 50%;
   left: 50%;
@@ -10,6 +36,7 @@
 }
 
 .c-modal__overlay {
+  visibility: hidden;
   position: fixed;
   background-color: #0000006f;
   top: 0;
@@ -18,3 +45,7 @@
   right: 0;
   pointer-events: none;
 }
+
+.c-modal__overlay.active {
+  visibility: visible;
+} */
