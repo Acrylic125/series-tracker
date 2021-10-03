@@ -39,28 +39,43 @@ export function createSeriesTrackerContent(seriesTracker: SeriesTracker) {
     return contentElement;
 }
 
+export interface BackgroundCircle {
+  color: string,
+  relativePosition: Position,
+  relativeSize: number
+} 
+
 // <div class="series-tracker__bg">
 //   <div class="series-tracker__bg--circle" style="top: 5em; left: 8em;"></div>
 //   <div class="series-tracker__bg--circle" style="width: 3em; top: 2em; left: 1em;"></div>
 // </div>
 // <div class="series-tracker__bg--circle" style="top: 5em; left: 8em;"></div>
-export function createSeriesTrackerBackgroundCircle(color: string, seriesTrackerElement: HTMLElement, percentRelativePosition: Position) {
+export function createSeriesTrackerBackgroundCircle(seriesTrackerElement: HTMLElement, backgroundCircle: BackgroundCircle) {
     const circle = document.createElement('div');
     // circle.style.backgroundColor = color;
     circle.classList.add('series-tracker__bg--circle');
-    circle.style.width = randInt(10, 25) + '%';
-    adaptiveResizers.addResizerELement(createPositionAdaptableElement(circle, {
-      x: randInt(35, 95),
-      y: randInt(10, 90)
-    }), seriesTrackerElement);
+    circle.style.width = backgroundCircle.relativeSize + '%';
+    adaptiveResizers.addResizerELement(createPositionAdaptableElement(circle, backgroundCircle.relativePosition), seriesTrackerElement);
     return circle;
 }
 
 export function createSeriesTrackerBackground(circleColor: string, seriesTrackerElement: HTMLElement) {
     const background = createDivWithClasses('series-tracker__bg');
-    const circles = randInt(2, 3);
+    const circles = randInt(3, 4);
+    const alpha = 100 / circles;
+    var beta = randInt(15, 24);
     for (let i = 0; i < circles; i++) {
-      background.appendChild(createSeriesTrackerBackgroundCircle(circleColor, seriesTrackerElement, { x: 25, y: 32 }));
+      beta -= (randInt(9, 12) / circles);
+      background.appendChild(
+        createSeriesTrackerBackgroundCircle(seriesTrackerElement, {
+          relativeSize: beta,
+          relativePosition: {
+            x: randInt(45, 90),
+            y: randInt(((i - 1) * alpha) + 15, (i * alpha) + 15)
+          },
+          color: '#aaaaaa'
+        })
+      );
     }
     return background;
 }
