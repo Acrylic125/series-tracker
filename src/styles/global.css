@@ -7,7 +7,7 @@
   user-select: none;
   background-color: black;
 
-  --main-action-button-color: #4a4a4f;
+  --main-action-button-color: black;
 }
 
 body {
@@ -134,10 +134,11 @@ body {
   border: none;
   background-color: var(--main-action-button-color);
   color: white;
+  opacity: 0.55;
 }
 
 .action-button:hover {
-  background-color: #8a8a8f;
+  opacity: 1;
 }
 
 .hidden {
