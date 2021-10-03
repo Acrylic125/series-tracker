@@ -27,3 +27,33 @@
   background-color: white;
   padding: 1em;
 }
+
+.modal > header {
+  width: 100%;
+}
+
+.modal__title-container {
+  display: flex;
+  flex-direction: column;
+  max-width: 60%;
+  margin-right: 0;
+}
+
+.modal__title-container--title {
+  font-weight: bold;
+}
+
+.modal__title-container--subtitle {
+  font-weight: lighter;
+}
+
+.modal__button--close {
+  display: block;
+  float: right;
+  width: 2em;
+  height: 2em;
+  font-size: inherit;
+  color: #777;
+  border: none;
+  border-radius: 0.25em;
+}
