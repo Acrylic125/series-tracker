@@ -73,7 +73,7 @@ export function createSeriesTrackerBackground(circleColor: string, seriesTracker
             x: randInt(45, 90),
             y: randInt(((i - 1) * alpha) + 15, (i * alpha) + 15)
           },
-          color: '#aaaaaa'
+          color: circleColor
         })
       );
     }

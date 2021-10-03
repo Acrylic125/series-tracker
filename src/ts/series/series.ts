@@ -21,13 +21,13 @@ export interface SeriesTracker {
 }
 
 export function createTracker(title: string, ...items: SeriesTrackerContentItem[]): SeriesTracker {
-    const color = randColorByShade(BRIGHT_SHADE);
+    const color = randColorByShade(DARK_SHADE);
     return {
         id: v4(),
         title, items,
         baseColor: color.toPrefixedHex('#'),
         circleColor: color.clone()
-                          .brighten(0.15)
+                          .brighten(0.2)
                           .toPrefixedHex('#')
     };
 }

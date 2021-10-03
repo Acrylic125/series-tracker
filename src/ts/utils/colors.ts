@@ -9,7 +9,7 @@ export const LOWER_COLOR_VALUE = 0,
              UPPER_COLOR_VALUE = 255;
 
 export function clampColorValue(value: number) {
-    return clamp(LOWER_COLOR_VALUE, value, UPPER_COLOR_VALUE);
+    return Math.floor(clamp(LOWER_COLOR_VALUE, value, UPPER_COLOR_VALUE));
 }
 
 export function rgbToDec(rgb: RGB) {
@@ -72,9 +72,9 @@ export function toColor(rgb: RGB): Color {
         brightenBase(percentRed: number, percentGreen: number, percentBlue: number) {
             const rgb = this.rgb;
             rgb.set(
-                rgb.red + (percentRed * UPPER_COLOR_VALUE),
-                rgb.green + (percentGreen * UPPER_COLOR_VALUE),
-                rgb.blue + (percentBlue * UPPER_COLOR_VALUE)
+                rgb.red + (percentRed * rgb.red),
+                rgb.green + (percentGreen * rgb.green),
+                rgb.blue + (percentBlue * rgb.blue)
             )
             return this;
         },
