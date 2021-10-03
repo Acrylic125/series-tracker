@@ -14,9 +14,9 @@ const createWindow = () => {
   // Create the browser window.
   const window = new BrowserWindow({
     width: 720,
-    minWidth: 720,
+    minWidth: 480,
     height: 400,
-    minHeight: 400,
+    minHeight: 320,
     resizable: true,
     fullscreen: false,
     frame: false,
