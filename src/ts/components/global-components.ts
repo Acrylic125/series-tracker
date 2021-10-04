@@ -1,3 +1,5 @@
+import { text } from "stream/consumers";
+
 const TAG = 'tag';
 
 //  <span class="series-card__tag"> </span>
@@ -111,4 +113,53 @@ export function createElementWithClasses(element: string, ...classes: string[]) 
 
 export function createDivWithClasses(...classes: string[]) {
     return createElementWithClasses('div', ...classes);
+}
+
+export interface Modal {
+    modalElement: HTMLElement
+    modalContent: HTMLElement
+    active: boolean
+    activate(active: boolean): void
+}
+
+// <div class="modal active">
+//     <div class="modal__body rounded-2">
+//         <div class="modal__buttons">
+//             <button class="modal__button--close action-button circle">&times;</button>
+//         </div>
+//         <div class="modal__content">
+//             <header class="modal__title-container">
+//                 <p class="modal__title-container--title">Lorem ipsum dolor sit.</p>
+//                 <p class="modal__title-container--subtitle">Lorem, ipsum dolor.</p>
+//             </header>
+//         </div>
+//     </div>
+// </div>
+
+export const closeActionButton: ActionButton = {
+    tooltip: {
+        title: "Close Modal",
+        text: "Click to close this modal."
+    },
+    innerText: "\u00D7",
+    circular: true,
+    singular: true
+}
+
+// <button class="modal__button--close action-button circle">&times;</button>
+export function createModalCloseButton(modal: Modal) {
+    const closeButton = createActionButton(closeActionButton);
+    closeButton.classList.add('modal__button--close');
+    return closeButton;
+}
+
+// <div class="modal__buttons"> </div>
+export function createModalButtons(modal: Modal) {
+    const modalButtons = createDivWithClasses('modal__buttons');
+    modalButtons.appendChild(createModalCloseButton(modal));
+    return modalButtons;
+}
+
+export function createModal(modal: Modal) {
+    
 }
