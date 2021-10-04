@@ -1,5 +1,6 @@
 import { text } from "stream/consumers";
 
+const ACTIVE = 'active';
 const TAG = 'tag';
 
 //  <span class="series-card__tag"> </span>
@@ -115,11 +116,15 @@ export function createDivWithClasses(...classes: string[]) {
     return createElementWithClasses('div', ...classes);
 }
 
+export interface ModalContent {
+    element: HTMLElement
+}
+
 export interface Modal {
     modalElement: HTMLElement
-    modalContent: HTMLElement
+    modalContent: ModalContent
     active: boolean
-    activate(active: boolean): void
+    setActive(active: boolean): void
 }
 
 // <div class="modal active">
@@ -150,6 +155,8 @@ export const closeActionButton: ActionButton = {
 export function createModalCloseButton(modal: Modal) {
     const closeButton = createActionButton(closeActionButton);
     closeButton.classList.add('modal__button--close');
+    closeButton.onclick = () => 
+        modal.setActive(false);
     return closeButton;
 }
 
@@ -160,6 +167,29 @@ export function createModalButtons(modal: Modal) {
     return modalButtons;
 }
 
-export function createModal(modal: Modal) {
-    
+// <div class="modal__body rounded-2"> </div>
+export function createModalBody(modal: Modal) {
+    const modalButtons = createDivWithClasses('modal__body', 'rounded-2');
+    modalButtons.appendChild(createModalButtons(modal));
+    modalButtons.appendChild(modal.modalContent.element);
+    return modalButtons;
+}
+
+export function createModal(modalContent: ModalContent, active = false) {
+    const modalElement = createDivWithClasses('modal');
+    const modal: Modal = {
+        modalElement, modalContent, active,
+        setActive(active: boolean) {
+            this.active = active;
+            const classes = this.modalElement.classList;
+            if (active)
+                classes.add(ACTIVE);
+            else 
+                classes.remove(ACTIVE);
+        }
+    };
+    modalElement.appendChild(createModalBody(modal));
+    modal.setActive(active);
+    document.appendChild(modalElement);
+    return modal;
 }
