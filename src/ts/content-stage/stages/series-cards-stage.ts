@@ -7,7 +7,7 @@ import { toComparableString } from "../../utils/utils";
 import { createSeriesCard } from "../../components/series-card-components";
 import { ContentStageElements, FragmentedContentStage } from "../content-stage";
 import { getContentStageElement } from '../content-stage-manager';
-import { ActionButton, createBoundedStageContent, createElementWithClasses, createHorzCenteredActionButton, openModal } from "../../components/global-components";
+import { ActionButton, createBoundedStageContent, createElementWithClasses, createHorzCenteredActionButton, addModal, createModalTitleHeader } from "../../components/global-components";
 
 const SERIES_CARDS_FILTER_ID = "series-cards__filter";
 const SERIES_CARDS = "series-cards";
@@ -147,8 +147,11 @@ const seriesCardsStage: SeriesCardsStage = {
         getContentStageElement().appendChild(this.elements.toFragment());
         this.state = new SeriesCardsStageProcess(this.elements);
         await this.state.freshLoad();
-        openModal({
-            element: document.createElement('p')
+        addModal({
+            modalContent: {
+                element: createModalTitleHeader('Hello', 'LOL')
+            },
+            active: true
         });
     }
 };

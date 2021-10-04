@@ -44,18 +44,18 @@
   padding: 1em 0;
 }
 
-.modal__title-container {
+.modal__title-header {
   max-width: 60%;
   display: flex;
   flex-direction: column;
   justify-content: center;
 }
 
-.modal__title-container--title {
+.modal__title-header--title {
   font-weight: bold;
 }
 
-.modal__title-container--subtitle {
+.modal__title-header--subtitle {
   font-weight: lighter;
 }
 

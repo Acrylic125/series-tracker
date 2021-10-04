@@ -124,6 +124,7 @@ export interface Modal {
     modalElement: HTMLElement
     modalContent: ModalContent
     active: boolean
+    deleteOnDeactivate: boolean
     setActive(active: boolean): void
 }
 
@@ -133,9 +134,9 @@ export interface Modal {
 //             <button class="modal__button--close action-button circle">&times;</button>
 //         </div>
 //         <div class="modal__content">
-//             <header class="modal__title-container">
-//                 <p class="modal__title-container--title">Lorem ipsum dolor sit.</p>
-//                 <p class="modal__title-container--subtitle">Lorem, ipsum dolor.</p>
+//             <header class="modal__title-header">
+//                 <p class="modal__title-header--title">Lorem ipsum dolor sit.</p>
+//                 <p class="modal__title-header--subtitle">Lorem, ipsum dolor.</p>
 //             </header>
 //         </div>
 //     </div>
@@ -179,31 +180,67 @@ export function createModalButtons(modal: Modal) {
 export function createModalBody(modal: Modal) {
     const modalBody = createDivWithClasses('modal__body', 'rounded-2');
     modalBody.appendChild(createModalButtons(modal));
-    modalBody.appendChild(modal.modalContent.element);
+    const content = createModalContent();
+    content.appendChild(modal.modalContent.element);
+    modalBody.appendChild(content);
     return modalBody;
 }
 
-export function createModal(modalContent: ModalContent, active = false) {
+export interface ModalOptions {
+    modalContent: ModalContent
+    active?: boolean
+    deleteOnDeactivate?: boolean
+}
+
+export function createModal(modalOptions: ModalOptions) {
     const modalElement = createDivWithClasses('modal');
     const modal: Modal = {
-        modalElement, modalContent, active,
+        modalElement, 
+        modalContent: modalOptions.modalContent, 
+        active: (modalOptions.active) ? true : false,
+        deleteOnDeactivate: (modalOptions.deleteOnDeactivate) ? true : false,
         setActive(active: boolean) {
             this.active = active;
             const classes = this.modalElement.classList;
             if (active)
                 classes.add(ACTIVE);
-            else 
+            else {
                 classes.remove(ACTIVE);
+                (this.deleteOnDeactivate) && modalElement.remove();
+            }
         }
     };
     modalElement.appendChild(createModalBackground(modal));
     modalElement.appendChild(createModalBody(modal));
-    modal.setActive(active);
+    modal.setActive(modal.active);
     return modal;
 }
 
-export function openModal(modalContent: ModalContent): Modal {
-    const modal = createModal(modalContent, true);
+export function addModal(modalOptions: ModalOptions): Modal {
+    const modal = createModal(modalOptions);
     document.body.appendChild(modal.modalElement);
     return modal;
+}
+
+// <header class="modal__title-header">
+//   <p class="modal__title-header--title">Lorem ipsum dolor sit.</p>
+//   <p class="modal__title-header--subtitle">Lorem, ipsum dolor.</p>
+// </header>
+export function createModalTitleHeader(title?: string, subtitle?: string) {
+    const header = createElementWithClasses('header', 'modal__title-header');
+    if (title) {
+        const titleElement = createElementWithClasses('p', 'modal__title-header--title');
+        titleElement.innerText = title;
+        header.appendChild(titleElement);
+    }
+    if (subtitle) {
+        const subtitleElement = createElementWithClasses('p', 'modal__title-header--subtitle');
+        subtitleElement.innerText = subtitle;
+        header.appendChild(subtitleElement);
+    }
+    return header;
+}
+
+export function createModalContent() {
+    return createDivWithClasses('modal__content');
 }
