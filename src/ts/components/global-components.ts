@@ -151,6 +151,14 @@ export const closeActionButton: ActionButton = {
     singular: true
 }
 
+// <div class="modal__background"></div>
+export function createModalBackground(modal: Modal) {
+    const background = createDivWithClasses('modal__background');
+    background.onclick = () => 
+        modal.setActive(false);
+    return background;
+}
+
 // <button class="modal__button--close action-button circle">&times;</button>
 export function createModalCloseButton(modal: Modal) {
     const closeButton = createActionButton(closeActionButton);
@@ -169,10 +177,10 @@ export function createModalButtons(modal: Modal) {
 
 // <div class="modal__body rounded-2"> </div>
 export function createModalBody(modal: Modal) {
-    const modalButtons = createDivWithClasses('modal__body', 'rounded-2');
-    modalButtons.appendChild(createModalButtons(modal));
-    modalButtons.appendChild(modal.modalContent.element);
-    return modalButtons;
+    const modalBody = createDivWithClasses('modal__body', 'rounded-2');
+    modalBody.appendChild(createModalButtons(modal));
+    modalBody.appendChild(modal.modalContent.element);
+    return modalBody;
 }
 
 export function createModal(modalContent: ModalContent, active = false) {
@@ -188,8 +196,14 @@ export function createModal(modalContent: ModalContent, active = false) {
                 classes.remove(ACTIVE);
         }
     };
+    modalElement.appendChild(createModalBackground(modal));
     modalElement.appendChild(createModalBody(modal));
     modal.setActive(active);
-    document.appendChild(modalElement);
+    return modal;
+}
+
+export function openModal(modalContent: ModalContent): Modal {
+    const modal = createModal(modalContent, true);
+    document.body.appendChild(modal.modalElement);
     return modal;
 }
