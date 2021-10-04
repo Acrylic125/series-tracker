@@ -1,6 +1,6 @@
-import { reloadGlobalScripts } from '../html-loaded/preloaders/html-preloaders';
+import { reloadNonStaticDocumentScripts, loadStaticDocumentScripts } from '../html-loaded/preloaders/html-preloaders';
 
 const scripts = {
-    reloadGlobalScripts
+    reloadNonStaticDocumentScripts, loadStaticDocumentScripts
 }
 export default scripts;
