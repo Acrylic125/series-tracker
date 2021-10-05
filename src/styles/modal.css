@@ -13,6 +13,10 @@
   left: 0;
 }
 
+header > .title {
+  font-size: 120%;
+}
+
 .modal__background {
   position: absolute;
   width: 100%;

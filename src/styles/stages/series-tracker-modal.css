@@ -1,0 +1,24 @@
+.modal__header-content {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  margin-top: 2em;
+}
+
+.modal__header-content > * {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.modal__tracker-styler {
+  display: block;
+  background-color: #6842b8;
+  width: 6.5em;
+  aspect-ratio: 1 / 1.5;
+  margin-top: 1em;
+  margin-bottom: 1em;
+}
+
+.modal__tracker-styler--circle {
+}
