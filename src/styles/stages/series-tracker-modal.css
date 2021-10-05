@@ -37,3 +37,10 @@
   border-radius: 50%;
   aspect-ratio: 1 / 1;
 }
+
+.modal__tracker-content {
+  width: 100%;
+  padding: 1em 0;
+  background-color: #efefef;
+  text-align: center;
+}

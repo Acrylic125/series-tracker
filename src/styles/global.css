@@ -169,6 +169,11 @@ p {
   margin: 0;
 }
 
+select {
+  background-color: transparent;
+  border: none;
+}
+
 .tag {
   display: inline;
   width: fit-content;
