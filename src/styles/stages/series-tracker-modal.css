@@ -13,12 +13,27 @@
 
 .modal__tracker-styler {
   display: block;
+  position: relative;
   background-color: #6842b8;
+  border: 5px solid #efefef;
   width: 6.5em;
-  aspect-ratio: 1 / 1.5;
+  aspect-ratio: 1 / 1.4;
   margin-top: 1em;
   margin-bottom: 1em;
 }
 
+.modal__tracker-styler--text {
+  color: white;
+  position: absolute;
+  z-index: 1000;
+  left: 15px;
+  top: 15px;
+  text-align: left;
+}
+
 .modal__tracker-styler--circle {
+  position: absolute;
+  background-color: #7c50d8;
+  border-radius: 50%;
+  aspect-ratio: 1 / 1;
 }
