@@ -222,25 +222,6 @@ export function addModal(modalOptions: ModalOptions): Modal {
     return modal;
 }
 
-// <header class="modal__title-header">
-//   <p class="modal__title-header--title">Lorem ipsum dolor sit.</p>
-//   <p class="modal__title-header--subtitle">Lorem, ipsum dolor.</p>
-// </header>
-export function createModalTitleHeader(title?: string, subtitle?: string) {
-    const header = createElementWithClasses('header', 'modal__title-header');
-    if (title) {
-        const titleElement = createElementWithClasses('p', 'modal__title-header--title');
-        titleElement.innerText = title;
-        header.appendChild(titleElement);
-    }
-    if (subtitle) {
-        const subtitleElement = createElementWithClasses('p', 'modal__title-header--subtitle');
-        subtitleElement.innerText = subtitle;
-        header.appendChild(subtitleElement);
-    }
-    return header;
-}
-
 export function createModalContent() {
     return createDivWithClasses('modal__content');
 }

@@ -126,6 +126,14 @@ body {
   margin-right: auto;
 }
 
+.title {
+  font-weight: bold;
+}
+
+.subtitle {
+  font-weight: lighter;
+}
+
 .action-button {
   display: block;
   padding: 0.5em;
