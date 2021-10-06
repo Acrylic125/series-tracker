@@ -1,3 +1,7 @@
+:root {
+  --template-item-color: #545472;
+}
+
 .modal__header-content {
   width: 100%;
   display: flex;
@@ -43,4 +47,48 @@
   padding: 1em 0;
   background-color: #efefef;
   text-align: center;
+}
+
+.modal__tracker-content-template {
+  width: 100%;
+  margin-top: 1em;
+}
+
+/* Templates */
+.template__episodes-container {
+  margin-top: 2em;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(10em, 1fr));
+  row-gap: 1em;
+  column-gap: 1em;
+  padding: 1em;
+}
+
+.template__episodes-container-item {
+  background-color: var(--template-item-color);
+  padding: 1em;
+  height: fit-content;
+  text-align: left;
+}
+
+.template__episodes-container-item > .title {
+  margin-bottom: 1.5em;
+  font-size: 100%;
+  width: 100%;
+  color: white;
+}
+
+.template__episodes-container-item > p {
+  width: 100%;
+  color: white;
+  margin-top: 1em;
+  font-size: 65%;
+}
+
+.template__episodes-container-item > .ol-input {
+  width: 100%;
+  border-color: white;
+  color: white;
+  font-size: 150%;
+  margin-top: 0.5em;
 }

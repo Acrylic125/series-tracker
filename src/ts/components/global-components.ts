@@ -60,10 +60,8 @@ export function createActionButton(actionButton: ActionButton) {
     actionButtonElement.innerText = actionButton.innerText;
     if (actionButton.tooltip) 
         bindTooltipTo(actionButtonElement, actionButton.tooltip);
-    if (actionButton.singular) {
-        actionButtonElement.style.width = '2em';
-        actionButtonElement.style.height = '2em';    
-    }
+    if (actionButton.singular)
+        actionButtonElement.classList.add('small-singular');
     return actionButtonElement;
 }
 

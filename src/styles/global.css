@@ -54,6 +54,7 @@ body {
 }
 
 .ol-input {
+  background-color: transparent;
   outline: none;
   border: none;
   border-bottom: 0.1em solid black;
@@ -143,6 +144,7 @@ body {
   font-weight: bold;
 }
 
+.text-lighter,
 .subtitle {
   font-weight: lighter;
 }
@@ -190,6 +192,17 @@ select {
 textarea {
   font-family: inherit;
   resize: none;
+  background-color: transparent;
+}
+
+textarea::placeholder {
+  color: inherit;
+  opacity: 0.7;
+}
+
+.small-singular {
+  width: 2em;
+  height: 2em;
 }
 
 .tag {
