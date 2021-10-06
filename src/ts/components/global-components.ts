@@ -1,3 +1,4 @@
+import iro from "@jaames/iro";
 import { text } from "stream/consumers";
 
 const ACTIVE = 'active';
@@ -222,4 +223,27 @@ export function addModal(modalOptions: ModalOptions): Modal {
 
 export function createModalContent() {
     return createDivWithClasses('modal__content');
+}
+
+export function onNotElementClick(element: HTMLElement, callback: (event: MouseEvent) => void) {
+    const outsideClickListener = (event: MouseEvent) => {
+        if (event.target instanceof Node && !element.contains(event.target)) 
+            callback(event);
+    }
+    document.addEventListener('click', outsideClickListener)
+    const terminate = () => 
+        document.removeEventListener('click', outsideClickListener);
+    return { terminate, outsideClickListener };
+}
+
+export function createColorPicker() {
+    const colorPickerElement = createDivWithClasses('color-picker');
+    const colorPicker = iro.ColorPicker(colorPickerElement, {
+        width: 120,
+        height: 120
+    });
+    return {
+        colorPicker,
+        colorPickerElement
+    }
 }
