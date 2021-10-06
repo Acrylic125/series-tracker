@@ -225,15 +225,14 @@ export function createModalContent() {
     return createDivWithClasses('modal__content');
 }
 
-export function onNotElementClick(element: HTMLElement, callback: (event: MouseEvent) => void) {
+export function onElementClickOutside(element: HTMLElement, callback: (event: MouseEvent, terminate: () => void) => void) {
     const outsideClickListener = (event: MouseEvent) => {
         if (event.target instanceof Node && !element.contains(event.target)) 
-            callback(event);
+            callback(event, terminate);
     }
     document.addEventListener('click', outsideClickListener)
     const terminate = () => 
         document.removeEventListener('click', outsideClickListener);
-    return { terminate, outsideClickListener };
 }
 
 export function createColorPicker() {
@@ -241,6 +240,10 @@ export function createColorPicker() {
     const colorPicker = iro.ColorPicker(colorPickerElement, {
         width: 120,
         height: 120
+    });
+    onElementClickOutside(colorPickerElement, (event, terminate) => {
+        colorPickerElement.remove();
+        terminate();
     });
     return {
         colorPicker,
