@@ -59,6 +59,7 @@
         </div>
         <div class="modal__content">
           <header>
+            <div class="color-picker"></div>
             <textarea class="text-as-height title input-focus-indicator no-border no-outline" type="text"
               placeholder="New Tracker Title"></textarea>
             <div class="modal__header-content">
@@ -82,7 +83,7 @@
             </select>
             <div class="modal__tracker-content-template">
               <button class="small-singular action-button center-horz rounded-1">&plus;</button>
-              <div class="template__episodes-container">
+              <div class="template__episodes-container center-horz">
                 <div class="template__episodes-container-item rounded-1">
                   <textarea class="text-as-height title input-focus-indicator no-border no-outline" type="text"
                     placeholder="Title"></textarea>
@@ -99,13 +100,13 @@
                   <textarea class="text-as-height title input-focus-indicator no-border no-outline" type="text"
                     placeholder="Title"></textarea>
                   <p class="text-lighter">Last Watched<br>Episode:</p>
-                  <input class="ol-input">
+                  <input class="ol-input" type="number">
                 </div>
                 <div class="template__episodes-container-item rounded-1">
                   <textarea class="text-as-height title input-focus-indicator no-border no-outline" type="text"
                     placeholder="Title"></textarea>
                   <p class="text-lighter">Last Watched<br>Episode:</p>
-                  <input class="ol-input">
+                  <input class="ol-input" placeholder="0" min="0" type="number">
                 </div>
               </div>
             </div>

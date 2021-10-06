@@ -1,7 +1,7 @@
 import { undefinedOrDefault } from "../../utils/utils";
 
 export function resizeTextAsHeight(element: HTMLTextAreaElement | HTMLInputElement) {
-    element.style.height = '1em';
+    element.style.height = 'auto';
     element.style.height = element.scrollHeight + 'px';
 }
 
