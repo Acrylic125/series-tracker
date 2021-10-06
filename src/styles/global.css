@@ -56,7 +56,20 @@ body {
 .ol-input {
   outline: none;
   border: none;
-  border-bottom: 0.1em solid black !important;
+  border-bottom: 0.1em solid black;
+}
+
+.input-focus-indicator:focus,
+.ol-input:focus {
+  border-bottom: 0.1em solid #359bfa;
+}
+
+.no-border {
+  border: none;
+}
+
+.no-outline {
+  outline: none;
 }
 
 .font-size-1 {
@@ -172,6 +185,11 @@ p {
 select {
   background-color: transparent;
   border: none;
+}
+
+textarea {
+  font-family: inherit;
+  resize: none;
 }
 
 .tag {

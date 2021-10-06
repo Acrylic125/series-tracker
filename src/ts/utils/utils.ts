@@ -77,6 +77,10 @@ export function parseFloatOrDefault<T>(val: string | undefined, defaultVal: T): 
     return (val) ? parseFloat(val) : defaultVal;
 }
 
+export function undefinedOrDefault<T>(val: T | undefined, defaultVal: T) {
+    return (val === undefined || val === null) ? defaultVal : val;
+}
+
 export function clamp(min: number, val: number, max: number) {
     return Math.min(max, Math.max(min, val));
 }
