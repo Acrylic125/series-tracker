@@ -101,9 +101,10 @@ export function createColorLine(color: string) {
     return line;
 }
 
-export function createInnerText(element: string, text: string) {
+export function createInnerText(element: string, text: string, ...classes: string[]) {
     const innerText = document.createElement(element);
     innerText.innerText = text;
+    classes.forEach((clazz) => innerText.classList.add(clazz));
     return innerText;
 }
 
@@ -118,7 +119,7 @@ export function createDivWithClasses(...classes: string[]) {
 }
 
 export interface ModalContent {
-    element: HTMLElement
+    elements: HTMLElement[]
 }
 
 export interface Modal {
@@ -182,7 +183,8 @@ export function createModalBody(modal: Modal) {
     const modalBody = createDivWithClasses('modal__body', 'rounded-2');
     modalBody.appendChild(createModalButtons(modal));
     const content = createModalContent();
-    content.appendChild(modal.modalContent.element);
+    modal.modalContent.elements.forEach((element) => 
+        content.appendChild(element));
     modalBody.appendChild(content);
     return modalBody;
 }
