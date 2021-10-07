@@ -8,6 +8,12 @@ export function reloadColorPickers() {
                 console.log(color);
             }
         });
+        if (colorPickerInput instanceof HTMLElement) {
+            colorPickerInput.onclick = () => {
+                console.log("TTTT");
+                colorPicker.activate(true);
+            };
+        }
         colorPickerInput.appendChild(colorPicker.element);
     });
     // colorPicker.on('color:change', (color) => {

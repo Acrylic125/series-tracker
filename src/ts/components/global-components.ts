@@ -1,6 +1,7 @@
 import iro from "@jaames/iro";
 import { text } from "stream/consumers";
-import { hideElement } from "../utils/html-utils";
+import { hideElement, hideOrShowElement } from "../utils/html-utils";
+import { undefinedOrDefault } from "../utils/utils";
 
 const ACTIVE = 'active';
 const TAG = 'tag';
@@ -241,11 +242,13 @@ export interface ColorPicker {
     colorPicker: iro.ColorPicker
     element: HTMLElement
     active: boolean
+    deleteOnClose: boolean
     activate(active: boolean): void
 }
 
 export interface ColorPickerOptions {
-    active: boolean
+    active?: boolean
+    deleteOnClose?: boolean
     onColorPick?: (colorPicker: ColorPicker, color: iro.Color) => void
 }
 
@@ -256,23 +259,32 @@ export function createColorPicker(options?: ColorPickerOptions) {
         height: 120
     });
     const colorPickerLiteral: ColorPicker = {
-        element: colorPickerElement, colorPicker, active: false,
+        element: colorPickerElement, colorPicker, active: false, deleteOnClose: false,
         activate(active) {
-            hideElement(colorPickerElement)
+            colorPickerLiteral.active = active;
+            hideOrShowElement(colorPickerElement, active);
         }
     }
     onElementClickOutside(colorPickerElement, (event, terminate) => {
-        colorPickerElement.remove();
-        terminate();
+        if (colorPickerLiteral.deleteOnClose) {
+            colorPickerElement.remove();
+            terminate();
+        } else if (colorPickerLiteral.active) {
+            colorPickerLiteral.activate(false);
+        }
     });
+
+    // Options Declarations
     if (options) {
-        const { onColorPick, active } = options;
+        const { onColorPick, active, deleteOnClose } = options;
         if (onColorPick) {
             colorPicker.on('color:change', (color: any) => 
                 onColorPick(colorPickerLiteral, color));
         }
-        if (active) 
-            colorPickerLiteral.activate(true);
+        colorPickerLiteral.active = undefinedOrDefault(active, false);
+        if (deleteOnClose)
+            colorPickerLiteral.deleteOnClose = deleteOnClose;
     }
+    colorPickerLiteral.activate(colorPickerLiteral.active);
     return colorPickerLiteral;
 }
