@@ -24,15 +24,18 @@ export function htmlToElement(document: Document, html: string) {
     return template.content.firstChild;
 }
 
-const HIDDEN = 'hidden';
+export function hideOrShowElement<T extends HTMLElement>(element: T, visible: boolean) {
+    element.style.visibility = (visible) ? 'visible' : 'hidden';
+}
+
 export function hideElement<T extends HTMLElement>(element: T) {
-    element.classList.add(HIDDEN);
+    element.style.visibility = 'hidden';
 }
 
 export function showElement<T extends HTMLElement>(element: T) {
-    element.classList.remove(HIDDEN);
+    element.style.visibility = 'visible';
 }
 
 export function isElementHidden<T extends HTMLElement>(element: T) {
-    return element.classList.contains(HIDDEN);
+    return element.style.visibility === 'hidden';
 }

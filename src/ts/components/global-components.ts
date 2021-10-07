@@ -1,5 +1,6 @@
 import iro from "@jaames/iro";
 import { text } from "stream/consumers";
+import { hideElement } from "../utils/html-utils";
 
 const ACTIVE = 'active';
 const TAG = 'tag';
@@ -227,7 +228,8 @@ export function createModalContent() {
 
 export function onElementClickOutside(element: HTMLElement, callback: (event: MouseEvent, terminate: () => void) => void) {
     const outsideClickListener = (event: MouseEvent) => {
-        if (event.target instanceof Node && !element.contains(event.target)) 
+        const target = event.target;
+        if (target instanceof Node && !element.contains(target)) 
             callback(event, terminate);
     }
     document.addEventListener('click', outsideClickListener)
@@ -235,18 +237,42 @@ export function onElementClickOutside(element: HTMLElement, callback: (event: Mo
         document.removeEventListener('click', outsideClickListener);
 }
 
-export function createColorPicker() {
+export interface ColorPicker {
+    colorPicker: iro.ColorPicker
+    element: HTMLElement
+    active: boolean
+    activate(active: boolean): void
+}
+
+export interface ColorPickerOptions {
+    active: boolean
+    onColorPick?: (colorPicker: ColorPicker, color: iro.Color) => void
+}
+
+export function createColorPicker(options?: ColorPickerOptions) {
     const colorPickerElement = createDivWithClasses('color-picker');
     const colorPicker = iro.ColorPicker(colorPickerElement, {
         width: 120,
         height: 120
     });
+    const colorPickerLiteral: ColorPicker = {
+        element: colorPickerElement, colorPicker, active: false,
+        activate(active) {
+            hideElement(colorPickerElement)
+        }
+    }
     onElementClickOutside(colorPickerElement, (event, terminate) => {
         colorPickerElement.remove();
         terminate();
     });
-    return {
-        colorPicker,
-        colorPickerElement
+    if (options) {
+        const { onColorPick, active } = options;
+        if (onColorPick) {
+            colorPicker.on('color:change', (color: any) => 
+                onColorPick(colorPickerLiteral, color));
+        }
+        if (active) 
+            colorPickerLiteral.activate(true);
     }
+    return colorPickerLiteral;
 }
