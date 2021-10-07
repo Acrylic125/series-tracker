@@ -39,27 +39,30 @@
 //           </div>
 //         </div>
 
+import { SeriesTracker } from "../../series/series";
 import { Position } from "../../utils/html-utils";
-import { createDivWithClasses, createElementWithClasses, createInnerText } from "../global-components";
+import { createDivWithClasses, createElementWithClasses, createInnerText, createModal } from "../global-components";
 
 // <textarea class="text-as-height title input-focus-indicator no-border no-outline" type="text" placeholder="New Tracker Title"></textarea>
 export function createTrackerTitle() {
-    const title = createElementWithClasses('textarea', 
-                                                              'text-as-height', 
-                                                              'title',
-                                                              'input-focus-indicator', 
-                                                              'no-border',
-                                                              'no-outline') as HTMLTextAreaElement;
+    const title =
+         createElementWithClasses('textarea', 
+                                  'text-as-height', 
+                                  'title',
+                                  'input-focus-indicator', 
+                                  'no-border',
+                                  'no-outline') as HTMLTextAreaElement;
    title.placeholder = 'New Tracker Title';
    return title;
 }
 
 //   <div class="modal__tracker-styler--circle color-picker-input" style="width: 10%; top: 60%; left: 65%"> </div>
-export function createTrackerStylerCircle(relWidth: number, relPosition: Position) {
+export function createTrackerStylerCircle(circleColor: string, relWidth: number, relPosition: Position) {
     const stylerCircle = createDivWithClasses('modal__tracker-styler--circle', 'color-picker-input');
     stylerCircle.style.width = relWidth + '%';
     stylerCircle.style.left = relPosition.x + '%';
     stylerCircle.style.top = relPosition.y + '%';
+    stylerCircle.style.background = circleColor;
     return stylerCircle;
 }
 
@@ -72,12 +75,13 @@ export function createTrackerStylerCircle(relWidth: number, relPosition: Positio
 //   <div class="modal__tracker-styler--circle color-picker-input" style="width: 10%; top: 60%; left: 65%">
 //   </div>
 // </div>
-export function createTrackerStyler() {
+export function createTrackerStyler(backgroundColor: string, circleColor: string) {
     const styler = createDivWithClasses('modal__tracker-styler', 'rounded-2');
     styler.appendChild(createInnerText('p', 'Sample Text', 'modal__tracker-styler--text', 'w-60'));
-    styler.appendChild(createTrackerStylerCircle(30, { x: 50, y: 12 }));
-    styler.appendChild(createTrackerStylerCircle(20, { x: 40, y: 40 }));
-    styler.appendChild(createTrackerStylerCircle(10, { x: 65, y: 60 }));
+    styler.appendChild(createTrackerStylerCircle(circleColor, 30, { x: 50, y: 12 }));
+    styler.appendChild(createTrackerStylerCircle(circleColor, 20, { x: 40, y: 40 }));
+    styler.appendChild(createTrackerStylerCircle(circleColor, 10, { x: 65, y: 60 }));
+    styler.style.backgroundColor = backgroundColor;
     return styler;
 }
 
@@ -87,10 +91,25 @@ export function createTrackerStyler() {
 //   to restyle below.
 // </p>
 // </div>
-export function createModalHeaderContent() {
+export function createModalHeaderContent(seriesTracker: SeriesTracker) {
     const headerContent = createDivWithClasses('modal__header-content');
     headerContent.appendChild(createInnerText('p', 'Tracker Display', 'title'));
     headerContent.appendChild(createInnerText('p', 'Edit the tracker display style by clicking on the component you want to restyle below.', 'subtitle', 'w-60', 'center-horz'));
-    headerContent.appendChild(createTrackerStyler());
+    headerContent.appendChild(createTrackerStyler(seriesTracker.baseColor, seriesTracker.circleColor));
     return headerContent;
+}
+
+export function createModalHeader(seriesTracker: SeriesTracker) {
+    const header = document.createElement('header');
+    header.appendChild(createTrackerTitle());
+    header.appendChild(createModalHeaderContent(seriesTracker));
+    return header;
+}
+
+export function createTrackerModal(seriesTracker: SeriesTracker) {
+    return createModal({
+        modalContent: {
+            elements: [ createModalHeader(seriesTracker) ]
+        }
+    })
 }

@@ -3,6 +3,7 @@ import { SeriesTracker } from "../../series/series";
 import { Position } from "../../utils/html-utils";
 import { randInt } from "../../utils/utils";
 import { createDivWithClasses, createInnerText } from "../global-components";
+import { createTrackerModal } from "./series-tracker-modal";
 
 // <header> </header>
 export function createSeriesTrackerHeader(title: string) {
@@ -64,6 +65,12 @@ export function createSeriesTrackerBackground(circleColor: string, seriesTracker
 
 export function createSeriesTracker(seriesTracker: SeriesTracker) {
     const seriesTrackerElement = document.createElement('div');
+    seriesTrackerElement.onclick = () => {
+      const modal = createTrackerModal(seriesTracker);
+      modal.setActive(true);
+      document.body.appendChild(modal.modalElement);
+    }
+    
     seriesTrackerElement.style.backgroundColor = seriesTracker.baseColor;
     seriesTrackerElement.id = seriesTracker.id;
     seriesTrackerElement.classList.add('series-tracker');

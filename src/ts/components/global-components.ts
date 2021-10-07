@@ -145,10 +145,6 @@ export interface Modal {
 // </div>
 
 export const closeActionButton: ActionButton = {
-    tooltip: {
-        title: "Close Modal",
-        text: "Click to close this modal."
-    },
     innerText: "\u00D7",
     circular: true,
     singular: true
