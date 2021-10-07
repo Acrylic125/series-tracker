@@ -63,7 +63,8 @@
               placeholder="New Tracker Title"></textarea>
             <div class="modal__header-content">
               <p class="title">Tracker Display</p>
-              <p class="subtitle">Edit the tracker display style by clicking on the<br>component you want to restyle
+              <p class="subtitle w-60 center-horz">Edit the tracker display style by clicking on the component you want
+                to restyle
                 below.
               </p>
               <div class="modal__tracker-styler rounded-2">
@@ -78,11 +79,11 @@
             </div>
           </header>
           <div class="modal__tracker-content rounded-2">
-            <p class="title">Currently Tracking</p>
-            <select>
+            <select class="modal__tracker-template-selector title">
               <option value="episodes-template">Episodes Template</option>
               <option value="checklist-template">Checlick Template</option>
             </select>
+            <p class="subtitle w-60 center-horz">Select a template to use. The selected template will be displayed.</p>
             <div class="modal__tracker-content-template">
               <button class="small-singular action-button center-horz rounded-1">&plus;</button>
               <div class="template__episodes-container center-horz">

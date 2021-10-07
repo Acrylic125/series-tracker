@@ -49,6 +49,14 @@
   text-align: center;
 }
 
+.modal__tracker-template-selector {
+  font-size: 100%;
+}
+
+.modal__tracker-template-selector > option {
+  font-size: 80%;
+}
+
 .modal__tracker-content-template {
   width: 100%;
   margin-top: 1em;

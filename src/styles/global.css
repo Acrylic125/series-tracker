@@ -105,6 +105,10 @@ body {
   flex-direction: column;
 }
 
+.w-60 {
+  width: 60%;
+}
+
 .w-80 {
   width: 80%;
 }
@@ -201,7 +205,7 @@ textarea {
 input::placeholder,
 textarea::placeholder {
   color: inherit;
-  opacity: 0.7;
+  opacity: 0.35;
 }
 
 .small-singular {
