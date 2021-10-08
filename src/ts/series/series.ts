@@ -52,7 +52,7 @@ export function createDummy(title: string): Series {
         ],
         tags: [],
         getIdentifiers() {
-            return [ this.title, this.id, ...this.tags ]
+            return [ this.title, ...this.tags ]
         }
     }
 }

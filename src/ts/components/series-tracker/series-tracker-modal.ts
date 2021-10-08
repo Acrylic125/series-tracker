@@ -111,5 +111,5 @@ export function createTrackerModal(seriesTracker: SeriesTracker) {
         modalContent: {
             elements: [ createModalHeader(seriesTracker) ]
         }
-    })
+    });
 }
