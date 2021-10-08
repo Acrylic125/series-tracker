@@ -1,4 +1,4 @@
-import { toID } from "./utils";
+import { toID } from "../utils/utils";
 
 export interface Registry<K, T> {
     register(key: K, t: T): void

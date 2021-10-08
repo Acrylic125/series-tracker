@@ -1,6 +1,6 @@
 import { reloadGlobalScripts } from "../html-loaded/preloaders/html-preloaders";
+import { stageRegistry } from "../registry/registries";
 import { ContentStage } from "./content-stage";
-import stageRegistry from "./stage.registries";
 
 export function getContentStageElement() {
     const contentStageElement = document.getElementById('content-stage');
