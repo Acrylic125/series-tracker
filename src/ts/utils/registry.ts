@@ -7,7 +7,7 @@ export interface Registry<K, T> {
 }
 
 export class RegistryImpl<T> implements Registry<string, T> {
-    constructor(private registry: Map<string, T>) {}
+    constructor(private registry: Map<string, T> = new Map()) {}
 
     public register(key: string, t: T) {
         this.registry.set(toID(key), t);

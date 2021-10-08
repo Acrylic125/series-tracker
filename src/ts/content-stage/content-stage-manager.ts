@@ -1,6 +1,6 @@
 import { reloadGlobalScripts } from "../html-loaded/preloaders/html-preloaders";
 import { ContentStage } from "./content-stage";
-import stageRegistry from "./registry/stage-registry";
+import stageRegistry from "./stage.registries";
 
 export function getContentStageElement() {
     const contentStageElement = document.getElementById('content-stage');
@@ -20,7 +20,7 @@ export async function useStage(stage: ContentStage) {
 }
 
 export async function useStageByID(id: string) {
-    const resultStage = stageRegistry.getStage(id);
+    const resultStage = stageRegistry.get(id);
     if (resultStage) {
         await useStage(resultStage);
     } else {
