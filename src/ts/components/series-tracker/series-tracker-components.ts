@@ -11,12 +11,15 @@ export function createSeriesTrackerHeader(title: string) {
 }
 
 export function createSeriesTrackerContent(seriesTracker: SeriesTracker) {
-    const { title, templateDataState } = seriesTracker;
+    const { title, templates } = seriesTracker;
     const contentElement = document.createElement('article');
     contentElement.classList.add('series-tracker__content');
     contentElement.appendChild(createSeriesTrackerHeader(title));
-
-    contentElement.appendChild(contentItemsElement);
+    const templateAndData = templates.getSelectedTemplateAndData();
+    if (templateAndData) {
+      contentElement.appendChild(
+        templateAndData.template.createTrackerContent(templateAndData.data));
+    }
     return contentElement;
 }
 

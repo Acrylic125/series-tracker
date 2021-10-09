@@ -17,7 +17,17 @@ export interface SeriesTrackerTemplateData {
 export class SeriesTrackerTemplates {
     constructor(public selectedTemplate: string | undefined,
                 public templates: Map<string, SeriesTrackerTemplateData> = new Map()) {}
-    
+        
+    getSelectedTemplateAndData() {
+        const template = this.getSelectedTemplate();
+        if (!this.selectedTemplate)
+            return undefined;
+        const data = this.templates.get(this.selectedTemplate);
+        return (data && template) ? {
+            template, data
+        } : undefined;
+    }
+
     getSelectedTemplate() {
         return (this.selectedTemplate) ? seriesTemplateRegistry.get(this.selectedTemplate) : undefined;
     }

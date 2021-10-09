@@ -7,7 +7,7 @@ export function register(template: SeriesTrackerTemplate) {
 }
 
 export function registerAll(...templates: SeriesTrackerTemplate[]) {
-    templates.forEach(register);
+    templates.forEach((template) => register(template));
 }
 
 registerAll(episodesTemplate);
