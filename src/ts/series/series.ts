@@ -1,6 +1,7 @@
 import { v4 } from 'uuid';
 import { BRIGHT_SHADE, DARK_SHADE, randColorByShade } from '../utils/colors';
 import { Filterable } from '../utils/filter';
+import { createEpisodesTemplate, episodesTemplate, EpisodesTemplateDataItem } from './templates/episodes-template';
 import { SeriesTrackerTemplateDataMap } from './templates/series-tracker-template';
 
 export interface Series extends Filterable {
@@ -19,8 +20,11 @@ export interface SeriesTracker {
     templateDataMap: SeriesTrackerTemplateDataMap
 }
 
-export function createTracker(title: string, items:): SeriesTracker {
+export function createTracker(title: string, ...items: EpisodesTemplateDataItem[]): SeriesTracker {
     const color = randColorByShade(DARK_SHADE);
+    const templateDataMap = new SeriesTrackerTemplateDataMap();
+    templateDataMap.bindTemplateRawData(episodesTemplate, items);
+    
     return {
         id: v4(),
         title, templateDataMap: new SeriesTrackerTemplateDataMap(),
@@ -37,7 +41,7 @@ export function createDummy(title: string): Series {
         id: v4(),
         title: "A REALLY long title " + title,
         colorStripColor: randColorByShade(BRIGHT_SHADE).toPrefixedHex(),
-        trackers: [],
+        trackers: [ createTracker('Seasons', {}, {}) ],
         tags: [],
         getIdentifiers() {
             return [ this.title, ...this.tags ];

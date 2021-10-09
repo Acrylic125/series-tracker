@@ -14,6 +14,13 @@ export interface SeriesTrackerTemplateData {
 export class SeriesTrackerTemplateDataMap {
     constructor(public map: Map<string, SeriesTrackerTemplateData> = new Map()) {}
 
+    bindTemplateRawData(template: SeriesTrackerTemplate, data: any) {
+        this.map.set(template.id, {
+            templateID: template.id,
+            data
+        });
+    }
+
     toJSON() {
         return Object.fromEntries(this.map);
     }

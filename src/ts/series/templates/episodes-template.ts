@@ -53,3 +53,5 @@ export function createEpisodesTemplate(): SeriesTrackerTemplate {
         }
     };
 }
+
+export const episodesTemplate = createEpisodesTemplate();
