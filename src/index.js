@@ -16,7 +16,7 @@ const createWindow = () => {
     width: 720,
     minWidth: 480,
     height: 400,
-    minHeight: 320,
+    minHeight: 300,
     resizable: true,
     fullscreen: false,
     frame: false,

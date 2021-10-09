@@ -2,5 +2,19 @@
 // This is due to deserialisation and unknown data being provided.
 export interface SeriesTrackerTemplate {
     id: string
-    decorate(trackerModalContent: HTMLElement, templateData: any): void
+    decorateTrackerDisplay(trackerDisplay: HTMLElement, templateData: SeriesTrackerTemplateData): Promise<void>
+    decorateModalContent(trackerModalContent: HTMLElement, templateData: SeriesTrackerTemplateData): Promise<void>
+}
+
+export interface SeriesTrackerTemplateData {
+    templateID: string
+    data: any
+}
+
+export class SeriesTrackerTemplateDataMap {
+    constructor(public map: Map<string, SeriesTrackerTemplateData> = new Map()) {}
+
+    toJSON() {
+        return Object.fromEntries(this.map);
+    }
 }

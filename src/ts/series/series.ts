@@ -3,6 +3,7 @@ import { SeriesTrackerContentItem } from '../components/series-tracker/series-tr
 import { SeriesTrackerContentItemStatus } from "../components/series-tracker/series-tracker-content-item-status";
 import { BRIGHT_SHADE, DARK_SHADE, randColorByShade } from '../utils/colors';
 import { Filterable } from '../utils/filter';
+import { SeriesTrackerTemplateDataMap } from './templates/series-tracker-template';
 
 export interface Series extends Filterable {
     title: string
@@ -17,6 +18,7 @@ export interface SeriesTracker {
     title: string
     baseColor: string
     circleColor: string
+    templateData: SeriesTrackerTemplateDataMap
     items: SeriesTrackerContentItem[]
 }
 
@@ -24,7 +26,7 @@ export function createTracker(title: string, ...items: SeriesTrackerContentItem[
     const color = randColorByShade(DARK_SHADE);
     return {
         id: v4(),
-        title, items,
+        title, items, templateData: new SeriesTrackerTemplateDataMap(),
         baseColor: color.toPrefixedHex(),
         circleColor: color.clone()
                           .brighten(0.2)
@@ -37,22 +39,22 @@ export function createDummy(title: string): Series {
     return {
         id: v4(),
         title: "A REALLY long title " + title,
-        colorStripColor: randColorByShade(BRIGHT_SHADE).toPrefixedHex('#'),
+        colorStripColor: randColorByShade(BRIGHT_SHADE).toPrefixedHex(),
         trackers: [
             createTracker("Seasons", new SeriesTrackerContentItemStatus("Season 1", "Episode 24"), 
                                      new SeriesTrackerContentItemStatus("Season 2", "Episode 24"),
                                      new SeriesTrackerContentItemStatus("Season 3", "Episode 24")),
             createTracker("Movies", new SeriesTrackerContentItemStatus("Whatever long title I can think of", "Episode 24")),
             createTracker("OVAS", new SeriesTrackerContentItemStatus("OVA 1", "Episode 24"), 
-                                     new SeriesTrackerContentItemStatus("OVA 2", "Episode 4"),),
+                                  new SeriesTrackerContentItemStatus("OVA 2", "Episode 4"),),
             createTracker("Specials", new SeriesTrackerContentItemStatus("Special 1", "Episode 1"), 
-                                     new SeriesTrackerContentItemStatus("Special 2", "Episode 1"),
-                                     new SeriesTrackerContentItemStatus("Special 3", "Episode 1")),
+                                      new SeriesTrackerContentItemStatus("Special 2", "Episode 1"),
+                                      new SeriesTrackerContentItemStatus("Special 3", "Episode 1")),
             createTracker("Diary", new SeriesTrackerContentItemStatus("Diary 1", "Episode 4"), ),
         ],
         tags: [],
         getIdentifiers() {
-            return [ this.title, ...this.tags ]
+            return [ this.title, ...this.tags ];
         }
     }
 }

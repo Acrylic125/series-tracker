@@ -1,5 +1,4 @@
 import fs from 'fs';
-import { randColorByShade, BRIGHT_SHADE } from '../utils/colors';
 import { createFileIfNotExist, JSON_FILE_CREATION_OPTIONS } from '../utils/utils';
 import { createDummy, Series } from './series';
 

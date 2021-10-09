@@ -34,9 +34,8 @@ export interface BackgroundCircle {
 // </div>
 // <div class="series-tracker__bg--circle" style="top: 5em; left: 8em;"></div>
 export function createSeriesTrackerBackgroundCircle(seriesTrackerElement: HTMLElement, backgroundCircle: BackgroundCircle) {
-    const circle = document.createElement('div');
+    const circle = createDivWithClasses('series-tracker__bg--circle');
     circle.style.backgroundColor = backgroundCircle.color;
-    circle.classList.add('series-tracker__bg--circle');
     circle.style.width = backgroundCircle.relativeSize + '%';
     adaptiveResizers.addResizerELement(createPositionAdaptableElement(circle, backgroundCircle.relativePosition), seriesTrackerElement);
     return circle;
@@ -64,16 +63,15 @@ export function createSeriesTrackerBackground(circleColor: string, seriesTracker
 }
 
 export function createSeriesTracker(seriesTracker: SeriesTracker) {
-    const seriesTrackerElement = document.createElement('div');
+    const seriesTrackerElement = createDivWithClasses('series-tracker');
     seriesTrackerElement.onclick = () => {
       const modal = createTrackerModal(seriesTracker);
       modal.setActive(true);
       document.body.appendChild(modal.modalElement);
-    }
+    };
     
     seriesTrackerElement.style.backgroundColor = seriesTracker.baseColor;
     seriesTrackerElement.id = seriesTracker.id;
-    seriesTrackerElement.classList.add('series-tracker');
     seriesTrackerElement.appendChild(createSeriesTrackerBackground(seriesTracker.circleColor, seriesTrackerElement));
     seriesTrackerElement.appendChild(createSeriesTrackerContent(seriesTracker));
     return seriesTrackerElement;

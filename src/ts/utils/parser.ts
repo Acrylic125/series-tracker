@@ -1,5 +1,5 @@
 export interface Parser<T> {
     id: string
-    parse(data: any): T
+    parse(data: any): Promise<T>
 }
 
