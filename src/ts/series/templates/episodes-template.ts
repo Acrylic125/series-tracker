@@ -48,7 +48,7 @@ export function createEpisodesTemplate(): SeriesTrackerTemplate {
             return contentElement;
         },
         async decorateModalContent(trackerModalContent: HTMLElement, templateData: SeriesTrackerTemplateData) {
-
+            
         }
     };
 }
