@@ -11,13 +11,11 @@ export function createSeriesTrackerHeader(title: string) {
 }
 
 export function createSeriesTrackerContent(seriesTracker: SeriesTracker) {
-    const { title, items } = seriesTracker;
+    const { title, templateDataMap } = seriesTracker;
     const contentElement = document.createElement('article');
     contentElement.classList.add('series-tracker__content');
     contentElement.appendChild(createSeriesTrackerHeader(title));
-    const contentItemsElement = document.createElement('ol');
-    items.forEach((contentItem) => 
-        contentItemsElement.appendChild(contentItem.toComponent()));
+    
     contentElement.appendChild(contentItemsElement);
     return contentElement;
 }

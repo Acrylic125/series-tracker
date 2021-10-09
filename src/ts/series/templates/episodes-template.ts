@@ -42,10 +42,9 @@ export function createEpisodesTemplate(): SeriesTrackerTemplate {
             const contentElement = document.createElement('ol');
             
             const parsed = episodesTemplateDataParser.parse(templateData.data);
-            parsed.items.forEach((item) => {
+            parsed.items.forEach((item) => 
                 contentElement.appendChild(createSeriesTrackerItem(undefinedOrDefault(item.title, 'No Title'),
-                                                                   'Episode ' + undefinedOrDefault(item.currentEpisode, 0)));
-            });
+                                                                   'Episode ' + undefinedOrDefault(item.currentEpisode, 0))));
             return contentElement;
         },
         async decorateModalContent(trackerModalContent: HTMLElement, templateData: SeriesTrackerTemplateData) {
