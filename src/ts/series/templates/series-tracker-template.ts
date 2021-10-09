@@ -2,7 +2,7 @@
 // This is due to deserialisation and unknown data being provided.
 export interface SeriesTrackerTemplate {
     id: string
-    decorateTrackerDisplay(trackerDisplay: HTMLElement, templateData: SeriesTrackerTemplateData): Promise<void>
+    createTrackerContent(templateData: SeriesTrackerTemplateData): HTMLElement
     decorateModalContent(trackerModalContent: HTMLElement, templateData: SeriesTrackerTemplateData): Promise<void>
 }
 
