@@ -2,7 +2,7 @@ import { v4 } from 'uuid';
 import { BRIGHT_SHADE, DARK_SHADE, randColorByShade } from '../utils/colors';
 import { Filterable } from '../utils/filter';
 import { createEpisodesTemplate, episodesTemplate, EpisodesTemplateDataItem } from './templates/episodes-template';
-import { SeriesTrackerTemplateDataMap } from './templates/series-tracker-template';
+import { SeriesTrackerTemplates } from './templates/series-tracker-template';
 
 export interface Series extends Filterable {
     title: string
@@ -17,17 +17,17 @@ export interface SeriesTracker {
     title: string
     baseColor: string
     circleColor: string
-    templateDataMap: SeriesTrackerTemplateDataMap
+    templateDataState: SeriesTrackerTemplates
 }
 
 export function createTracker(title: string, ...items: EpisodesTemplateDataItem[]): SeriesTracker {
     const color = randColorByShade(DARK_SHADE);
-    const templateDataMap = new SeriesTrackerTemplateDataMap();
-    templateDataMap.bindTemplateRawData(episodesTemplate, items);
+    const templateDataState = new SeriesTrackerTemplates(undefined);
+    templateDataState.bindTemplateRawData(episodesTemplate, items);
     
     return {
         id: v4(),
-        title, templateDataMap: new SeriesTrackerTemplateDataMap(),
+        title, templateDataState,
         baseColor: color.toPrefixedHex(),
         circleColor: color.clone()
                           .brighten(0.2)
