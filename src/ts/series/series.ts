@@ -1,7 +1,7 @@
 import { v4 } from 'uuid';
 import { BRIGHT_SHADE, DARK_SHADE, randColorByShade } from '../utils/colors';
 import { Filterable } from '../utils/filter';
-import { createEpisodesTemplate, episodesTemplate, EpisodesTemplateDataItem } from './templates/episodes-template';
+import { episodesTemplate, EpisodesTemplateDataItem } from './templates/episodes-template';
 import { SeriesTrackerTemplates } from './templates/series-tracker-template';
 
 export interface Series extends Filterable {

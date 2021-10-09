@@ -17,6 +17,7 @@ export async function useStage(stage: ContentStage) {
     clearStage();
     await stage.initialise();
     await reloadGlobalScripts();
+    getContentStageElement().scrollTo(0, 0);
 }
 
 export async function useStageByID(id: string) {
