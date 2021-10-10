@@ -20,24 +20,29 @@ export class SeriesTrackerTemplates {
     constructor(public selectedTemplateID: string | undefined,
                 public templates: Map<string, SeriesTrackerTemplateData> = new Map()) {}
 
-    getTemplateData(seriesTemplate: SeriesTrackerTemplate | string) {
-        if (typeof seriesTemplate === 'string')  {
-            const data = this.templates.get(seriesTemplate);
-            if (data) 
-                return data;
-            const template = seriesTemplateRegistry.get(seriesTemplate);
-            if (template)
-                return template.newDefaultData();
-            else 
-                throw new Error(`Template with id '${id}' is not registered.`);
-        } else {
-            const data = this.templates.get(seriesTemplate.id);
-            return (data) ? data : seriesTemplate.newDefaultData();
-        }
+    getTemplateDataByID(templateID: string) {
+        const data = this.templates.get(templateID);
+        if (data) 
+            return data;
+        const template = seriesTemplateRegistry.get(templateID);
+        if (template) {
+            const newData = template.newDefaultData();
+            this.bindTemplateRawDataByTemplate(template, newData);
+        } else 
+            throw new Error(`Template with id '${templateID}' is not registered.`);
+    }
+
+    getTemplateDataByTemplate(template: SeriesTrackerTemplate) {
+        const data = this.templates.get(template.id);
+        if (data) 
+            return data;
+        const newData = template.newDefaultData();
+        this.bindTemplateRawDataByTemplate(template, newData);
+        return newData;
     }
 
     getSelectedTemplateData() {
-        return (this.selectedTemplateID) ? this.getTemplateData(this.selectedTemplateID) : undefined;
+        return (this.selectedTemplateID) ? this.getTemplateDataByID(this.selectedTemplateID) : undefined;
     }
 
     getSelectedTemplate() {
@@ -48,11 +53,14 @@ export class SeriesTrackerTemplates {
         this.selectedTemplateID = template.id;
     }
 
-    bindTemplateRawData(template: SeriesTrackerTemplate, data: any) {
-        this.templates.set(template.id, {
-            templateID: template.id,
-            data
+    bindTemplateRawDataByID(templateID: string, data: any) {
+        this.templates.set(templateID, {
+            templateID, data
         });
+    }
+
+    bindTemplateRawDataByTemplate(template: SeriesTrackerTemplate, data: any) {
+        this.bindTemplateRawDataByID(template.id, data);
     }
 
     toJSON() {

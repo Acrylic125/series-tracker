@@ -39,6 +39,14 @@ export function createEpisodesTemplate(): SeriesTrackerTemplate {
     return {
         title: 'Episodes Template',
         id: 'episodes-template',
+        newDefaultData() {
+            return {
+                templateID: 'episodes-template',
+                data: {
+                    items: new Array()
+                }
+            }
+        },
         createTrackerContent(templateData: SeriesTrackerTemplateData) {
             const contentElement = document.createElement('ol');
             
