@@ -43,6 +43,7 @@ import { seriesTemplateRegistry } from "../../registry/registries";
 import { SeriesTracker } from "../../series/series";
 import { SeriesTrackerTemplate } from "../../series/templates/series-tracker-template";
 import { Position } from "../../utils/html-utils";
+import { undefinedOrDefault } from "../../utils/utils";
 import { createDivWithClasses, createElementWithClasses, createInnerText, createModal, Modal } from "../global-components";
 
 // <textarea class="text-as-height title input-focus-indicator no-border no-outline" type="text" placeholder="New Tracker Title"></textarea>
@@ -130,7 +131,7 @@ export function createTrackerSelector(trackerModal: TrackerModal) {
 // </div>
 export function createTrackerContent(trackerModal: TrackerModal) {
     const content = createDivWithClasses('modal__tracker-content', 'rounded-2');
-    content.appendChild(createTrackerSelector(trackerModal));
+    content.appendChild(trackerModal.templateSelectorElement);
     content.appendChild(createInnerText('p', 'Select a template to use. The selected template will be displayed.', 'subtitle', 'w-60', 'center-horz'));
     content.appendChild(trackerModal.templateContentElement);
     return content;
@@ -139,7 +140,8 @@ export function createTrackerContent(trackerModal: TrackerModal) {
 export class TrackerModal {
     
     public modal: Modal 
-    public templateContentElement: HTMLElement = createDivWithClasses('modal__tracker-template-content');
+    public templateSelectorElement = createTrackerSelector(this);
+    public templateContentElement = createDivWithClasses('modal__tracker-template-content');
 
     constructor(public seriesTracker: SeriesTracker) {
         this.modal = createModal({
@@ -152,8 +154,9 @@ export class TrackerModal {
     public useTemplate(seriesTemplate: SeriesTrackerTemplate) {
         this.seriesTracker.templates.setSelectedTemplate(seriesTemplate);
         this.templateContentElement.innerText = '';
-        const data = this.seriesTracker.templates.getTemplateData(seriesTemplate);
+        const data = this.seriesTracker.templates.getTemplateDataByTemplate(seriesTemplate);
         seriesTemplate.decorateModalContent(this.templateContentElement, data);
+        this.templateSelectorElement.value = undefinedOrDefault(this.seriesTracker.templates.selectedTemplateID, '');
     }
 }
 

@@ -18,10 +18,10 @@ export interface SeriesTrackerTemplateData {
 
 export class SeriesTrackerTemplates {
     constructor(public selectedTemplateID: string | undefined,
-                public templates: Map<string, SeriesTrackerTemplateData> = new Map()) {}
+                public templatesMap: Map<string, SeriesTrackerTemplateData> = new Map()) {}
 
     getTemplateDataByID(templateID: string) {
-        const data = this.templates.get(templateID);
+        const data = this.templatesMap.get(templateID);
         if (data) 
             return data;
         const template = seriesTemplateRegistry.get(templateID);
@@ -33,7 +33,7 @@ export class SeriesTrackerTemplates {
     }
 
     getTemplateDataByTemplate(template: SeriesTrackerTemplate) {
-        const data = this.templates.get(template.id);
+        const data = this.templatesMap.get(template.id);
         if (data) 
             return data;
         const newData = template.newDefaultData();
@@ -54,7 +54,7 @@ export class SeriesTrackerTemplates {
     }
 
     bindTemplateRawDataByID(templateID: string, data: any) {
-        this.templates.set(templateID, {
+        this.templatesMap.set(templateID, {
             templateID, data
         });
     }
@@ -64,6 +64,6 @@ export class SeriesTrackerTemplates {
     }
 
     toJSON() {
-        return Object.fromEntries(this.templates);
+        return Object.fromEntries(this.templatesMap);
     }
 }

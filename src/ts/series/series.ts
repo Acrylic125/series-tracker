@@ -23,7 +23,7 @@ export interface SeriesTracker {
 export function createTracker(title: string, ...items: EpisodesTemplateDataItem[]): SeriesTracker {
     const color = randColorByShade(DARK_SHADE);
     const templates = new SeriesTrackerTemplates(undefined);
-    templates.bindTemplateRawData(episodesTemplate, {
+    templates.bindTemplateRawDataByTemplate(episodesTemplate, {
         items
     });
     templates.setSelectedTemplate(episodesTemplate);
