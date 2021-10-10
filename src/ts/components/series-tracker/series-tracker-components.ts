@@ -67,8 +67,8 @@ export function createSeriesTracker(seriesTracker: SeriesTracker) {
     const seriesTrackerElement = createDivWithClasses('series-tracker');
     seriesTrackerElement.onclick = () => {
       const modal = createTrackerModal(seriesTracker);
-      modal.setActive(true);
-      document.body.appendChild(modal.modalElement);
+      modal.modal.setActive(true);
+      document.body.appendChild(modal.modal.modalElement);
     };
     
     seriesTrackerElement.style.backgroundColor = seriesTracker.baseColor;

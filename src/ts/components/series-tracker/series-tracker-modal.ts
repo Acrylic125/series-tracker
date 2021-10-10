@@ -25,7 +25,7 @@
 //               <option value="checklist-template">Checlick Template</option>
 //             </select>
 //             <p class="subtitle w-60 center-horz">Select a template to use. The selected template will be displayed.</p>
-//             <div class="modal__tracker-content-template">
+//             <div class="modal__tracker-template-content">
 //               <button class="small-singular action-button center-horz rounded-1">&plus;</button>
 //               <div class="template__episodes-container center-horz">
 //                 <div class="template__episodes-container-item rounded-1">
@@ -124,16 +124,37 @@ export function createTrackerSelector(trackerModal: TrackerModal) {
     return selector;
 } 
 
-export interface TrackerModal {
-    seriesTracker: SeriesTracker
-    modal: Modal
-    useTemplate(seriesTemplate: SeriesTrackerTemplate): void
+// <div class="modal__tracker-content rounded-2">
+//  <p class="subtitle w-60 center-horz">Select a template to use. The selected template will be displayed.</p>
+//  <div class="modal__tracker-template-content"> </div>
+// </div>
+export function createTrackerContent(trackerModal: TrackerModal) {
+    const content = createDivWithClasses('modal__tracker-content', 'rounded-2');
+    content.appendChild(createTrackerSelector(trackerModal));
+    content.appendChild(createInnerText('p', 'Select a template to use. The selected template will be displayed.', 'subtitle', 'w-60', 'center-horz'));
+    content.appendChild(trackerModal.templateContentElement);
+    return content;
 }
 
-export function createTrackerModal(seriesTracker: SeriesTracker) {
-    return createModal({
-        modalContent: {
-            elements: [ createModalHeader(seriesTracker) ]
-        }
-    });
+export class TrackerModal {
+    
+    public modal: Modal 
+    public templateContentElement: HTMLElement = createDivWithClasses('modal__tracker-template-content');
+
+    constructor(public seriesTracker: SeriesTracker) {
+        this.modal = createModal({
+            modalContent: {
+                elements: [ createModalHeader(seriesTracker), createTrackerContent(this) ]
+            }
+        });
+    }
+
+    public useTemplate(seriesTemplate: SeriesTrackerTemplate) {
+        this.seriesTracker.templates.setSelectedTemplate(seriesTemplate);
+        
+    }
+}
+
+export function createTrackerModal(seriesTracker: SeriesTracker): TrackerModal {
+    return new TrackerModal(seriesTracker);
 }
