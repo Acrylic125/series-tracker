@@ -6,6 +6,7 @@ import { seriesTemplateRegistry } from "../../registry/registries";
 export interface SeriesTrackerTemplate {
     title: string
     id: string
+    newDefaultData(): SeriesTrackerTemplateData
     createTrackerContent(templateData: SeriesTrackerTemplateData): HTMLElement
     decorateModalContent(trackerModalContent: HTMLElement, templateData: SeriesTrackerTemplateData): Promise<void>
 }
@@ -16,25 +17,35 @@ export interface SeriesTrackerTemplateData {
 }
 
 export class SeriesTrackerTemplates {
-    constructor(public selectedTemplate: string | undefined,
+    constructor(public selectedTemplateID: string | undefined,
                 public templates: Map<string, SeriesTrackerTemplateData> = new Map()) {}
-        
-    getSelectedTemplateAndData() {
-        const template = this.getSelectedTemplate();
-        if (!this.selectedTemplate)
-            return undefined;
-        const data = this.templates.get(this.selectedTemplate);
-        return (data && template) ? {
-            template, data
-        } : undefined;
+
+    getTemplateData(seriesTemplate: SeriesTrackerTemplate | string) {
+        if (typeof seriesTemplate === 'string')  {
+            const data = this.templates.get(seriesTemplate);
+            if (data) 
+                return data;
+            const template = seriesTemplateRegistry.get(seriesTemplate);
+            if (template)
+                return template.newDefaultData();
+            else 
+                throw new Error(`Template with id '${id}' is not registered.`);
+        } else {
+            const data = this.templates.get(seriesTemplate.id);
+            return (data) ? data : seriesTemplate.newDefaultData();
+        }
+    }
+
+    getSelectedTemplateData() {
+        return (this.selectedTemplateID) ? this.getTemplateData(this.selectedTemplateID) : undefined;
     }
 
     getSelectedTemplate() {
-        return (this.selectedTemplate) ? seriesTemplateRegistry.get(this.selectedTemplate) : undefined;
+        return (this.selectedTemplateID) ? seriesTemplateRegistry.get(this.selectedTemplateID) : undefined;
     }
 
     setSelectedTemplate(template: SeriesTrackerTemplate) {
-        this.selectedTemplate = template.id;
+        this.selectedTemplateID = template.id;
     }
 
     bindTemplateRawData(template: SeriesTrackerTemplate, data: any) {

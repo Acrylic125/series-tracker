@@ -26,7 +26,7 @@ export function createTracker(title: string, ...items: EpisodesTemplateDataItem[
     templates.bindTemplateRawData(episodesTemplate, {
         items
     });
-    templates.setTemplate(episodesTemplate);
+    templates.setSelectedTemplate(episodesTemplate);
     return {
         id: v4(),
         title, templates,

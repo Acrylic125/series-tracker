@@ -113,9 +113,9 @@ export function createModalHeader(seriesTracker: SeriesTracker) {
 //   <option value="checklist-template">Checlick Template</option>
 // </select>
 export function createTrackerSelector(trackerModal: TrackerModal) {
-    const selector = createElementWithClasses('select', 'modal__tracker-template-selector title') as HTMLSelectElement;
+    const selector = createElementWithClasses('select', 'modal__tracker-template-selector', 'title') as HTMLSelectElement;
     seriesTemplateRegistry.getRegistry().forEach((template) => {
-        const option = createElementWithClasses('input', template.title) as HTMLInputElement;
+        const option = createInnerText('option', template.title) as HTMLInputElement;
         option.value = template.id;
         option.onselect = () => 
             trackerModal.useTemplate(template);
@@ -151,7 +151,9 @@ export class TrackerModal {
 
     public useTemplate(seriesTemplate: SeriesTrackerTemplate) {
         this.seriesTracker.templates.setSelectedTemplate(seriesTemplate);
-        
+        this.templateContentElement.innerText = '';
+        const data = this.seriesTracker.templates.getTemplateData(seriesTemplate);
+        seriesTemplate.decorateModalContent(this.templateContentElement, data);
     }
 }
 
