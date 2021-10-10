@@ -63,3 +63,6 @@ export function createEpisodesTemplate(): SeriesTrackerTemplate {
 }
 
 export const episodesTemplate = createEpisodesTemplate();
+export const episodesTemplate2 = createEpisodesTemplate();
+episodesTemplate2.id = 'abc';
+episodesTemplate2.title = "ewdw wf wrfwfwefwfwwfwefwe fwddddddddddddddddddddddddddddddddcfecec ";
