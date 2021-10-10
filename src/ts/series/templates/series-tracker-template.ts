@@ -4,6 +4,7 @@ import { seriesTemplateRegistry } from "../../registry/registries";
 
 // This is due to deserialisation and unknown data being provided.
 export interface SeriesTrackerTemplate {
+    title: string
     id: string
     createTrackerContent(templateData: SeriesTrackerTemplateData): HTMLElement
     decorateModalContent(trackerModalContent: HTMLElement, templateData: SeriesTrackerTemplateData): Promise<void>
@@ -32,7 +33,7 @@ export class SeriesTrackerTemplates {
         return (this.selectedTemplate) ? seriesTemplateRegistry.get(this.selectedTemplate) : undefined;
     }
 
-    setTemplate(template: SeriesTrackerTemplate) {
+    setSelectedTemplate(template: SeriesTrackerTemplate) {
         this.selectedTemplate = template.id;
     }
 

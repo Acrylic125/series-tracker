@@ -37,6 +37,7 @@ export const episodesTemplateDataParser: Parser<EpisodesTemplateData> = {
 
 export function createEpisodesTemplate(): SeriesTrackerTemplate {
     return {
+        title: 'Episodes Template',
         id: 'episodes-template',
         createTrackerContent(templateData: SeriesTrackerTemplateData) {
             const contentElement = document.createElement('ol');

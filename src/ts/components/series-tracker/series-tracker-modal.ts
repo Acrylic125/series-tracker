@@ -39,9 +39,11 @@
 //           </div>
 //         </div>
 
+import { seriesTemplateRegistry } from "../../registry/registries";
 import { SeriesTracker } from "../../series/series";
+import { SeriesTrackerTemplate } from "../../series/templates/series-tracker-template";
 import { Position } from "../../utils/html-utils";
-import { createDivWithClasses, createElementWithClasses, createInnerText, createModal } from "../global-components";
+import { createDivWithClasses, createElementWithClasses, createInnerText, createModal, Modal } from "../global-components";
 
 // <textarea class="text-as-height title input-focus-indicator no-border no-outline" type="text" placeholder="New Tracker Title"></textarea>
 export function createTrackerTitle() {
@@ -104,6 +106,28 @@ export function createModalHeader(seriesTracker: SeriesTracker) {
     header.appendChild(createTrackerTitle());
     header.appendChild(createModalHeaderContent(seriesTracker));
     return header;
+}
+
+// <select class="modal__tracker-template-selector title">
+//   <option value="episodes-template">Episodes Template</option>
+//   <option value="checklist-template">Checlick Template</option>
+// </select>
+export function createTrackerSelector(trackerModal: TrackerModal) {
+    const selector = createElementWithClasses('select', 'modal__tracker-template-selector title') as HTMLSelectElement;
+    seriesTemplateRegistry.getRegistry().forEach((template) => {
+        const option = createElementWithClasses('input', template.title) as HTMLInputElement;
+        option.value = template.id;
+        option.onselect = () => 
+            trackerModal.useTemplate(template);
+        selector.appendChild(option);
+    });
+    return selector;
+} 
+
+export interface TrackerModal {
+    seriesTracker: SeriesTracker
+    modal: Modal
+    useTemplate(seriesTemplate: SeriesTrackerTemplate): void
 }
 
 export function createTrackerModal(seriesTracker: SeriesTracker) {

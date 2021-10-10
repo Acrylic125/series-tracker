@@ -21,4 +21,8 @@ export class RegistryImpl<T> implements Registry<string, T> {
         return this.registry.get(toID(key));
     } 
 
+    public getRegistry() {
+        return this.registry;
+    }
+
 }
