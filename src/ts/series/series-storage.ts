@@ -2,6 +2,11 @@ import fs from 'fs';
 import { createFileIfNotExist, JSON_FILE_CREATION_OPTIONS } from '../utils/utils';
 import { createDummy, Series } from './series';
 
+const STORE_COMPRESSED = 1;
+const STORE_READ = 2;
+
+const storageMode: number = STORE_READ;
+
 export class SeriesStorage {
 
     constructor(public collectionFilePath: string = "D:\\apps\\test.json",
@@ -37,8 +42,20 @@ export class SeriesStorage {
         var data = {
             series: Object.fromEntries(this.seriesMap)
         };
-        await fs.promises.writeFile(this.collectionFilePath, JSON.stringify(data, null, 4));
+        
+        await fs.promises.writeFile(this.collectionFilePath, SeriesStorage.toStoredData(data));
     }
+
+    public static toStoredData(data: any) {
+        switch (storageMode) {
+            case STORE_COMPRESSED:
+                return JSON.stringify(data);
+            case STORE_READ:
+                return JSON.stringify(data, null, 4);
+            default:
+                return data;
+        }
+    } 
 
 }
 
