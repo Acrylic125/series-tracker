@@ -41,6 +41,7 @@
 
 import { seriesTemplateRegistry } from "../../registry/registries";
 import { SeriesTracker } from "../../series/series";
+import { episodesTemplate } from "../../series/templates/episodes-template";
 import { SeriesTrackerTemplate } from "../../series/templates/series-tracker-template";
 import { Position } from "../../utils/html-utils";
 import { undefinedOrDefault } from "../../utils/utils";
@@ -134,6 +135,7 @@ export function createTrackerContent(trackerModal: TrackerModal) {
     content.appendChild(trackerModal.templateSelectorElement);
     content.appendChild(createInnerText('p', 'Select a template to use. The selected template will be displayed.', 'subtitle', 'w-60', 'center-horz'));
     content.appendChild(trackerModal.templateContentElement);
+    trackerModal.useTemplate(episodesTemplate);
     return content;
 }
 
@@ -155,6 +157,7 @@ export class TrackerModal {
         this.seriesTracker.templates.setSelectedTemplate(seriesTemplate);
         this.templateContentElement.innerText = '';
         const data = this.seriesTracker.templates.getTemplateDataByTemplate(seriesTemplate);
+        console.log("ABC");
         seriesTemplate.decorateModalContent(this.templateContentElement, data);
         this.templateSelectorElement.value = undefinedOrDefault(this.seriesTracker.templates.selectedTemplateID, '');
     }

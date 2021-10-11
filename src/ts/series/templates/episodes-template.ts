@@ -61,7 +61,7 @@ export function createEpisodesContainerItemTitle() {
 
 // <input class="ol-input" placeholder="0" min="0" type="number">
 export function createEpisodesContainerItemInput() {
-    const input = createElementWithClasses('ol-input') as HTMLInputElement;
+    const input = createElementWithClasses('input', 'ol-input') as HTMLInputElement;
     input.placeholder = '0';
     input.min = '0';
     input.type = 'number';
@@ -112,8 +112,10 @@ export function createEpisodesTemplate(): SeriesTrackerTemplate {
         async decorateModalContent(trackerModalContent: HTMLElement, templateData: SeriesTrackerTemplateData) {
             const parsed = episodesTemplateDataParser.parse(templateData.data);
             const container = createEpisodesContainer(parsed.items);
-            trackerModalContent.appendChild(createActionButton(createEpisodeButton));
-            trackerModalContent.onclick = () => {
+            const buttonElement = createActionButton(createEpisodeButton);
+            buttonElement.classList.add('center-horz');
+            trackerModalContent.appendChild(buttonElement);
+            buttonElement.onclick = () => {
                 const containerItem = {};
                 parsed.items.push(containerItem);
                 container.appendChild(createEpisodesContainerItem(containerItem));
