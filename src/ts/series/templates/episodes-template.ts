@@ -1,3 +1,4 @@
+import { ActionButton, createActionButton, createDivWithClasses, createElementWithClasses, createInnerText } from "../../components/global-components";
 import { createSeriesTrackerItem } from "../../components/series-tracker/series-tracker-content-item";
 import { Parser } from "../../utils/parser";
 import { undefinedOrDefault } from "../../utils/utils";
@@ -35,6 +36,57 @@ export const episodesTemplateDataParser: Parser<EpisodesTemplateData> = {
     }
 };
 
+const createEpisodeButton: ActionButton = {
+    tooltip: {
+        title: "Create Episode Status",
+        text: "Click to create a new episode status."
+    },
+    innerText: '\u002B',
+    circular: false,
+    singular: true
+}
+
+// <textarea class="text-as-height title input-focus-indicator no-border no-outline" type="text"
+//   placeholder="Title"></textarea>
+export function createEpisodesContainerItemTitle() {
+    const title = createElementWithClasses('textarea',
+                                                       'text-as-height', 
+                                                       'title',
+                                                       'input-focus-indicator',
+                                                       'no-border',
+                                                       'no-outline') as HTMLTextAreaElement;
+    title.placeholder = 'Title';
+    return title;
+}
+
+// <input class="ol-input" placeholder="0" min="0" type="number">
+export function createEpisodesContainerItemInput() {
+    const input = createElementWithClasses('ol-input') as HTMLInputElement;
+    input.placeholder = '0';
+    input.min = '0';
+    input.type = 'number';
+    return input;
+}
+
+// <div class="template__episodes-container-item rounded-1">
+//   <p class="text-lighter">Last Watched<br>Episode:</p>
+// </div>
+export function createEpisodesContainerItem(item: EpisodesTemplateDataItem) {
+    const itemElement = createDivWithClasses('template__episodes-container-item', 'rounded-1');
+    itemElement.appendChild(createEpisodesContainerItemTitle());
+    itemElement.appendChild(createInnerText('p', 'Last Watched Episode:', 'text-lighter'));
+    itemElement.appendChild(createEpisodesContainerItemInput());
+    return itemElement;
+}
+
+// <div class="template__episodes-container center-horz"> </div>
+export function createEpisodesContainer(items: EpisodesTemplateDataItem[]) {
+    const container = createDivWithClasses('template__episodes-container', 'center-horz');
+    items.forEach((item) => 
+        container.appendChild(createEpisodesContainerItem(item)));
+    return container;
+}
+
 export function createEpisodesTemplate(): SeriesTrackerTemplate {
     return {
         title: 'Episodes Template',
@@ -49,15 +101,24 @@ export function createEpisodesTemplate(): SeriesTrackerTemplate {
         },
         createTrackerContent(templateData: SeriesTrackerTemplateData) {
             const contentElement = document.createElement('ol');
-            
             const parsed = episodesTemplateDataParser.parse(templateData.data);
             parsed.items.forEach((item) => 
                 contentElement.appendChild(createSeriesTrackerItem(undefinedOrDefault(item.title, 'No Title'),
                                                                    'Episode ' + undefinedOrDefault(item.currentEpisode, 0))));
             return contentElement;
         },
+        // <button class="small-singular action-button center-horz rounded-1">&plus;</button>
+        // <div class="template__episodes-container center-horz"> </div>
         async decorateModalContent(trackerModalContent: HTMLElement, templateData: SeriesTrackerTemplateData) {
-            
+            const parsed = episodesTemplateDataParser.parse(templateData.data);
+            const container = createEpisodesContainer(parsed.items);
+            trackerModalContent.appendChild(createActionButton(createEpisodeButton));
+            trackerModalContent.onclick = () => {
+                const containerItem = {};
+                parsed.items.push(containerItem);
+                container.appendChild(createEpisodesContainerItem(containerItem));
+            };
+            trackerModalContent.appendChild(container);
         }
     };
 }
