@@ -32,6 +32,7 @@ export const episodesTemplateDataParser: Parser<EpisodesTemplateData> = {
             itemsFromData.forEach((item) => 
                 items.push(episodesTemplateDataItemParser.parse(item)));
         }
+        data.items = items;
         return { items };
     }
 };
