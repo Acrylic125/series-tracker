@@ -19,23 +19,10 @@ export const episodesTemplateDataItemParser: Parser<EpisodesTemplateDataItem> = 
     }
 };
 
-export interface EpisodesTemplateData {
-    items: EpisodesTemplateDataItem[]
+// THE PROPERTIES SHOULD BE NULLABLE!
+export interface EpisodesTemplateData extends SeriesTrackerTemplateData {
+    items?: EpisodesTemplateDataItem[]
 }
-
-export const episodesTemplateDataParser: Parser<EpisodesTemplateData> = {
-    id: 'episodes-data',
-    parse(data) {
-        var items = new Array<EpisodesTemplateDataItem>();
-        const itemsFromData = data.items;
-        if (itemsFromData instanceof Array) {
-            itemsFromData.forEach((item) => 
-                items.push(episodesTemplateDataItemParser.parse(item)));
-        }
-        data.items = items;
-        return { items };
-    }
-};
 
 const createEpisodeButton: ActionButton = {
     tooltip: {
@@ -88,37 +75,39 @@ export function createEpisodesContainer(items: EpisodesTemplateDataItem[]) {
     return container;
 }
 
-export function createEpisodesTemplate(): SeriesTrackerTemplate {
+export function createEpisodesTemplate(): SeriesTrackerTemplate<EpisodesTemplateData> {
     return {
         title: 'Episodes Template',
         id: 'episodes-template',
         newDefaultData() {
             return {
                 templateID: 'episodes-template',
-                data: {
-                    items: new Array()
-                }
+                items: []
             }
         },
-        createTrackerContent(templateData: SeriesTrackerTemplateData) {
+        createTrackerContent(templateData: EpisodesTemplateData) {
             const contentElement = document.createElement('ol');
-            const parsed = episodesTemplateDataParser.parse(templateData.data);
-            parsed.items.forEach((item) => 
+            if (!templateData.items)
+                templateData.items = [];
+            templateData.items.forEach((item) => 
                 contentElement.appendChild(createSeriesTrackerItem(undefinedOrDefault(item.title, 'No Title'),
                                                                    'Episode ' + undefinedOrDefault(item.currentEpisode, 0))));
             return contentElement;
         },
         // <button class="small-singular action-button center-horz rounded-1">&plus;</button>
         // <div class="template__episodes-container center-horz"> </div>
-        async decorateModalContent(trackerModalContent: HTMLElement, templateData: SeriesTrackerTemplateData) {
-            const parsed = episodesTemplateDataParser.parse(templateData.data);
-            const container = createEpisodesContainer(parsed.items);
+        async decorateModalContent(trackerModalContent: HTMLElement, templateData: EpisodesTemplateData) {
+            if (!templateData.items)
+                templateData.items = [];
+            const container = createEpisodesContainer(templateData.items);
             const buttonElement = createActionButton(createEpisodeButton);
             buttonElement.classList.add('center-horz');
             trackerModalContent.appendChild(buttonElement);
             buttonElement.onclick = () => {
                 const containerItem = {};
-                parsed.items.push(containerItem);
+                if (!templateData.items)
+                    templateData.items = [];
+                templateData.items.push(containerItem);
                 container.appendChild(createEpisodesContainerItem(containerItem));
             };
             trackerModalContent.appendChild(container);

@@ -154,7 +154,7 @@ export class TrackerModal {
     }
 
     public useTemplate(seriesTemplate: SeriesTrackerTemplate) {
-        this.seriesTracker.templates.setSelectedTemplate(seriesTemplate);
+        this.seriesTracker.templates.selectedTemplateID = seriesTemplate.id;
         this.templateContentElement.innerText = '';
         const data = this.seriesTracker.templates.getTemplateDataByTemplate(seriesTemplate);
         console.log("ABC");
