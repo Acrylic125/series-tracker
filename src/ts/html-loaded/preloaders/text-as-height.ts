@@ -1,15 +1,14 @@
-import { undefinedOrDefault } from "../../utils/utils";
-
 export function resizeTextAsHeight(element: HTMLTextAreaElement | HTMLInputElement) {
     element.style.height = 'auto';
     element.style.height = element.scrollHeight + 'px';
 }
 
-export async function reloadTextAsHeight() {
+export function addTextAsHeightListener(element: HTMLTextAreaElement | HTMLInputElement) {
+    element.addEventListener('input', () => resizeTextAsHeight(element));
+}
+
+export async function reloadAllTextAsHeight() {
     document.querySelectorAll('.text-as-height').forEach((textAsHeight) => {
-        if ((textAsHeight instanceof HTMLTextAreaElement) || (textAsHeight instanceof HTMLInputElement)) {
-            resizeTextAsHeight(textAsHeight);
-            textAsHeight.oninput = () => resizeTextAsHeight(textAsHeight);
-        }
+        ((textAsHeight instanceof HTMLTextAreaElement) || (textAsHeight instanceof HTMLInputElement)) && addTextAsHeightListener(textAsHeight);
     });
 }

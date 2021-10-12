@@ -39,6 +39,7 @@
 //           </div>
 //         </div>
 
+import { addTextAsHeightListener } from "../../html-loaded/preloaders/text-as-height";
 import { seriesTemplateRegistry } from "../../registry/registries";
 import { SeriesTracker } from "../../series/series";
 import { episodesTemplate } from "../../series/templates/episodes-template";
@@ -59,6 +60,7 @@ export function createTrackerTitle(title?: string) {
     titleElement.placeholder = 'New Tracker Title';
     if (title) 
         titleElement.value = title;
+    addTextAsHeightListener(titleElement);
     return titleElement;
 }
 
@@ -151,7 +153,8 @@ export class TrackerModal {
         this.modal = createModal({
             modalContent: {
                 elements: [ createModalHeader(seriesTracker), createTrackerContent(this) ]
-            }
+            },
+            deleteOnDeactivate: true
         });
     }
 

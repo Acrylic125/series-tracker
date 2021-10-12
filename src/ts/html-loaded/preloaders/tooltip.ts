@@ -16,14 +16,15 @@ async function getTooltipsFromRegion(tooltipRegion: HTMLElement) {
     return toolTips;
 }
 
-async function addTooltipListener(tooltipRegion: HTMLElement) {
+export async function addTooltipListener(tooltipRegion: HTMLElement) {
     const toolTips = await getTooltipsFromRegion(tooltipRegion);
     if (toolTips.length > 0) {
         const tooltip = toolTips[0];
-        tooltipRegion.onmouseover = (event) => {
-            const { width } = tooltip.getBoundingClientRect();
-            const x = (event.pageX - (width * 0.5));
-            const y = event.pageY + 5;
+        tooltipRegion.onmouseover = () => {
+            var { x, y, width, height } = tooltipRegion.getBoundingClientRect();
+            const toolTipBB = tooltip.getBoundingClientRect();
+            x = (x + (width * 0.5) - (toolTipBB.width * 0.5));
+            y = y + height + 10;
             setPosition(tooltip, { x, y });
         }
     }

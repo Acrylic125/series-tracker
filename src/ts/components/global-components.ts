@@ -1,5 +1,6 @@
 import iro from "@jaames/iro";
 import { text } from "stream/consumers";
+import { addTooltipListener } from "../html-loaded/preloaders/tooltip";
 import { hideElement, hideOrShowElement } from "../utils/html-utils";
 import { undefinedOrDefault } from "../utils/utils";
 
@@ -47,6 +48,7 @@ export function createTooltip(tooltip: Tooltip) {
 export function bindTooltipTo(tooltipRegion: HTMLElement, tooltip: Tooltip) {
     tooltipRegion.classList.add('tooltip-region');
     tooltipRegion.appendChild(createTooltip(tooltip));
+    addTooltipListener(tooltipRegion);
 }
 
 export interface ActionButton {

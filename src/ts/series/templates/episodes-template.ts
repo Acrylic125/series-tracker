@@ -1,5 +1,6 @@
 import { ActionButton, createActionButton, createDivWithClasses, createElementWithClasses, createInnerText } from "../../components/global-components";
 import { createSeriesTrackerItem } from "../../components/series-tracker/series-tracker-content-item";
+import { addTextAsHeightListener } from "../../html-loaded/preloaders/text-as-height";
 import { Parser } from "../../utils/parser";
 import { undefinedOrDefault } from "../../utils/utils";
 import { SeriesTrackerTemplate, SeriesTrackerTemplateData } from "./series-tracker-template";
@@ -50,6 +51,7 @@ export function createEpisodesContainerItemTitle(title?: string) {
     titleElement.placeholder = 'Title';
     if (title) 
         titleElement.value = title;
+    addTextAsHeightListener(titleElement);
     return titleElement;
 }
 
