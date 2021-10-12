@@ -19,9 +19,13 @@ export const episodesTemplateDataItemParser: Parser<EpisodesTemplateDataItem> = 
     }
 };
 
-// THE PROPERTIES SHOULD BE NULLABLE!
 export interface EpisodesTemplateData extends SeriesTrackerTemplateData {
-    items?: EpisodesTemplateDataItem[]
+    items: EpisodesTemplateDataItem[]
+}
+
+export function validateEpisodesTemplateData(data: EpisodesTemplateData) {
+    if (!data.items)
+        data.items = []; 
 }
 
 const createEpisodeButton: ActionButton = {
@@ -36,23 +40,27 @@ const createEpisodeButton: ActionButton = {
 
 // <textarea class="text-as-height title input-focus-indicator no-border no-outline" type="text"
 //   placeholder="Title"></textarea>
-export function createEpisodesContainerItemTitle() {
-    const title = createElementWithClasses('textarea',
+export function createEpisodesContainerItemTitle(title?: string) {
+    const titleElement = createElementWithClasses('textarea',
                                                        'text-as-height', 
                                                        'title',
                                                        'input-focus-indicator',
                                                        'no-border',
                                                        'no-outline') as HTMLTextAreaElement;
-    title.placeholder = 'Title';
-    return title;
+    titleElement.placeholder = 'Title';
+    if (title) 
+        titleElement.value = title;
+    return titleElement;
 }
 
 // <input class="ol-input" placeholder="0" min="0" type="number">
-export function createEpisodesContainerItemInput() {
+export function createEpisodesContainerItemInput(currentEpisode?: number) {
     const input = createElementWithClasses('input', 'ol-input') as HTMLInputElement;
     input.placeholder = '0';
     input.min = '0';
     input.type = 'number';
+    if (currentEpisode)
+        input.value = currentEpisode + '';
     return input;
 }
 
@@ -61,9 +69,9 @@ export function createEpisodesContainerItemInput() {
 // </div>
 export function createEpisodesContainerItem(item: EpisodesTemplateDataItem) {
     const itemElement = createDivWithClasses('template__episodes-container-item', 'rounded-1');
-    itemElement.appendChild(createEpisodesContainerItemTitle());
+    itemElement.appendChild(createEpisodesContainerItemTitle(item.title));
     itemElement.appendChild(createInnerText('p', 'Last Watched Episode:', 'text-lighter'));
-    itemElement.appendChild(createEpisodesContainerItemInput());
+    itemElement.appendChild(createEpisodesContainerItemInput(item.currentEpisode));
     return itemElement;
 }
 
@@ -86,9 +94,8 @@ export function createEpisodesTemplate(): SeriesTrackerTemplate<EpisodesTemplate
             }
         },
         createTrackerContent(templateData: EpisodesTemplateData) {
+            validateEpisodesTemplateData(templateData);
             const contentElement = document.createElement('ol');
-            if (!templateData.items)
-                templateData.items = [];
             templateData.items.forEach((item) => 
                 contentElement.appendChild(createSeriesTrackerItem(undefinedOrDefault(item.title, 'No Title'),
                                                                    'Episode ' + undefinedOrDefault(item.currentEpisode, 0))));
@@ -97,16 +104,14 @@ export function createEpisodesTemplate(): SeriesTrackerTemplate<EpisodesTemplate
         // <button class="small-singular action-button center-horz rounded-1">&plus;</button>
         // <div class="template__episodes-container center-horz"> </div>
         async decorateModalContent(trackerModalContent: HTMLElement, templateData: EpisodesTemplateData) {
-            if (!templateData.items)
-                templateData.items = [];
+            validateEpisodesTemplateData(templateData);
             const container = createEpisodesContainer(templateData.items);
             const buttonElement = createActionButton(createEpisodeButton);
             buttonElement.classList.add('center-horz');
             trackerModalContent.appendChild(buttonElement);
             buttonElement.onclick = () => {
                 const containerItem = {};
-                if (!templateData.items)
-                    templateData.items = [];
+                validateEpisodesTemplateData(templateData);
                 templateData.items.push(containerItem);
                 container.appendChild(createEpisodesContainerItem(containerItem));
             };
