@@ -84,3 +84,12 @@ export function undefinedOrDefault<T>(val: T | undefined, defaultVal: T) {
 export function clamp(min: number, val: number, max: number) {
     return Math.min(max, Math.max(min, val));
 }
+
+export function removeElementFromArray<T>(array: T[], element: T) {
+    const index = array.indexOf(element);
+    if (index > -1) {
+        array.splice(index, 1);
+        return true;
+    }
+    return false;
+}

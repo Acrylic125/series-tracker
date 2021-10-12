@@ -48,16 +48,18 @@ import { undefinedOrDefault } from "../../utils/utils";
 import { createDivWithClasses, createElementWithClasses, createInnerText, createModal, Modal } from "../global-components";
 
 // <textarea class="text-as-height title input-focus-indicator no-border no-outline" type="text" placeholder="New Tracker Title"></textarea>
-export function createTrackerTitle() {
-    const title =
+export function createTrackerTitle(title?: string) {
+    const titleElement =
          createElementWithClasses('textarea', 
                                   'text-as-height', 
                                   'title',
                                   'input-focus-indicator', 
                                   'no-border',
                                   'no-outline') as HTMLTextAreaElement;
-   title.placeholder = 'New Tracker Title';
-   return title;
+    titleElement.placeholder = 'New Tracker Title';
+    if (title) 
+        titleElement.value = title;
+    return titleElement;
 }
 
 //   <div class="modal__tracker-styler--circle color-picker-input" style="width: 10%; top: 60%; left: 65%"> </div>
@@ -105,7 +107,7 @@ export function createModalHeaderContent(seriesTracker: SeriesTracker) {
 
 export function createModalHeader(seriesTracker: SeriesTracker) {
     const header = document.createElement('header');
-    header.appendChild(createTrackerTitle());
+    header.appendChild(createTrackerTitle(seriesTracker.title));
     header.appendChild(createModalHeaderContent(seriesTracker));
     return header;
 }
@@ -157,8 +159,7 @@ export class TrackerModal {
         this.seriesTracker.templates.selectedTemplateID = seriesTemplate.id;
         this.templateContentElement.innerText = '';
         const data = this.seriesTracker.templates.getTemplateDataByTemplate(seriesTemplate);
-        console.log("ABC");
-        seriesTemplate.decorateModalContent(this.templateContentElement, data);
+        seriesTemplate.applyModalContent(this.templateContentElement, data);
         this.templateSelectorElement.value = undefinedOrDefault(this.seriesTracker.templates.selectedTemplateID, '');
     }
 }

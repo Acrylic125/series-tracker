@@ -232,7 +232,7 @@ textarea::placeholder {
   border-radius: 0.5em;
   background-color: var(--tooltip-color);
   color: white;
-  z-index: 10000;
+  z-index: 1000000;
   top: 100%;
 }
 

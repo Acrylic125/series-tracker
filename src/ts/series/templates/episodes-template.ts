@@ -103,7 +103,7 @@ export function createEpisodesTemplate(): SeriesTrackerTemplate<EpisodesTemplate
         },
         // <button class="small-singular action-button center-horz rounded-1">&plus;</button>
         // <div class="template__episodes-container center-horz"> </div>
-        async decorateModalContent(trackerModalContent: HTMLElement, templateData: EpisodesTemplateData) {
+        async applyModalContent(trackerModalContent: HTMLElement, templateData: EpisodesTemplateData) {
             validateEpisodesTemplateData(templateData);
             const container = createEpisodesContainer(templateData.items);
             const buttonElement = createActionButton(createEpisodeButton);
