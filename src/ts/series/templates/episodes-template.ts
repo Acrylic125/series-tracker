@@ -72,7 +72,7 @@ export function createEpisodesContainerItemInput(currentEpisode?: number) {
 export function createEpisodesContainerItem(item: EpisodesTemplateDataItem) {
     const itemElement = createDivWithClasses('template__episodes-container-item', 'rounded-1');
     itemElement.appendChild(createEpisodesContainerItemTitle(item.title));
-    itemElement.appendChild(createInnerText('p', 'Last Watched Episode:', 'text-lighter'));
+    itemElement.appendChild(createInnerText('p', 'Last Watched\nEpisode:', 'text-lighter'));
     itemElement.appendChild(createEpisodesContainerItemInput(item.currentEpisode));
     return itemElement;
 }

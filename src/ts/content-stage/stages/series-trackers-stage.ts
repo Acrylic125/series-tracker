@@ -1,5 +1,5 @@
 import { ActionButton, createBoundedStageContent, createColorLine, createColumn, createColumns, createDivWithClasses, createHorzCenteredActionButton, createInnerText } from '../../components/global-components';
-import { createSeriesTracker } from '../../components/series-tracker/series-tracker-components';
+import { createSeriesTracker, createSeriesTrackerTitle } from '../../components/series-tracker/series-tracker-components';
 import { createTracker, Series, SeriesTracker } from '../../series/series';
 import { ContentStageElements, FragmentedContentStage } from '../content-stage';
 import { getContentStageElement } from '../content-stage-manager';
@@ -72,7 +72,7 @@ function createSeriesTrackerStageElements(series: Series): SeriesTrackerStageEle
             const fragment = new DocumentFragment(),
                   stageContent = createBoundedStageContent();
             this.seriesTrackers.addSeries(series);
-            stageContent.appendChild(createInnerText('h1', series.title));
+            stageContent.appendChild(createSeriesTrackerTitle(series.title));
             stageContent.appendChild(this.colorLine);
             stageContent.appendChild(createAddSeriesTrackerButton(this.seriesTrackers));
             stageContent.appendChild(this.seriesTrackers.element);

@@ -1,9 +1,28 @@
 import adaptiveResizers, { createPositionAdaptableElement } from "../../html-loaded/preloaders/adaptive-size";
+import { addTextAsHeightListener } from "../../html-loaded/preloaders/text-as-height";
 import { SeriesTracker } from "../../series/series";
 import { Position } from "../../utils/html-utils";
 import { randInt } from "../../utils/utils";
-import { createDivWithClasses, createInnerText } from "../global-components";
+import { createDivWithClasses, createElementWithClasses, createInnerText } from "../global-components";
 import { createTrackerModal } from "./series-tracker-modal";
+
+// <textarea class="text-as-height title input-focus-indicator no-border no-outline" type="text"
+//   placeholder="Title"></textarea>
+export function createSeriesTrackerTitle(title?: string) {
+  const titleElement = createElementWithClasses('textarea',
+                                                     'text-as-height', 
+                                                     'title',
+                                                     'w-60',
+                                                     'font-size-2',
+                                                     'input-focus-indicator',
+                                                     'no-border',
+                                                     'no-outline') as HTMLTextAreaElement;
+  titleElement.placeholder = 'Title';
+  if (title) 
+      titleElement.value = title;
+  addTextAsHeightListener(titleElement);
+  return titleElement;
+}
 
 // <header> </header>
 export function createSeriesTrackerHeader(title: string) {
