@@ -1,6 +1,6 @@
 import { ActionButton, createBoundedStageContent, createColorLine, createColumn, createColumns, createDivWithClasses, createHorzCenteredActionButton, createInnerText } from '../../components/global-components';
 import { createSeriesTracker } from '../../components/series-tracker/series-tracker-components';
-import { Series, SeriesTracker } from '../../series/series';
+import { createTracker, Series, SeriesTracker } from '../../series/series';
 import { ContentStageElements, FragmentedContentStage } from '../content-stage';
 import { getContentStageElement } from '../content-stage-manager';
 
@@ -14,9 +14,11 @@ const addSeriesTrackerButton: ActionButton = {
     singular: true
 }
 
-function createAddSeriesTrackerButton() {
+function createAddSeriesTrackerButton(seriesTrackers: SeriesTrackers) {
     const addSeriesTracker = createHorzCenteredActionButton(addSeriesTrackerButton);
     addSeriesTracker.classList.add('create-series-tracker');
+    addSeriesTracker.onclick = () => 
+        seriesTrackers.addSeriesTracker(createTracker('No Title', {}));
     return addSeriesTracker;
 }
 
@@ -61,17 +63,18 @@ export class SeriesTrackers {
 }
 
 function createSeriesTrackerStageElements(series: Series): SeriesTrackerStageElements {
+    const seriesTrackers = new SeriesTrackers();
     return {
-        seriesTrackers: new SeriesTrackers(),
+        seriesTrackers,
         colorLine: createColorLine(series.colorStripColor),
-        addSeriesTracker: createAddSeriesTrackerButton(),
+        addSeriesTracker: createAddSeriesTrackerButton(seriesTrackers),
         toFragment() {
             const fragment = new DocumentFragment(),
                   stageContent = createBoundedStageContent();
             this.seriesTrackers.addSeries(series);
             stageContent.appendChild(createInnerText('h1', series.title));
             stageContent.appendChild(this.colorLine);
-            stageContent.appendChild(createAddSeriesTrackerButton());
+            stageContent.appendChild(createAddSeriesTrackerButton(this.seriesTrackers));
             stageContent.appendChild(this.seriesTrackers.element);
             fragment.appendChild(stageContent);
             return fragment;
