@@ -6,8 +6,6 @@ import { randInt } from "../../utils/utils";
 import { createDivWithClasses, createElementWithClasses, createInnerText } from "../global-components";
 import { createTrackerModal } from "./series-tracker-modal";
 
-// <textarea class="text-as-height title input-focus-indicator no-border no-outline" type="text"
-//   placeholder="Title"></textarea>
 export function createSeriesTrackerTitle(title?: string) {
   const titleElement = createElementWithClasses('textarea',
                                                      'text-as-height', 
