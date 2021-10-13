@@ -1,5 +1,5 @@
 import { ActionButton, createBoundedStageContent, createColorLine, createColumn, createColumns, createDivWithClasses, createHorzCenteredActionButton, createInnerText } from '../../components/global-components';
-import { createSeriesTracker, createSeriesTrackerTitle } from '../../components/series-tracker/series-tracker-components';
+import { createSeriesTracker, createSeriesTrackerStageTitle } from '../../components/series-tracker/series-tracker-components';
 import { createTracker, Series, SeriesTracker } from '../../series/series';
 import { ContentStageElements, FragmentedContentStage } from '../content-stage';
 import { getContentStageElement } from '../content-stage-manager';
@@ -56,7 +56,7 @@ export class SeriesTrackers {
         this.addElement(createSeriesTracker(seriesTracker));
     }
 
-    public addSeries(series: Series) {
+    public addSeriesTrackersBySeries(series: Series) {
         series.trackers.forEach((tracker) => this.addSeriesTracker(tracker));
     }
 
@@ -70,9 +70,16 @@ function createSeriesTrackerStageElements(series: Series): SeriesTrackerStageEle
         addSeriesTracker: createAddSeriesTrackerButton(seriesTrackers),
         toFragment() {
             const fragment = new DocumentFragment(),
-                  stageContent = createBoundedStageContent();
-            this.seriesTrackers.addSeries(series);
-            stageContent.appendChild(createSeriesTrackerTitle(series.title));
+                  stageContent = createBoundedStageContent(),
+                  titleELement = createSeriesTrackerStageTitle(series.title);
+            
+            this.seriesTrackers.addSeriesTrackersBySeries(series);
+            // Initialise event listeners
+            titleELement.addEventListener('change', () => 
+                series.title = titleELement.value);
+
+            // Append elements to stageContent
+            stageContent.appendChild(titleELement);
             stageContent.appendChild(this.colorLine);
             stageContent.appendChild(createAddSeriesTrackerButton(this.seriesTrackers));
             stageContent.appendChild(this.seriesTrackers.element);

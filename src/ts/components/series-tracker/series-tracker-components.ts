@@ -6,7 +6,7 @@ import { randInt } from "../../utils/utils";
 import { createDivWithClasses, createElementWithClasses, createInnerText } from "../global-components";
 import { createTrackerModal } from "./series-tracker-modal";
 
-export function createSeriesTrackerTitle(title?: string) {
+export function createSeriesTrackerStageTitle(title?: string) {
   const titleElement = createElementWithClasses('textarea',
                                                      'text-as-height', 
                                                      'title',
