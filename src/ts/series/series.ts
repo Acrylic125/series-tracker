@@ -57,6 +57,39 @@ export function createDummy(title: string): Series {
             }, {
                 title: "Season 2", currentEpisode: 3
             }),
+            createTracker('Light Novel', {
+                title: "Season 1", currentEpisode: 3
+            }, {
+                title: "Season 2", currentEpisode: 3
+            }, {
+                title: "Volume 2", currentEpisode: 3
+            }, {
+                title: "Volume 2", currentEpisode: 3
+            }, {
+                title: "Volume 2", currentEpisode: 3
+            }, {
+                title: "Volume 2", currentEpisode: 3
+            }, {
+                title: "Volume 2", currentEpisode: 3
+            }, {
+                title: "Volume 2", currentEpisode: 3
+            }, {
+                title: "Volume 2", currentEpisode: 3
+            }, {
+                title: "Volume 2", currentEpisode: 3
+            }, {
+                title: "Volume 2", currentEpisode: 3
+            }, {
+                title: "Volume 2", currentEpisode: 3
+            }, {
+                title: "Volume 2", currentEpisode: 3
+            }, {
+                title: "Volume 2", currentEpisode: 3
+            }, {
+                title: "Volume 2", currentEpisode: 3
+            }, {
+                title: "Volume 2", currentEpisode: 3
+            }),
             createTracker('Movies', {
                 title: "A really long title lol Idk why but whatever", currentEpisode: 3
             }),

@@ -34,10 +34,8 @@ export function createSeriesTrackerContent(seriesTracker: SeriesTracker) {
     contentElement.appendChild(createSeriesTrackerHeader(title));
     const template = templates.getSelectedTemplate(),
           data = templates.getSelectedTemplateData();
-    if (template && data) {
-      contentElement.appendChild(
-        template.createTrackerContent(data));
-    }
+    (template && data) &&
+      contentElement.appendChild(template.createTrackerContent(data));
     return contentElement;
 }
 
