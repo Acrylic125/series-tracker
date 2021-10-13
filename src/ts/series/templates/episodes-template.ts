@@ -71,9 +71,15 @@ export function createEpisodesContainerItemInput(currentEpisode?: number) {
 // </div>
 export function createEpisodesContainerItem(item: EpisodesTemplateDataItem) {
     const itemElement = createDivWithClasses('template__episodes-container-item', 'rounded-1');
-    itemElement.appendChild(createEpisodesContainerItemTitle(item.title));
+    const titleElement = createEpisodesContainerItemTitle(item.title),
+          currentEpisodeElement = createEpisodesContainerItemInput(item.currentEpisode);
+
+    titleElement.addEventListener('input', () => item.title = (titleElement.value === '') ? undefined : titleElement.value);
+    currentEpisodeElement.addEventListener('input', () => item.currentEpisode = (currentEpisodeElement.value) ? parseInt(currentEpisodeElement.value) : 0);
+
+    itemElement.appendChild(titleElement);
     itemElement.appendChild(createInnerText('p', 'Last Watched\nEpisode:', 'text-lighter'));
-    itemElement.appendChild(createEpisodesContainerItemInput(item.currentEpisode));
+    itemElement.appendChild(currentEpisodeElement);
     return itemElement;
 }
 
