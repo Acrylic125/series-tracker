@@ -4,7 +4,7 @@ export interface SeriesTrackerTemplate<T extends SeriesTrackerTemplateData = Ser
     title: string
     id: string
     newDefaultData(): T
-    createTrackerContent(templateData: T): HTMLElement
+    createSeriesTrackerContent(templateData: T): HTMLElement
     applyModalContent(trackerModalContent: HTMLElement, templateData: T): Promise<void>
 }
 

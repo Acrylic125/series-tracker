@@ -1,5 +1,6 @@
 import { ActionButton, createBoundedStageContent, createColorLine, createColumn, createColumns, createDivWithClasses, createHorzCenteredActionButton, createInnerText } from '../../components/global-components';
 import { createSeriesTracker, createSeriesTrackerStageTitle } from '../../components/series-tracker/series-tracker-components';
+import { createTrackerModal } from '../../components/series-tracker/series-tracker-modal';
 import { createTracker, Series, SeriesTracker } from '../../series/series';
 import { ContentStageElements, FragmentedContentStage } from '../content-stage';
 import { getContentStageElement } from '../content-stage-manager';
@@ -42,6 +43,11 @@ export class SeriesTrackers {
             this.columns.push(createColumn());
     }
 
+    public clear() {
+        this.columns.forEach((column) => 
+            column.innerText = '');
+    }
+
     private addElement(elemenet: HTMLElement) {
         const columns = this.columns;
         var col = this.currentColumn++;
@@ -53,7 +59,14 @@ export class SeriesTrackers {
     }
 
     public addSeriesTracker(seriesTracker: SeriesTracker) {
-        this.addElement(createSeriesTracker(seriesTracker));
+        const seriesTrackerElement = createSeriesTracker(seriesTracker);
+        seriesTrackerElement.onclick = () => {
+            const modal = createTrackerModal(seriesTracker);
+            modal.modal.setActive(true);
+            document.body.appendChild(modal.modal.modalElement);
+        };
+        
+        this.addElement(seriesTrackerElement);
     }
 
     public addSeriesTrackersBySeries(series: Series) {
@@ -75,7 +88,7 @@ function createSeriesTrackerStageElements(series: Series): SeriesTrackerStageEle
             
             this.seriesTrackers.addSeriesTrackersBySeries(series);
             // Initialise event listeners
-            titleELement.addEventListener('change', () => 
+            titleELement.addEventListener('input', () => 
                 series.title = titleELement.value);
 
             // Append elements to stageContent

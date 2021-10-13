@@ -95,7 +95,7 @@ export function createEpisodesTemplate(): SeriesTrackerTemplate<EpisodesTemplate
                 items: []
             }
         },
-        createTrackerContent(templateData: EpisodesTemplateData) {
+        createSeriesTrackerContent(templateData: EpisodesTemplateData) {
             validateEpisodesTemplateData(templateData);
             const contentElement = document.createElement('ol');
             templateData.items.forEach((item) => 

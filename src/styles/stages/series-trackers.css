@@ -54,11 +54,11 @@
   font-size: 150%;
 }
 
-.series-tracker__content > ol {
+.series-tracker__content ol {
   padding: 0;
 }
 
-.series-tracker__content > ol > li {
+.series-tracker__content ol > li {
   margin-bottom: 0.5em;
 }
 

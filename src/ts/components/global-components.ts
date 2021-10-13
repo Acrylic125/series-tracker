@@ -129,6 +129,7 @@ export interface Modal {
     modalContent: ModalContent
     active: boolean
     deleteOnDeactivate: boolean
+    onClose(): void
     setActive(active: boolean): void
 }
 
@@ -191,15 +192,22 @@ export interface ModalOptions {
     modalContent: ModalContent
     active?: boolean
     deleteOnDeactivate?: boolean
+    onClose?: () => void
 }
 
 export function createModal(modalOptions: ModalOptions) {
     const modalElement = createDivWithClasses('modal');
+    var done = false;
     const modal: Modal = {
         modalElement, 
         modalContent: modalOptions.modalContent, 
         active: (modalOptions.active) ? true : false,
         deleteOnDeactivate: (modalOptions.deleteOnDeactivate) ? true : false,
+        onClose() {
+            const onClose = modalOptions.onClose;
+            if (onClose)
+                onClose();
+        },
         setActive(active: boolean) {
             this.active = active;
             const classes = this.modalElement.classList;
@@ -207,7 +215,13 @@ export function createModal(modalOptions: ModalOptions) {
                 classes.add(ACTIVE);
             else {
                 classes.remove(ACTIVE);
-                (this.deleteOnDeactivate) && modalElement.remove();
+                if (done)
+                    return;
+                this.onClose();
+                if (this.deleteOnDeactivate) {
+                    done = true;
+                    modalElement.remove();
+                }    
             }
         }
     };

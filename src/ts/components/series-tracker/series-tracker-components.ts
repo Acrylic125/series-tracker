@@ -34,8 +34,10 @@ export function createSeriesTrackerContent(seriesTracker: SeriesTracker) {
     contentElement.appendChild(createSeriesTrackerHeader(title));
     const template = templates.getSelectedTemplate(),
           data = templates.getSelectedTemplateData();
+    const container = createDivWithClasses('w-100');
     (template && data) &&
-      contentElement.appendChild(template.createTrackerContent(data));
+      container.appendChild(template.createSeriesTrackerContent(data));
+    contentElement.appendChild(container);
     return contentElement;
 }
 
@@ -81,12 +83,6 @@ export function createSeriesTrackerBackground(circleColor: string, seriesTracker
 
 export function createSeriesTracker(seriesTracker: SeriesTracker) {
     const seriesTrackerElement = createDivWithClasses('series-tracker');
-    seriesTrackerElement.onclick = () => {
-      const modal = createTrackerModal(seriesTracker);
-      modal.modal.setActive(true);
-      document.body.appendChild(modal.modal.modalElement);
-    };
-    
     seriesTrackerElement.style.backgroundColor = seriesTracker.baseColor;
     seriesTrackerElement.id = seriesTracker.id;
     seriesTrackerElement.appendChild(createSeriesTrackerBackground(seriesTracker.circleColor, seriesTrackerElement));
