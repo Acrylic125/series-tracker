@@ -192,7 +192,6 @@ export interface ModalOptions {
     modalContent: ModalContent
     active?: boolean
     deleteOnDeactivate?: boolean
-    onClose?: () => void
 }
 
 export function createModal(modalOptions: ModalOptions) {
@@ -203,11 +202,7 @@ export function createModal(modalOptions: ModalOptions) {
         modalContent: modalOptions.modalContent, 
         active: (modalOptions.active) ? true : false,
         deleteOnDeactivate: (modalOptions.deleteOnDeactivate) ? true : false,
-        onClose() {
-            const onClose = modalOptions.onClose;
-            if (onClose)
-                onClose();
-        },
+        onClose() {},
         setActive(active: boolean) {
             this.active = active;
             const classes = this.modalElement.classList;
@@ -227,7 +222,8 @@ export function createModal(modalOptions: ModalOptions) {
     };
     modalElement.appendChild(createModalBackground(modal));
     modalElement.appendChild(createModalBody(modal));
-    modal.setActive(modal.active);
+    if (modal.active)
+        modalElement.classList.add(ACTIVE);
     return modal;
 }
 

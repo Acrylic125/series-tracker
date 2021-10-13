@@ -60,12 +60,6 @@ export class SeriesTrackers {
 
     public addSeriesTracker(seriesTracker: SeriesTracker) {
         const seriesTrackerElement = createSeriesTracker(seriesTracker);
-        seriesTrackerElement.onclick = () => {
-            const modal = createTrackerModal(seriesTracker);
-            modal.modal.setActive(true);
-            document.body.appendChild(modal.modal.modalElement);
-        };
-        
         this.addElement(seriesTrackerElement);
     }
 

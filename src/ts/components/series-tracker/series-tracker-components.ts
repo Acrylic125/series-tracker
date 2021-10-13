@@ -32,13 +32,21 @@ export function createSeriesTrackerContent(seriesTracker: SeriesTracker) {
     const contentElement = document.createElement('article');
     contentElement.classList.add('series-tracker__content');
     contentElement.appendChild(createSeriesTrackerHeader(title));
-    const template = templates.getSelectedTemplate(),
-          data = templates.getSelectedTemplateData();
     const container = createDivWithClasses('w-100');
-    (template && data) &&
-      container.appendChild(template.createSeriesTrackerContent(data));
     contentElement.appendChild(container);
-    return contentElement;
+    const updateTrackerContent = () => {
+      const template = templates.getSelectedTemplate(),
+            data = templates.getSelectedTemplateData();
+      if (template && data) {
+        container.innerText = '';
+        container.appendChild(template.createSeriesTrackerContent(data));
+      }
+      console.log("ABC");
+    };
+    updateTrackerContent();
+    return {
+      contentElement, updateTrackerContent
+    };
 }
 
 export interface BackgroundCircle {
@@ -83,9 +91,16 @@ export function createSeriesTrackerBackground(circleColor: string, seriesTracker
 
 export function createSeriesTracker(seriesTracker: SeriesTracker) {
     const seriesTrackerElement = createDivWithClasses('series-tracker');
+    const trackerContent = createSeriesTrackerContent(seriesTracker);
     seriesTrackerElement.style.backgroundColor = seriesTracker.baseColor;
     seriesTrackerElement.id = seriesTracker.id;
     seriesTrackerElement.appendChild(createSeriesTrackerBackground(seriesTracker.circleColor, seriesTrackerElement));
-    seriesTrackerElement.appendChild(createSeriesTrackerContent(seriesTracker));
+    seriesTrackerElement.appendChild(trackerContent.contentElement);
+    seriesTrackerElement.onclick = () => {
+      const modal = createTrackerModal(seriesTracker);
+      modal.modal.setActive(true);
+      document.body.appendChild(modal.modal.modalElement);
+      modal.modal.onClose = () => trackerContent.updateTrackerContent();
+    };
     return seriesTrackerElement;
 }
