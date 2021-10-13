@@ -109,7 +109,10 @@ export function createModalHeaderContent(seriesTracker: SeriesTracker) {
 
 export function createModalHeader(seriesTracker: SeriesTracker) {
     const header = document.createElement('header');
-    header.appendChild(createTrackerTitle(seriesTracker.title));
+    const titleElement = createTrackerTitle(seriesTracker.title);
+    titleElement.addEventListener('input', () => seriesTracker.title = titleElement.value);
+
+    header.appendChild(titleElement);
     header.appendChild(createModalHeaderContent(seriesTracker));
     return header;
 }

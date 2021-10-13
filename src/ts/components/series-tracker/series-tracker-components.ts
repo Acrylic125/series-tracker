@@ -1,20 +1,22 @@
 import adaptiveResizers, { createPositionAdaptableElement } from "../../html-loaded/preloaders/adaptive-size";
 import { addTextAsHeightListener } from "../../html-loaded/preloaders/text-as-height";
 import { SeriesTracker } from "../../series/series";
+import { SeriesTrackerTemplate, SeriesTrackerTemplateData, SeriesTrackerTemplates } from "../../series/templates/series-tracker-template";
 import { Position } from "../../utils/html-utils";
 import { randInt } from "../../utils/utils";
 import { createDivWithClasses, createElementWithClasses, createInnerText } from "../global-components";
 import { createTrackerModal } from "./series-tracker-modal";
 
 export function createSeriesTrackerStageTitle(title?: string) {
-  const titleElement = createElementWithClasses('textarea',
-                                                     'text-as-height', 
-                                                     'title',
-                                                     'w-60',
-                                                     'font-size-2',
-                                                     'input-focus-indicator',
-                                                     'no-border',
-                                                     'no-outline') as HTMLTextAreaElement;
+  const titleElement = 
+  createElementWithClasses('textarea',
+    'text-as-height', 
+    'title',
+    'w-60',
+    'font-size-2',
+    'input-focus-indicator',
+    'no-border',
+    'no-outline') as HTMLTextAreaElement;
   titleElement.placeholder = 'Title';
   if (title) 
       titleElement.value = title;
@@ -29,23 +31,32 @@ export function createSeriesTrackerHeader(title: string) {
 
 export function createSeriesTrackerContent(seriesTracker: SeriesTracker) {
     const { title, templates } = seriesTracker;
-    const contentElement = document.createElement('article');
-    contentElement.classList.add('series-tracker__content');
-    contentElement.appendChild(createSeriesTrackerHeader(title));
-    const container = createDivWithClasses('w-100');
+    const contentElement = createElementWithClasses('article', 'series-tracker__content'),
+          titleElement = createSeriesTrackerHeader(title),
+          container = createDivWithClasses('w-100');;
+
+    contentElement.appendChild(titleElement);
     contentElement.appendChild(container);
-    const updateTrackerContent = () => {
-      const template = templates.getSelectedTemplate(),
-            data = templates.getSelectedTemplateData();
-      if (template && data) {
-        container.innerText = '';
-        container.appendChild(template.createSeriesTrackerContent(data));
-      }
-      console.log("ABC");
-    };
-    updateTrackerContent();
+
+    tryUpdateTemplateData();
     return {
       contentElement, updateTrackerContent
+    };
+
+    async function updateTemplateData(template: SeriesTrackerTemplate, data: SeriesTrackerTemplateData) {
+      container.innerText = '';
+      container.appendChild(template.createSeriesTrackerContent(data));
+    }
+
+    async function tryUpdateTemplateData() {
+      const template = templates.getSelectedTemplate(),
+            data = templates.getSelectedTemplateData();
+      (template && data) && updateTemplateData(template, data); 
+    }
+
+    async function updateTrackerContent() {
+      titleElement.innerText = seriesTracker.title;
+      tryUpdateTemplateData();
     };
 }
 
