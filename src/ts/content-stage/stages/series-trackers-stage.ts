@@ -3,7 +3,7 @@ import { ActionButton, bindRightClickMenu, createBoundedStageContent, createColo
 import { createSeriesTrackerComponent, createSeriesTrackerStageTitle } from '../../components/series-tracker/series-tracker-components';
 import { createTrackerModalDisplayer } from '../../components/series-tracker/series-tracker-modal';
 import { createTracker, Series, SeriesTracker } from '../../series/series';
-import { removeElementFromArray } from '../../utils/utils';
+import { removeElementFromArray, shifElementtLeft, shifElementtRight } from '../../utils/utils';
 import { ContentStageElements, FragmentedContentStage } from '../content-stage';
 import { getContentStageElement } from '../content-stage-manager';
 
@@ -21,9 +21,11 @@ function createAddSeriesTrackerButton(seriesTrackersDisplayer: SeriesTrackersDis
     const addSeriesTracker = createHorzCenteredActionButton(addSeriesTrackerButton);
     addSeriesTracker.classList.add('create-series-tracker');
     addSeriesTracker.onclick = () => {
-        const tracker = createTracker('No Title', {});
-        seriesTrackersDisplayer.series.trackers.push(tracker);
-        seriesTrackersDisplayer.appendTracker(tracker);
+        for (let index = 0; index < 100; index++) {
+            const tracker = createTracker('No Title', {});
+            seriesTrackersDisplayer.series.trackers.push(tracker);
+            seriesTrackersDisplayer.appendTracker(tracker);
+        }
     };
     return addSeriesTracker;
 }
@@ -76,9 +78,23 @@ export class SeriesTrackersDisplayer {
                         refresh();
                     }
                 },
+                {
+                    text: "Shift Left",
+                    onClick() {
+                        shifElementtLeft(displayer.series.trackers, tracker);
+                        refresh();
+                    }
+                },
+                {
+                    text: "Shift Right",
+                    onClick() {
+                        shifElementtRight(displayer.series.trackers, tracker);
+                        refresh();
+                    }
+                },
             ]
         });
-        displayer.appendElement(seriesTrackerComponent.seriesTrackerElement);
+        this.appendElement(seriesTrackerComponent.seriesTrackerElement);
     }
 
     public async refreshTrackers() {
