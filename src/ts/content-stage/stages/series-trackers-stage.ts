@@ -1,7 +1,9 @@
-import { ActionButton, createBoundedStageContent, createColorLine, createColumn, createColumns, createDivWithClasses, createHorzCenteredActionButton, createInnerText } from '../../components/global-components';
+import { clear } from 'console';
+import { ActionButton, bindRightClickMenu, createBoundedStageContent, createColorLine, createColumn, createColumns, createDivWithClasses, createHorzCenteredActionButton, createInnerText } from '../../components/global-components';
 import { createSeriesTracker, createSeriesTrackerStageTitle } from '../../components/series-tracker/series-tracker-components';
 import { createTrackerModal } from '../../components/series-tracker/series-tracker-modal';
 import { createTracker, Series, SeriesTracker } from '../../series/series';
+import { removeElementFromArray } from '../../utils/utils';
 import { ContentStageElements, FragmentedContentStage } from '../content-stage';
 import { getContentStageElement } from '../content-stage-manager';
 
@@ -58,13 +60,36 @@ export class SeriesTrackers {
         columns[col].appendChild(elemenet);
     }
 
-    public addSeriesTracker(seriesTracker: SeriesTracker) {
+    public addSeriesTracker(trackers: SeriesTracker[], seriesTracker: SeriesTracker) {
+        const addSeriesTrackerCallback = () => this.addSeriesTrackers(trackers);
+        const clearCallback = () => this.clear();
+        
         const seriesTrackerElement = createSeriesTracker(seriesTracker);
-        this.addElement(seriesTrackerElement);
+        bindRightClickMenu(seriesTrackerElement.seriesTrackerElement, {
+            buttons: [
+              {
+                text: "Edit",
+                onClick: seriesTrackerElement.openModal
+              },
+              {
+                text: "Delete",
+                onClick() {
+                    removeElementFromArray(trackers, seriesTracker);
+                    clearCallback();
+                    addSeriesTrackerCallback();
+                }
+              },
+            ]
+          })
+        this.addElement(seriesTrackerElement.seriesTrackerElement);
+    }
+
+    public addSeriesTrackers(trackers: SeriesTracker[]) {
+        trackers.forEach((tracker) => this.addSeriesTracker(trackers, tracker));
     }
 
     public addSeriesTrackersBySeries(series: Series) {
-        series.trackers.forEach((tracker) => this.addSeriesTracker(tracker));
+        this.addSeriesTrackers(series.trackers);
     }
 
 }

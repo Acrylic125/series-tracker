@@ -6,6 +6,7 @@ import { Position } from "../../utils/html-utils";
 import { randInt } from "../../utils/utils";
 import { bindRightClickMenu, createDivWithClasses, createElementWithClasses, createInnerText } from "../global-components";
 import { createTrackerModal } from "./series-tracker-modal";
+import { SeriesTrackers } from "../../content-stage/stages/series-trackers-stage";
 
 export function createSeriesTrackerStageTitle(title?: string) {
   const titleElement = 
@@ -110,21 +111,12 @@ export function createSeriesTracker(seriesTracker: SeriesTracker) {
     seriesTrackerElement.appendChild(createSeriesTrackerBackground(seriesTracker.circleColor, seriesTrackerElement));
     seriesTrackerElement.appendChild(trackerContent.contentElement);
     
-    seriesTrackerElement.addEventListener('click', () => {
+    const openModal =  () => {
       const modal = createTrackerModal(seriesTracker);
       modal.modal.setActive(true);
       document.body.appendChild(modal.modal.modalElement);
       modal.modal.onClose = () => trackerContent.updateTrackerContent();
-    });
-    bindRightClickMenu(seriesTrackerElement, {
-      buttons: [
-        {
-          text: "Delete",
-          onClick() {
-            console.log("Test");
-          }
-        }
-      ]
-    })
-    return seriesTrackerElement;
+    };
+    seriesTrackerElement.addEventListener('click', openModal);
+    return { seriesTrackerElement, openModal};
 }

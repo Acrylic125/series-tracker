@@ -316,15 +316,15 @@ export function createRightClickMenuButton(button: RightClickMenuButton) {
 }
 
 // <ol class="right-click-menu rounded-1">
-//   <li><button>Edit</button></li>
-//   <li><button>Delete</button></li>
-//   <li><button>Duplicate</button></li>
+//   <li></li>
 // </ol>
 export function createRightClickMenu(rightClickMenu: RightClickMenu) {
     const rightClickMenuElement = createElementWithClasses('ol', 'right-click-menu', 'rounded-1');
     rightClickMenu.buttons.forEach((button) => {
         const itemElement = document.createElement('li');
-        itemElement.appendChild(createRightClickMenuButton(button));
+        const buttonElement = createRightClickMenuButton(button);
+        buttonElement.addEventListener('click', () => rightClickMenuElement.remove());
+        itemElement.appendChild(buttonElement);
         rightClickMenuElement.appendChild(itemElement);
     });
     return rightClickMenuElement;
@@ -357,6 +357,6 @@ export function bindRightClickMenu(element: HTMLElement, rightClickMenu: RightCl
         });
         onElementClickOutside(rightClickMenuElement, () => 
             rightClickMenuElement.remove());
-        element.appendChild(rightClickMenuElement);
+        document.body.appendChild(rightClickMenuElement);
     });
 }
