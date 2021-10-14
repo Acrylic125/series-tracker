@@ -1,12 +1,5 @@
 import { setPosition } from "../../utils/html-utils";
 
-export async function initTooltipListeners() {
-    document.querySelectorAll('.tooltip-region').forEach(async (tooltipRegion) => {
-        if (tooltipRegion instanceof HTMLElement) 
-            await addTooltipListener(tooltipRegion);
-    });
-}
-
 async function getTooltipsFromRegion(tooltipRegion: HTMLElement) {
     const toolTips: HTMLElement[] = new Array();
     tooltipRegion.querySelectorAll('.tooltip').forEach((tooltip) => {

@@ -1,6 +1,6 @@
 import iro from "@jaames/iro";
 import { text } from "stream/consumers";
-import { addTooltipListener } from "../html-loaded/preloaders/tooltip";
+import { addTooltipListener } from "./modifiers/tooltip";
 import { hideElement, hideOrShowElement } from "../utils/html-utils";
 import { undefinedOrDefault } from "../utils/utils";
 

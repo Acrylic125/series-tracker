@@ -1,4 +1,3 @@
-import { reloadGlobalScripts } from "../html-loaded/preloaders/html-preloaders";
 import { stageRegistry } from "../registry/registries";
 import { ContentStage } from "./content-stage";
 
@@ -16,7 +15,6 @@ function clearStage() {
 export async function useStage(stage: ContentStage) {
     clearStage();
     await stage.initialise();
-    await reloadGlobalScripts();
     getContentStageElement().scrollTo(0, 0);
 }
 

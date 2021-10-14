@@ -84,7 +84,7 @@ function createSeriesTrackerStageElements(series: Series): SeriesTrackerStageEle
             // Initialise event listeners
             titleELement.addEventListener('input', () => 
                 series.title = titleELement.value);
-
+            
             // Append elements to stageContent
             stageContent.appendChild(titleELement);
             stageContent.appendChild(this.colorLine);

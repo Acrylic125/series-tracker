@@ -39,7 +39,7 @@
 //           </div>
 //         </div>
 
-import { addTextAsHeightListener } from "../../html-loaded/preloaders/text-as-height";
+import { addTextAsHeightListener } from "../modifiers/text-as-height";
 import { seriesTemplateRegistry } from "../../registry/registries";
 import { SeriesTracker } from "../../series/series";
 import { episodesTemplate } from "../../series/templates/episodes-template";

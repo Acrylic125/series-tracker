@@ -1,5 +1,5 @@
 import iro from '@jaames/iro';
-import { createColorPicker } from '../../components/global-components';
+import { createColorPicker } from '../global-components';
 
 export function reloadColorPickers() {
     document.querySelectorAll('.color-picker-input').forEach((colorPickerInput) => {
