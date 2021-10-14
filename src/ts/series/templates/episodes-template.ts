@@ -42,12 +42,13 @@ const createEpisodeButton: ActionButton = {
 // <textarea class="text-as-height title input-focus-indicator no-border no-outline" type="text"
 //   placeholder="Title"></textarea>
 export function createEpisodesContainerItemTitle(title?: string) {
-    const titleElement = createElementWithClasses('textarea',
-                                                       'text-as-height', 
-                                                       'title',
-                                                       'input-focus-indicator',
-                                                       'no-border',
-                                                       'no-outline') as HTMLTextAreaElement;
+    const titleElement = 
+    createElementWithClasses('textarea',
+        'text-as-height', 
+        'title',
+        'input-focus-indicator',
+        'no-border',
+        'no-outline') as HTMLTextAreaElement;
     titleElement.placeholder = 'Title';
     if (title) 
         titleElement.value = title;

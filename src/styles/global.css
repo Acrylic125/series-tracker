@@ -163,7 +163,7 @@ body {
 .action-button {
   display: block;
   padding: 0.5em;
-  font-size: 150%;
+  font-size: 100%;
   font-weight: bold;
   border: none;
   background-color: var(--main-action-button-color);
