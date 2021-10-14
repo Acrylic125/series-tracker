@@ -1,7 +1,7 @@
 import iro from "@jaames/iro";
 import { text } from "stream/consumers";
 import { addTooltipListener } from "./modifiers/tooltip";
-import { hideElement, hideOrShowElement } from "../utils/html-utils";
+import { hideElement, hideOrShowElement, setPosition } from "../utils/html-utils";
 import { undefinedOrDefault } from "../utils/utils";
 
 const ACTIVE = 'active';
@@ -330,11 +330,33 @@ export function createRightClickMenu(rightClickMenu: RightClickMenu) {
     return rightClickMenuElement;
 }
 
-export function bindRightClickMenu(element: HTMLElement, rightClickMenu: RightClickMenu) {
-    var rightClickMenuElement: HTMLElement;
-    element.addEventListener('contextmenu', () => {
-        (rightClickMenuElement) && rightClickMenuElement.remove();
-        rightClickMenuElement = createRightClickMenu(rightClickMenu);
-        
+class RightClickMenuState {
+    private rightClickMenuElement?: HTMLElement
+
+    public closeRightClickMenu() {
+        const rightClickMenuElement = this.rightClickMenuElement;
+        if (rightClickMenuElement)
+            rightClickMenuElement.remove();
+    }
+
+    public useRightClickMenu(rightClickMenuElement: HTMLElement) {
+        this.closeRightClickMenu();
+        this.rightClickMenuElement = rightClickMenuElement;
+    }
+}
+
+export const globalRightClickMenuState = new RightClickMenuState();
+
+export function bindRightClickMenu(element: HTMLElement, rightClickMenu: RightClickMenu, rightClickMenuState: RightClickMenuState = globalRightClickMenuState) {
+    element.addEventListener('contextmenu', (event) => {
+        var rightClickMenuElement = createRightClickMenu(rightClickMenu);
+        rightClickMenuState.useRightClickMenu(rightClickMenuElement);
+        setPosition(rightClickMenuElement, {
+            x: event.x,
+            y: event.y
+        });
+        onElementClickOutside(rightClickMenuElement, () => 
+            rightClickMenuElement.remove());
+        element.appendChild(rightClickMenuElement);
     });
 }
