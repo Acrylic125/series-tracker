@@ -1,6 +1,6 @@
 import { clear } from 'console';
 import { ActionButton, bindRightClickMenu, createBoundedStageContent, createColorLine, createColumn, createColumns, createDivWithClasses, createHorzCenteredActionButton, createInnerText } from '../../components/global-components';
-import { createSeriesTracker, createSeriesTrackerStageTitle } from '../../components/series-tracker/series-tracker-components';
+import { createSeriesTrackerComponent, createSeriesTrackerStageTitle } from '../../components/series-tracker/series-tracker-components';
 import { createTrackerModal } from '../../components/series-tracker/series-tracker-modal';
 import { createTracker, Series, SeriesTracker } from '../../series/series';
 import { removeElementFromArray } from '../../utils/utils';
@@ -20,8 +20,10 @@ const addSeriesTrackerButton: ActionButton = {
 function createAddSeriesTrackerButton(seriesTrackers: SeriesTrackers) {
     const addSeriesTracker = createHorzCenteredActionButton(addSeriesTrackerButton);
     addSeriesTracker.classList.add('create-series-tracker');
-    addSeriesTracker.onclick = () => 
-        seriesTrackers.addSeriesTracker(createTracker('No Title', {}));
+    addSeriesTracker.onclick = () => {
+        seriesTrackers.series.trackers.push(createTracker('No Title', {}));
+        seriesTrackers.update();
+    };
     return addSeriesTracker;
 }
 
@@ -36,7 +38,7 @@ export class SeriesTrackers {
     private columns: HTMLElement[] = createColumns(2);
     private currentColumn = 0;
 
-    constructor() {
+    constructor(public series: Series) {
         this.columns.forEach((column) => this.element.appendChild(column));
     }
 
@@ -46,56 +48,46 @@ export class SeriesTrackers {
     }
 
     public clear() {
+        this.currentColumn = 0;
         this.columns.forEach((column) => 
             column.innerText = '');
     }
 
     private addElement(elemenet: HTMLElement) {
         const columns = this.columns;
-        var col = this.currentColumn++;
-        if (col >= columns.length) {
-            col = 0;
-            this.currentColumn = 1;
-        }
-        columns[col].appendChild(elemenet);
+        columns[this.currentColumn++ % columns.length].appendChild(elemenet);
     }
 
-    public addSeriesTracker(trackers: SeriesTracker[], seriesTracker: SeriesTracker) {
-        const addSeriesTrackerCallback = () => this.addSeriesTrackers(trackers);
-        const clearCallback = () => this.clear();
-        
-        const seriesTrackerElement = createSeriesTracker(seriesTracker);
-        bindRightClickMenu(seriesTrackerElement.seriesTrackerElement, {
+    public async update() {
+        this.clear();
+        const update = async () => this.update();
+        const trackers = this;
+        this.series.trackers.forEach(addTracker);
+
+        async function addTracker(tracker: SeriesTracker) {
+            const seriesTrackerComponent = createSeriesTrackerComponent(tracker);
+            bindRightClickMenu(seriesTrackerComponent.seriesTrackerElement, {
             buttons: [
-              {
-                text: "Edit",
-                onClick: seriesTrackerElement.openModal
-              },
-              {
-                text: "Delete",
-                onClick() {
-                    removeElementFromArray(trackers, seriesTracker);
-                    clearCallback();
-                    addSeriesTrackerCallback();
-                }
-              },
-            ]
-          })
-        this.addElement(seriesTrackerElement.seriesTrackerElement);
-    }
-
-    public addSeriesTrackers(trackers: SeriesTracker[]) {
-        trackers.forEach((tracker) => this.addSeriesTracker(trackers, tracker));
-    }
-
-    public addSeriesTrackersBySeries(series: Series) {
-        this.addSeriesTrackers(series.trackers);
+                {
+                    text: "Edit",
+                    onClick: seriesTrackerComponent.openModal
+                },
+                {
+                    text: "Delete",
+                    onClick() {
+                        removeElementFromArray(trackers.series.trackers, tracker);
+                        update();
+                    }
+                },
+            ]})
+            trackers.addElement(seriesTrackerComponent.seriesTrackerElement);
+        }
     }
 
 }
 
 function createSeriesTrackerStageElements(series: Series): SeriesTrackerStageElements {
-    const seriesTrackers = new SeriesTrackers();
+    const seriesTrackers = new SeriesTrackers(series);
     return {
         seriesTrackers,
         colorLine: createColorLine(series.colorStripColor),
@@ -105,7 +97,7 @@ function createSeriesTrackerStageElements(series: Series): SeriesTrackerStageEle
                   stageContent = createBoundedStageContent(),
                   titleELement = createSeriesTrackerStageTitle(series.title);
             
-            this.seriesTrackers.addSeriesTrackersBySeries(series);
+            this.seriesTrackers.update();
             // Initialise event listeners
             titleELement.addEventListener('input', () => 
                 series.title = titleELement.value);

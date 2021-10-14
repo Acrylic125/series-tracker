@@ -101,7 +101,7 @@ export function createSeriesTrackerBackground(circleColor: string, seriesTracker
     return background;
 }
 
-export function createSeriesTracker(seriesTracker: SeriesTracker) {
+export function createSeriesTrackerComponent(seriesTracker: SeriesTracker) {
     const seriesTrackerElement = createDivWithClasses('series-tracker');
     const trackerContent = createSeriesTrackerContent(seriesTracker);
     

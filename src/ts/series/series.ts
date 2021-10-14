@@ -48,59 +48,8 @@ export function createDummy(title: string): Series {
             createTracker('Seasons', {
                 title: "Season 1", currentEpisode: 24
             }, {
-                title: "Season 2", currentEpisode: 12
-            }, {
-                title: "Season 2 part 2", currentEpisode: 12
-            }),
-            createTracker('OVAs', {
-                title: "Season 1", currentEpisode: 3
-            }, {
-                title: "Season 2", currentEpisode: 3
-            }),
-            createTracker('Light Novel', {
-                title: "Season 1", currentEpisode: 3
-            }, {
-                title: "Season 2", currentEpisode: 3
-            }, {
-                title: "Volume 2", currentEpisode: 3
-            }, {
-                title: "Volume 2", currentEpisode: 3
-            }, {
-                title: "Volume 2", currentEpisode: 3
-            }, {
-                title: "Volume 2", currentEpisode: 3
-            }, {
-                title: "Volume 2", currentEpisode: 3
-            }, {
-                title: "Volume 2", currentEpisode: 3
-            }, {
-                title: "Volume 2", currentEpisode: 3
-            }, {
-                title: "Volume 2", currentEpisode: 3
-            }, {
-                title: "Volume 2", currentEpisode: 3
-            }, {
-                title: "Volume 2", currentEpisode: 3
-            }, {
-                title: "Volume 2", currentEpisode: 3
-            }, {
-                title: "Volume 2", currentEpisode: 3
-            }, {
-                title: "Volume 2", currentEpisode: 3
-            }, {
-                title: "Volume 2", currentEpisode: 3
-            }),
-            createTracker('Movies', {
-                title: "A really long title lol Idk why but whatever", currentEpisode: 3
-            }),
-            createTracker('Specials', {
-                title: "Special 1 - WHatever", currentEpisode: 3
-            }, {
-                title: "Special 2 - Another Title", currentEpisode: 3
-            }),
-            createTracker('Diary', {
-                title: "Diary 1", currentEpisode: 12
-            }),
+                title: "Season 2", currentEpisode: 24
+            })
         ],
         tags: [],
         getIdentifiers() {
