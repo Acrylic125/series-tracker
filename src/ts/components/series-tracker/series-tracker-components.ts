@@ -5,7 +5,7 @@ import { SeriesTrackerTemplate, SeriesTrackerTemplateData, SeriesTrackerTemplate
 import { Position } from "../../utils/html-utils";
 import { randInt } from "../../utils/utils";
 import { bindRightClickMenu, createDivWithClasses, createElementWithClasses, createInnerText } from "../global-components";
-import { createTrackerModal } from "./series-tracker-modal";
+import { createTrackerModalDisplayer } from "./series-tracker-modal";
 import { SeriesTrackersDisplayer } from "../../content-stage/stages/series-trackers-stage";
 
 export function createSeriesTrackerStageTitle(title?: string) {
@@ -112,7 +112,7 @@ export function createSeriesTrackerComponent(seriesTracker: SeriesTracker) {
     seriesTrackerElement.appendChild(trackerContent.contentElement);
     
     const openModal =  () => {
-      const modal = createTrackerModal(seriesTracker);
+      const modal = createTrackerModalDisplayer(seriesTracker);
       modal.modal.setActive(true);
       document.body.appendChild(modal.modal.modalElement);
       modal.modal.onClose = () => trackerContent.updateTrackerContent();

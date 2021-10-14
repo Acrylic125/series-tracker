@@ -52,11 +52,11 @@ import { createDivWithClasses, createElementWithClasses, createInnerText, create
 export function createTrackerTitle(title?: string) {
     const titleElement =
          createElementWithClasses('textarea', 
-                                  'text-as-height', 
-                                  'title',
-                                  'input-focus-indicator', 
-                                  'no-border',
-                                  'no-outline') as HTMLTextAreaElement;
+            'text-as-height', 
+            'title',
+            'input-focus-indicator', 
+            'no-border',
+            'no-outline') as HTMLTextAreaElement;
     titleElement.placeholder = 'New Tracker Title';
     if (title) 
         titleElement.value = title;
@@ -121,7 +121,7 @@ export function createModalHeader(seriesTracker: SeriesTracker) {
 //   <option value="episodes-template">Episodes Template</option>
 //   <option value="checklist-template">Checlick Template</option>
 // </select>
-export function createTrackerSelector(trackerModal: TrackerModal) {
+export function createTrackerSelector(trackerModal: TrackerModalDisplayer) {
     const selector = createElementWithClasses('select', 'modal__tracker-template-selector', 'title') as HTMLSelectElement;
     seriesTemplateRegistry.getRegistry().forEach((template) => {
         const option = createInnerText('option', template.title) as HTMLInputElement;
@@ -137,7 +137,7 @@ export function createTrackerSelector(trackerModal: TrackerModal) {
 //  <p class="subtitle w-60 center-horz">Select a template to use. The selected template will be displayed.</p>
 //  <div class="modal__tracker-template-content"> </div>
 // </div>
-export function createTrackerContent(trackerModal: TrackerModal) {
+export function createTrackerContent(trackerModal: TrackerModalDisplayer) {
     const content = createDivWithClasses('modal__tracker-content', 'rounded-2');
     content.appendChild(trackerModal.templateSelectorElement);
     content.appendChild(createInnerText('p', 'Select a template to use. The selected template will be displayed.', 'subtitle', 'w-60', 'center-horz'));
@@ -146,7 +146,7 @@ export function createTrackerContent(trackerModal: TrackerModal) {
     return content;
 }
 
-export class TrackerModal {
+export class TrackerModalDisplayer {
     
     public modal: Modal 
     public templateSelectorElement = createTrackerSelector(this);
@@ -170,6 +170,6 @@ export class TrackerModal {
     }
 }
 
-export function createTrackerModal(seriesTracker: SeriesTracker): TrackerModal {
-    return new TrackerModal(seriesTracker);
+export function createTrackerModalDisplayer(seriesTracker: SeriesTracker): TrackerModalDisplayer {
+    return new TrackerModalDisplayer(seriesTracker);
 }

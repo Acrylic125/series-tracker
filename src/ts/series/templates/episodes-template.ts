@@ -1,8 +1,8 @@
-import { ActionButton, createActionButton, createDivWithClasses, createElementWithClasses, createInnerText } from "../../components/global-components";
+import { ActionButton, bindRightClickMenu, createActionButton, createDivWithClasses, createElementWithClasses, createInnerText } from "../../components/global-components";
 import { createSeriesTrackerItem } from "../../components/series-tracker/series-tracker-content-item";
 import { addTextAsHeightListener } from "../../components/modifiers/text-as-height";
 import { Parser } from "../../utils/parser";
-import { undefinedOrDefault } from "../../utils/utils";
+import { removeElementFromArray, undefinedOrDefault } from "../../utils/utils";
 import { SeriesTrackerTemplate, SeriesTrackerTemplateData } from "./series-tracker-template";
 
 export interface EpisodesTemplateDataItem {
@@ -70,26 +70,48 @@ export function createEpisodesContainerItemInput(currentEpisode?: number) {
 // <div class="template__episodes-container-item rounded-1">
 //   <p class="text-lighter">Last Watched<br>Episode:</p>
 // </div>
-export function createEpisodesContainerItem(item: EpisodesTemplateDataItem) {
+export function createEpisodesContainerItem(displayer: EpisodeContainerDisplayer, item: EpisodesTemplateDataItem) {
     const itemElement = createDivWithClasses('template__episodes-container-item', 'rounded-1');
     const titleElement = createEpisodesContainerItemTitle(item.title),
           currentEpisodeElement = createEpisodesContainerItemInput(item.currentEpisode);
-    
+
     titleElement.addEventListener('input', () => item.title = (titleElement.value === '') ? undefined : titleElement.value);
     currentEpisodeElement.addEventListener('input', () => item.currentEpisode = (currentEpisodeElement.value) ? parseInt(currentEpisodeElement.value) : 0);
 
     itemElement.appendChild(titleElement);
     itemElement.appendChild(createInnerText('p', 'Last Watched\nEpisode:', 'text-lighter'));
     itemElement.appendChild(currentEpisodeElement);
+
+    bindRightClickMenu(itemElement, {
+        buttons: [{
+            text: "Delete",
+            onClick() {
+                removeElementFromArray(displayer.items, item);
+                displayer.refresh();
+            }
+        }]
+    });
     return itemElement;
 }
 
+export interface EpisodeContainerDisplayer {
+    refresh(): Promise<void>
+    items: EpisodesTemplateDataItem[]
+    containerElement: HTMLElement
+}
+
 // <div class="template__episodes-container center-horz"> </div>
-export function createEpisodesContainer(items: EpisodesTemplateDataItem[]) {
-    const container = createDivWithClasses('template__episodes-container', 'center-horz');
-    items.forEach((item) => 
-        container.appendChild(createEpisodesContainerItem(item)));
-    return container;
+export function createEpisodesContainerDisplayer(items: EpisodesTemplateDataItem[]): EpisodeContainerDisplayer {
+    const containerElement = createDivWithClasses('template__episodes-container', 'center-horz');
+    const displayer = { containerElement, items, refresh };
+    refresh();
+    return displayer;
+
+    async function refresh() {
+        containerElement.innerHTML = '';
+        items.forEach((item) => 
+            containerElement.appendChild(createEpisodesContainerItem(displayer, item)));
+    }
 }
 
 export function createEpisodesTemplate(): SeriesTrackerTemplate<EpisodesTemplateData> {
@@ -114,7 +136,8 @@ export function createEpisodesTemplate(): SeriesTrackerTemplate<EpisodesTemplate
         // <div class="template__episodes-container center-horz"> </div>
         async applyModalContent(trackerModalContent: HTMLElement, templateData: EpisodesTemplateData) {
             validateEpisodesTemplateData(templateData);
-            const container = createEpisodesContainer(templateData.items);
+            const containerDisplayer = createEpisodesContainerDisplayer(templateData.items);
+            const containerDisplayerElement = containerDisplayer.containerElement;
             const buttonElement = createActionButton(createEpisodeButton);
             buttonElement.classList.add('center-horz');
             trackerModalContent.appendChild(buttonElement);
@@ -122,9 +145,9 @@ export function createEpisodesTemplate(): SeriesTrackerTemplate<EpisodesTemplate
                 const containerItem = {};
                 validateEpisodesTemplateData(templateData);
                 templateData.items.push(containerItem);
-                container.appendChild(createEpisodesContainerItem(containerItem));
+                containerDisplayerElement.appendChild(createEpisodesContainerItem(containerDisplayer, containerItem));
             };
-            trackerModalContent.appendChild(container);
+            trackerModalContent.appendChild(containerDisplayerElement);
         }
     };
 }

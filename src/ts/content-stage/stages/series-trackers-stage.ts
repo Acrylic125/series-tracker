@@ -1,7 +1,7 @@
 import { clear } from 'console';
 import { ActionButton, bindRightClickMenu, createBoundedStageContent, createColorLine, createColumn, createColumns, createDivWithClasses, createHorzCenteredActionButton, createInnerText } from '../../components/global-components';
 import { createSeriesTrackerComponent, createSeriesTrackerStageTitle } from '../../components/series-tracker/series-tracker-components';
-import { createTrackerModal } from '../../components/series-tracker/series-tracker-modal';
+import { createTrackerModalDisplayer } from '../../components/series-tracker/series-tracker-modal';
 import { createTracker, Series, SeriesTracker } from '../../series/series';
 import { removeElementFromArray } from '../../utils/utils';
 import { ContentStageElements, FragmentedContentStage } from '../content-stage';
@@ -29,7 +29,7 @@ function createAddSeriesTrackerButton(seriesTrackersDisplayer: SeriesTrackersDis
 }
 
 interface SeriesTrackerStageElements extends ContentStageElements {
-    readonly seriesTrackers: SeriesTrackersDisplayer
+    readonly seriesTrackersDisplayer: SeriesTrackersDisplayer
     readonly addSeriesTracker: HTMLElement
     readonly colorLine: HTMLElement
 }
@@ -54,7 +54,7 @@ export class SeriesTrackersDisplayer {
             column.innerText = '');
     }
 
-    private addElement(elemenet: HTMLElement) {
+    private appendElement(elemenet: HTMLElement) {
         const columns = this.columns;
         columns[this.currentColumn++ % columns.length].appendChild(elemenet);
     }
@@ -78,7 +78,7 @@ export class SeriesTrackersDisplayer {
                 },
             ]
         });
-        displayer.addElement(seriesTrackerComponent.seriesTrackerElement);
+        displayer.appendElement(seriesTrackerComponent.seriesTrackerElement);
     }
 
     public async refreshTrackers() {
@@ -89,17 +89,17 @@ export class SeriesTrackersDisplayer {
 }
 
 function createSeriesTrackerStageElements(series: Series): SeriesTrackerStageElements {
-    const seriesTrackers = new SeriesTrackersDisplayer(series);
+    const seriesTrackersDisplayer = new SeriesTrackersDisplayer(series);
     return {
-        seriesTrackers,
+        seriesTrackersDisplayer,
         colorLine: createColorLine(series.colorStripColor),
-        addSeriesTracker: createAddSeriesTrackerButton(seriesTrackers),
+        addSeriesTracker: createAddSeriesTrackerButton(seriesTrackersDisplayer),
         toFragment() {
             const fragment = new DocumentFragment(),
                   stageContent = createBoundedStageContent(),
                   titleELement = createSeriesTrackerStageTitle(series.title);
             
-            this.seriesTrackers.refreshTrackers();
+            this.seriesTrackersDisplayer.refreshTrackers();
             // Initialise event listeners
             titleELement.addEventListener('input', () => 
                 series.title = titleELement.value);
@@ -107,8 +107,8 @@ function createSeriesTrackerStageElements(series: Series): SeriesTrackerStageEle
             // Append elements to stageContent
             stageContent.appendChild(titleELement);
             stageContent.appendChild(this.colorLine);
-            stageContent.appendChild(createAddSeriesTrackerButton(this.seriesTrackers));
-            stageContent.appendChild(this.seriesTrackers.element);
+            stageContent.appendChild(createAddSeriesTrackerButton(this.seriesTrackersDisplayer));
+            stageContent.appendChild(this.seriesTrackersDisplayer.element);
             fragment.appendChild(stageContent);
             return fragment;
         }
