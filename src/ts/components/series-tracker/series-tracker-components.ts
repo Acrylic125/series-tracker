@@ -4,7 +4,7 @@ import { SeriesTracker } from "../../series/series";
 import { SeriesTrackerTemplate, SeriesTrackerTemplateData, SeriesTrackerTemplates } from "../../series/templates/series-tracker-template";
 import { Position } from "../../utils/html-utils";
 import { randInt } from "../../utils/utils";
-import { createDivWithClasses, createElementWithClasses, createInnerText } from "../global-components";
+import { bindRightClickMenu, createDivWithClasses, createElementWithClasses, createInnerText } from "../global-components";
 import { createTrackerModal } from "./series-tracker-modal";
 
 export function createSeriesTrackerStageTitle(title?: string) {
@@ -103,15 +103,28 @@ export function createSeriesTrackerBackground(circleColor: string, seriesTracker
 export function createSeriesTracker(seriesTracker: SeriesTracker) {
     const seriesTrackerElement = createDivWithClasses('series-tracker');
     const trackerContent = createSeriesTrackerContent(seriesTracker);
+    
     seriesTrackerElement.style.backgroundColor = seriesTracker.baseColor;
     seriesTrackerElement.id = seriesTracker.id;
+    
     seriesTrackerElement.appendChild(createSeriesTrackerBackground(seriesTracker.circleColor, seriesTrackerElement));
     seriesTrackerElement.appendChild(trackerContent.contentElement);
-    seriesTrackerElement.onclick = () => {
+    
+    seriesTrackerElement.addEventListener('click', () => {
       const modal = createTrackerModal(seriesTracker);
       modal.modal.setActive(true);
       document.body.appendChild(modal.modal.modalElement);
       modal.modal.onClose = () => trackerContent.updateTrackerContent();
-    };
+    });
+    bindRightClickMenu(seriesTrackerElement, {
+      buttons: [
+        {
+          text: "Delete",
+          onClick() {
+            console.log("Test");
+          }
+        }
+      ]
+    })
     return seriesTrackerElement;
 }

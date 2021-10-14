@@ -298,3 +298,43 @@ export function createColorPicker(options?: ColorPickerOptions) {
     colorPickerLiteral.activate(colorPickerLiteral.active);
     return colorPickerLiteral;
 }
+
+export interface RightClickMenuButton {
+    onClick(event: MouseEvent): void
+    text: string 
+}
+
+export interface RightClickMenu {
+    buttons: RightClickMenuButton[]
+}
+
+// <button> </button>
+export function createRightClickMenuButton(button: RightClickMenuButton) {
+    const buttonElement = createInnerText('button', button.text);
+    buttonElement.onclick = button.onClick;
+    return buttonElement;
+}
+
+// <ol class="right-click-menu rounded-1">
+//   <li><button>Edit</button></li>
+//   <li><button>Delete</button></li>
+//   <li><button>Duplicate</button></li>
+// </ol>
+export function createRightClickMenu(rightClickMenu: RightClickMenu) {
+    const rightClickMenuElement = createElementWithClasses('ol', 'right-click-menu', 'rounded-1');
+    rightClickMenu.buttons.forEach((button) => {
+        const itemElement = document.createElement('li');
+        itemElement.appendChild(createRightClickMenuButton(button));
+        rightClickMenuElement.appendChild(itemElement);
+    });
+    return rightClickMenuElement;
+}
+
+export function bindRightClickMenu(element: HTMLElement, rightClickMenu: RightClickMenu) {
+    var rightClickMenuElement: HTMLElement;
+    element.addEventListener('contextmenu', () => {
+        (rightClickMenuElement) && rightClickMenuElement.remove();
+        rightClickMenuElement = createRightClickMenu(rightClickMenu);
+        
+    });
+}

@@ -291,7 +291,7 @@ ol.right-click-menu > li > button {
   border: 0;
 }
 
-ol.right-click-menu > li > button:hover {
+ol.right-click-menu > li:hover {
   background-color: #277bb8;
 }
 
