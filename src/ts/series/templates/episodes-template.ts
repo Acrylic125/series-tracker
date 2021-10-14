@@ -2,7 +2,7 @@ import { ActionButton, bindRightClickMenu, createActionButton, createDivWithClas
 import { createSeriesTrackerItem } from "../../components/series-tracker/series-tracker-content-item";
 import { addTextAsHeightListener } from "../../components/modifiers/text-as-height";
 import { Parser } from "../../utils/parser";
-import { removeElementFromArray, undefinedOrDefault } from "../../utils/utils";
+import { removeElementFromArray, shifElementtLeft, shifElementtRight, undefinedOrDefault } from "../../utils/utils";
 import { SeriesTrackerTemplate, SeriesTrackerTemplateData } from "./series-tracker-template";
 
 export interface EpisodesTemplateDataItem {
@@ -83,13 +83,29 @@ export function createEpisodesContainerItem(displayer: EpisodeContainerDisplayer
     itemElement.appendChild(currentEpisodeElement);
 
     bindRightClickMenu(itemElement, {
-        buttons: [{
-            text: "Delete",
-            onClick() {
-                removeElementFromArray(displayer.items, item);
-                displayer.refresh();
+        buttons: [
+            {
+                text: "Delete",
+                onClick() {
+                    removeElementFromArray(displayer.items, item);
+                    displayer.refresh();
+                }
+            },
+            {
+                text: "Shift Left",
+                onClick() {
+                    shifElementtLeft(displayer.items, item);
+                    displayer.refresh();
+                }
+            },
+            {
+                text: "Shift Right",
+                onClick() {
+                    shifElementtRight(displayer.items, item);
+                    displayer.refresh();
+                }
             }
-        }]
+        ]
     });
     return itemElement;
 }

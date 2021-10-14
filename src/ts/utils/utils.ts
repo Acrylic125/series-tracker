@@ -146,7 +146,7 @@ export function shifElementtLeft<T>(array: T[], element: T, wrap = true) {
  */
  export function shifElementtRightByIndex<T>(array: T[], index: number, wrap = true) {
     var swapIndex = index + 1;
-    if (index === array.length) {
+    if (index === array.length - 1) {
         if (!wrap)
             return;
         swapIndex = 0;
