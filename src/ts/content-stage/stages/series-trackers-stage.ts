@@ -17,23 +17,24 @@ const addSeriesTrackerButton: ActionButton = {
     singular: true
 }
 
-function createAddSeriesTrackerButton(seriesTrackers: SeriesTrackers) {
+function createAddSeriesTrackerButton(seriesTrackersDisplayer: SeriesTrackersDisplayer) {
     const addSeriesTracker = createHorzCenteredActionButton(addSeriesTrackerButton);
     addSeriesTracker.classList.add('create-series-tracker');
     addSeriesTracker.onclick = () => {
-        seriesTrackers.series.trackers.push(createTracker('No Title', {}));
-        seriesTrackers.update();
+        const tracker = createTracker('No Title', {});
+        seriesTrackersDisplayer.series.trackers.push(tracker);
+        seriesTrackersDisplayer.appendTracker(tracker);
     };
     return addSeriesTracker;
 }
 
 interface SeriesTrackerStageElements extends ContentStageElements {
-    readonly seriesTrackers: SeriesTrackers
+    readonly seriesTrackers: SeriesTrackersDisplayer
     readonly addSeriesTracker: HTMLElement
     readonly colorLine: HTMLElement
 }
 
-export class SeriesTrackers {
+export class SeriesTrackersDisplayer {
     public element: HTMLElement = createDivWithClasses('series-trackers');
     private columns: HTMLElement[] = createColumns(2);
     private currentColumn = 0;
@@ -58,15 +59,11 @@ export class SeriesTrackers {
         columns[this.currentColumn++ % columns.length].appendChild(elemenet);
     }
 
-    public async update() {
-        this.clear();
-        const update = async () => this.update();
-        const trackers = this;
-        this.series.trackers.forEach(addTracker);
-
-        async function addTracker(tracker: SeriesTracker) {
-            const seriesTrackerComponent = createSeriesTrackerComponent(tracker);
-            bindRightClickMenu(seriesTrackerComponent.seriesTrackerElement, {
+    public async appendTracker(tracker: SeriesTracker) {
+        const refresh = async () => this.refreshTrackers();
+        const seriesTrackerComponent = createSeriesTrackerComponent(tracker);
+        const displayer = this;
+        bindRightClickMenu(seriesTrackerComponent.seriesTrackerElement, {
             buttons: [
                 {
                     text: "Edit",
@@ -75,19 +72,24 @@ export class SeriesTrackers {
                 {
                     text: "Delete",
                     onClick() {
-                        removeElementFromArray(trackers.series.trackers, tracker);
-                        update();
+                        removeElementFromArray(displayer.series.trackers, tracker);
+                        refresh();
                     }
                 },
-            ]})
-            trackers.addElement(seriesTrackerComponent.seriesTrackerElement);
-        }
+            ]
+        });
+        displayer.addElement(seriesTrackerComponent.seriesTrackerElement);
+    }
+
+    public async refreshTrackers() {
+        this.clear();
+        this.series.trackers.forEach((tracker) => this.appendTracker(tracker));
     }
 
 }
 
 function createSeriesTrackerStageElements(series: Series): SeriesTrackerStageElements {
-    const seriesTrackers = new SeriesTrackers(series);
+    const seriesTrackers = new SeriesTrackersDisplayer(series);
     return {
         seriesTrackers,
         colorLine: createColorLine(series.colorStripColor),
@@ -97,7 +99,7 @@ function createSeriesTrackerStageElements(series: Series): SeriesTrackerStageEle
                   stageContent = createBoundedStageContent(),
                   titleELement = createSeriesTrackerStageTitle(series.title);
             
-            this.seriesTrackers.update();
+            this.seriesTrackers.refreshTrackers();
             // Initialise event listeners
             titleELement.addEventListener('input', () => 
                 series.title = titleELement.value);

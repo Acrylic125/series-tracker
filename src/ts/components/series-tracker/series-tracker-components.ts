@@ -6,7 +6,7 @@ import { Position } from "../../utils/html-utils";
 import { randInt } from "../../utils/utils";
 import { bindRightClickMenu, createDivWithClasses, createElementWithClasses, createInnerText } from "../global-components";
 import { createTrackerModal } from "./series-tracker-modal";
-import { SeriesTrackers } from "../../content-stage/stages/series-trackers-stage";
+import { SeriesTrackersDisplayer } from "../../content-stage/stages/series-trackers-stage";
 
 export function createSeriesTrackerStageTitle(title?: string) {
   const titleElement = 

@@ -74,7 +74,7 @@ export function createEpisodesContainerItem(item: EpisodesTemplateDataItem) {
     const itemElement = createDivWithClasses('template__episodes-container-item', 'rounded-1');
     const titleElement = createEpisodesContainerItemTitle(item.title),
           currentEpisodeElement = createEpisodesContainerItemInput(item.currentEpisode);
-
+    
     titleElement.addEventListener('input', () => item.title = (titleElement.value === '') ? undefined : titleElement.value);
     currentEpisodeElement.addEventListener('input', () => item.currentEpisode = (currentEpisodeElement.value) ? parseInt(currentEpisodeElement.value) : 0);
 
