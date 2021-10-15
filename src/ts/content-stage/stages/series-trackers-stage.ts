@@ -1,8 +1,8 @@
 import { clear } from 'console';
 import { ActionButton, bindRightClickMenu, createBoundedStageContent, createColorLine, createColumn, createColumns, createDivWithClasses, createHorzCenteredActionButton, createInnerText } from '../../components/global-components';
-import { createSeriesTrackerComponent, createSeriesTrackerStageTitle } from '../../components/series-tracker/series-tracker-components';
+import { createSeriesTrackerComponent, createSeriesTrackerStageTitle, SeriesTrackerComponent } from '../../components/series-tracker/series-tracker-components';
 import { createTrackerModalDisplayer } from '../../components/series-tracker/series-tracker-modal';
-import { createTracker, Series, SeriesTracker } from '../../series/series';
+import { createTracker, Series, SeriesTracker, SeriesTrackerID } from '../../series/series';
 import { removeElementFromArray, shifElementtLeft, shifElementtRight } from '../../utils/utils';
 import { ContentStageElements, FragmentedContentStage } from '../content-stage';
 import { getContentStageElement } from '../content-stage-manager';
@@ -40,6 +40,7 @@ export class SeriesTrackersDisplayer {
     public element: HTMLElement = createDivWithClasses('series-trackers');
     private columns: HTMLElement[] = createColumns(2);
     private currentColumn = 0;
+    private trackerComponentMap: Map<SeriesTrackerID, SeriesTrackerComponent> = new Map();
 
     constructor(public series: Series) {
         this.columns.forEach((column) => this.element.appendChild(column));
@@ -50,10 +51,15 @@ export class SeriesTrackersDisplayer {
             this.columns.push(createColumn());
     }
 
-    public clear() {
+    public clearDisplayed() {
         this.currentColumn = 0;
         this.columns.forEach((column) => 
             column.innerText = '');
+    }
+
+    public clearAll() {
+        this.clearDisplayed();
+        this.trackerComponentMap = new Map();
     }
 
     private appendElement(elemenet: HTMLElement) {
@@ -61,9 +67,16 @@ export class SeriesTrackersDisplayer {
         columns[this.currentColumn++ % columns.length].appendChild(elemenet);
     }
 
-    public async appendTracker(tracker: SeriesTracker) {
-        const refresh = async () => this.refreshTrackers();
-        const seriesTrackerComponent = createSeriesTrackerComponent(tracker);
+    public async appendTracker(tracker: SeriesTracker, hot = false) {
+        const refresh = async () => this.hotRefreshTrackers();
+        var seriesTrackerComponent;
+        if (hot) {
+            var componentFromMap = this.trackerComponentMap.get(tracker.id);
+            seriesTrackerComponent = (componentFromMap) ? componentFromMap : createSeriesTrackerComponent(tracker);
+        } else 
+            seriesTrackerComponent = createSeriesTrackerComponent(tracker);
+        this.trackerComponentMap.set(tracker.id, seriesTrackerComponent);
+        
         const displayer = this;
         bindRightClickMenu(seriesTrackerComponent.seriesTrackerElement, {
             buttons: [
@@ -97,8 +110,13 @@ export class SeriesTrackersDisplayer {
         this.appendElement(seriesTrackerComponent.seriesTrackerElement);
     }
 
+    public async hotRefreshTrackers() {
+        this.clearDisplayed();
+        this.series.trackers.forEach((tracker) => this.appendTracker(tracker, true));
+    }
+
     public async refreshTrackers() {
-        this.clear();
+        this.clearAll();
         this.series.trackers.forEach((tracker) => this.appendTracker(tracker));
     }
 

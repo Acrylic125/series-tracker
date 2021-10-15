@@ -12,8 +12,10 @@ export interface Series extends Filterable {
     colorStripColor: string
 }
 
+export type SeriesTrackerID = string;
+
 export interface SeriesTracker {
-    id: string
+    id: SeriesTrackerID
     title: string
     baseColor: string
     circleColor: string
