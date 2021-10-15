@@ -7,7 +7,7 @@ import { toComparableString } from "../../utils/utils";
 import { createSeriesCard } from "../../components/series-card-components";
 import { ContentStageElements, FragmentedContentStage } from "../content-stage";
 import { getContentStageElement } from '../content-stage-manager';
-import { ActionButton, createBoundedStageContent, createElementWithClasses, createHorzCenteredActionButton } from "../../components/global-components";
+import { ActionButton, bindRightClickMenu, createBoundedStageContent, createElementWithClasses, createHorzCenteredActionButton } from "../../components/global-components";
 
 const SERIES_CARDS_FILTER_ID = "series-cards__filter";
 const SERIES_CARDS = "series-cards";
@@ -103,6 +103,7 @@ class SeriesCardsStageDisplayer {
         if (generator) {
             var searches = 0;
             const seriesCardsFragmnet = new DocumentFragment();
+            
             const next = async () => {
                 if (searches >= resultsLimit)
                     return;
@@ -111,11 +112,30 @@ class SeriesCardsStageDisplayer {
                 if (!series || result.done)
                     return;
                 if (!filterString || testFilter(series, filterString)) {
-                    seriesCardsFragmnet.appendChild(createSeriesCard(series));
+                    const { seriesCardElement, openEditSeries } = createSeriesCard(series);
+                    bindRightClickMenu(seriesCardElement, {
+                        buttons: [
+                            {
+                                text: "Edit",
+                                onClick() {
+                                    openEditSeries();
+                                }
+                            },
+                            {
+                                text: "Delete",
+                                onClick() {
+                                    seriesStorage.seriesMap.delete(series.id);
+                                    seriesCardElement.remove();
+                                }
+                            }
+                        ]
+                    });
+                    seriesCardsFragmnet.appendChild(seriesCardElement);
                     searches++;
                 }
                 next();
             };
+
             await next();
             seriesCardsElement.appendChild(seriesCardsFragmnet);
         }

@@ -1,7 +1,7 @@
 import { useStage } from "../content-stage/content-stage-manager";
 import { createSeriesStage } from "../content-stage/stages/series-trackers-stage";
 import { Series } from "../series/series";
-import { createElementWithClasses, createTag } from "./global-components";
+import { bindRightClickMenu, createElementWithClasses, createTag } from "./global-components";
 
 // <span class="series-card__color-strip"></span>
 export function createSeriesCardColorStrip(color: string) {
@@ -43,7 +43,7 @@ export function createSeriesCard(series: Series) {
     seriesCardElement.id = series.id;
     seriesCardElement.appendChild(createSeriesCardColorStrip(series.colorStripColor));
     seriesCardElement.appendChild(createSeriesCardContent(series.title, ...series.tags));
-    seriesCardElement.onclick = async () => 
-        useStage(createSeriesStage(series));
-    return seriesCardElement;
+    const openEditSeries = async () => useStage(createSeriesStage(series));
+    seriesCardElement.addEventListener('click', openEditSeries);
+    return { seriesCardElement, openEditSeries };
 }
