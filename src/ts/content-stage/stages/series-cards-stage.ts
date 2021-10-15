@@ -9,18 +9,15 @@ import { ContentStageElements, FragmentedContentStage } from "../content-stage";
 import { getContentStageElement } from '../content-stage-manager';
 import { ActionButton, bindRightClickMenu, createBoundedStageContent, createElementWithClasses, createHorzCenteredActionButton } from "../../components/global-components";
 
-const SERIES_CARDS_FILTER_ID = "series-cards__filter";
-const SERIES_CARDS = "series-cards";
-
 // <ol class="series-cards"> </ol>
 export function createSeriesCards() {
-    return createElementWithClasses('ol', SERIES_CARDS);
+    return createElementWithClasses('ol', 'series-cards');
 }
 
 //   <input id="series-cards__filter" class="ol-input" placeholder="Filter">
 function createSeriesCardsFilter() {
     const seriesCardsFilter = (createElementWithClasses('input', 'ol-input') as HTMLInputElement);
-    seriesCardsFilter.id = SERIES_CARDS_FILTER_ID;
+    seriesCardsFilter.id = 'series-cards__filter';
     seriesCardsFilter.placeholder = 'Filter';
     return seriesCardsFilter;
 }
@@ -117,9 +114,7 @@ class SeriesCardsStageDisplayer {
                         buttons: [
                             {
                                 text: "Edit",
-                                onClick() {
-                                    openEditSeries();
-                                }
+                                onClick: openEditSeries
                             },
                             {
                                 text: "Delete",
