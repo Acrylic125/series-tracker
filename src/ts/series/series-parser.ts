@@ -1,4 +1,5 @@
 import { v4 } from "uuid";
+import { seriesTemplateRegistry } from "../registry/registries";
 import { BRIGHT_SHADE, DARK_SHADE, isStringValidHexColor, randColorByShade } from "../utils/colors";
 import { Parser } from "../utils/parser";
 import { undefinedOrDefault } from "../utils/utils";
@@ -25,25 +26,40 @@ export const seriesParser: Parser<Series> = {
     }
 };
 
-
 const seriesTrackerParser: Parser<SeriesTracker> = {
     parse(data: any): SeriesTracker {
-        var { id, title, baseColor, circleColor } = data;
+        var { id, title, baseColor, circleColor, templates } = data;
         if ((!baseColor || isStringValidHexColor(baseColor)) || (!circleColor || isStringValidHexColor(circleColor))) {
             const color = randColorByShade(DARK_SHADE);
             baseColor = color.toPrefixedHex();
             circleColor = color.clone().brighten(0.2).toPrefixedHex();
         }
-        const templates = new SeriesTrackerTemplates();
-        templates.addTemplateDataForTemplate(episodesTemplate, {
-            templateID: episodesTemplate.id,
-            items: []
-        });
+        var templatesObject;
+        if (templates)
+            templatesObject = seriesTrackerTemplatesParser.parse(templates);
+        else {
+            templatesObject = new SeriesTrackerTemplates();
+        }
         return {
             id: (id) ? id : v4(),
             title: undefinedOrDefault(title, ''),
             baseColor, circleColor,
-            templates
+            templates: templatesObject
         };
+    }
+}
+
+const seriesTrackerTemplatesParser: Parser<SeriesTrackerTemplates> = {
+    parse(data: any): SeriesTrackerTemplates {
+        const { selectedTemplateID, templateDataMap } = data
+        const templatesObject = new SeriesTrackerTemplates();
+        templatesObject.selectedTemplateID = selectedTemplateID;
+        if (templateDataMap) {
+            for (const [templateID, data] of Object.entries(templateDataMap)) {
+                const template = seriesTemplateRegistry.get(templateID);
+                (template) && templatesObject.addTemplateDataForTemplate(template, template.templateDataParser.parse(data));
+            }
+        } 
+        return templatesObject;
     }
 }

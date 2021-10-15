@@ -126,7 +126,6 @@ export function createEpisodesContainerDisplayer(items: EpisodesTemplateDataItem
 
 export const episodesTemplateID = 'episodes-template';
 export const newDefaultEpisodesData: () => EpisodesTemplateData = () => ({
-    templateID: episodesTemplateID,
     items: []
 });
 export const episodesTemplateParser: Parser<EpisodesTemplateData> = {

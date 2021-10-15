@@ -30,7 +30,6 @@ export function createTracker(title: string, ...items: EpisodesTemplateDataItem[
     const color = randColorByShade(DARK_SHADE);
     const templates = new SeriesTrackerTemplates();
     templates.addTemplateDataForTemplate(episodesTemplate, {
-        templateID: episodesTemplate.id,
         items
     });
     templates.selectedTemplateID = episodesTemplate.id;

@@ -2,6 +2,7 @@ import fs from 'fs';
 import { keyboardShortcutListener, KEY_CTRL } from '../html-loaded/keyboard-shortcut';
 import { createFileIfNotExist, JSON_FILE_CREATION_OPTIONS } from '../utils/utils';
 import { createDummy, Series } from './series';
+import { seriesParser } from './series-parser';
 
 const STORE_COMPRESSED = 1;
 const STORE_READ = 2;
@@ -36,7 +37,8 @@ export class SeriesStorage {
         const data = await this.getFileData();
         const series = data['series'];
         if (series) {
-            
+            for (const [seriesID, seriesData] of Object.entries(series)) 
+                this.seriesMap.set(seriesID, seriesParser.parse(seriesData));
         }
     }
 
@@ -66,11 +68,12 @@ export class SeriesStorage {
 }
 
 const seriesStorage = new SeriesStorage();
-for (let i = 0; i < 3; i++) {
-    const dummy = createDummy("test-" + i);
-    seriesStorage.seriesMap.set(dummy.id, dummy);
-}
-seriesStorage.saveToFile();
+// for (let i = 0; i < 3; i++) {
+//     const dummy = createDummy("test-" + i);
+//     seriesStorage.seriesMap.set(dummy.id, dummy);
+// }
+seriesStorage.importSeries();
+// seriesStorage.saveToFile();
 
 keyboardShortcutListener.shortcuts.push({
     keys: ['s', KEY_CTRL],

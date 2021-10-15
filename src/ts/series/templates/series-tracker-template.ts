@@ -16,7 +16,6 @@ export type TemplateID = string;
  * Add in properties of the template data by extending upon this class.
  */
 export interface SeriesTrackerTemplateData {
-    templateID: TemplateID
 }
 
 export class SeriesTrackerTemplates {
