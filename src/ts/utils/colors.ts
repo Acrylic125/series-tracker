@@ -7,9 +7,17 @@ export const BITS_2 = 2 << 7;
 
 export const LOWER_COLOR_VALUE = 0,
              UPPER_COLOR_VALUE = 255;
+export const HEX_PREFIX = '#';
 
 export function clampColorValue(value: number) {
     return Math.floor(clamp(LOWER_COLOR_VALUE, value, UPPER_COLOR_VALUE));
+}
+
+export function isStringValidHexColor(color: string) {
+    if (!color.startsWith(HEX_PREFIX))
+        return false;
+    const s = color.length;    
+    return (s <= 8);
 }
 
 export interface Color {
@@ -59,7 +67,7 @@ export function toRGB(red: number, green: number, blue: number, alpha?: number):
                 return '0' + dec.toString(16);
             return dec.toString(16);
         },
-        toPrefixedHex(prefix: string = '#') {
+        toPrefixedHex(prefix: string = HEX_PREFIX) {
             return prefix + this.toHex();
         },
         toDecimal() {

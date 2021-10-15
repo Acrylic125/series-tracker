@@ -10,6 +10,8 @@ const storageMode: number = STORE_READ;
 
 export class SeriesStorage {
 
+    private readyToSave = true;
+
     constructor(public collectionFilePath: string = "D:\\apps\\test.json",
                 public seriesMap: Map<string, Series> = new Map()) {}
 
@@ -39,13 +41,15 @@ export class SeriesStorage {
     }
 
     public async saveToFile() {
-        console.log("SAVED!");
+        if (!this.readyToSave)
+            return;
+        this.readyToSave = false;
         await this.createFileIfNotExist();
         var data = {
             series: Object.fromEntries(this.seriesMap)
         };
-        
         await fs.promises.writeFile(this.collectionFilePath, SeriesStorage.toStoredData(data));
+        this.readyToSave = true;
     }
 
     public static toStoredData(data: any) {
