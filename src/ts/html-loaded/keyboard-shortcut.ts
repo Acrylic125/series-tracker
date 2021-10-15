@@ -1,3 +1,7 @@
+export const KEY_SHIFT = 'shift';
+export const KEY_ALT = 'shift';
+export const KEY_CTRL = 'ctrl';
+ 
 export interface KeyboardShortcut {
     keys: string[]
     callback(): void
@@ -8,8 +12,13 @@ export class KeyboardShortcutListener {
     private preparedForNextCycle = true;
     private keyboardCallback = async (event: KeyboardEvent) => {
         this.currentKeysPressed.add(event.key);
-        if (this.preparedForNextCycle)
+        if (event.shiftKey) this.currentKeysPressed.add(KEY_SHIFT);
+        if (event.ctrlKey) this.currentKeysPressed.add(KEY_CTRL);
+        if (event.altKey) this.currentKeysPressed.add(KEY_ALT);
+        if (this.preparedForNextCycle) {
+            this.preparedForNextCycle = false;
             setTimeout(() => this.activateCycle(), 100);
+        }
     };
 
     constructor(public shortcuts = new Array<KeyboardShortcut>()) {}
@@ -31,7 +40,7 @@ export class KeyboardShortcutListener {
         this.shortcuts.forEach((shortcut) => 
             this.doesShortcutMatch(shortcut) && shortcut.callback());
         this.currentKeysPressed = new Set();
-        this.preparedForNextCycle = false;
+        this.preparedForNextCycle = true;
     }
 
 }

@@ -1,4 +1,5 @@
 import fs from 'fs';
+import { keyboardShortcutListener, KEY_CTRL } from '../html-loaded/keyboard-shortcut';
 import { createFileIfNotExist, JSON_FILE_CREATION_OPTIONS } from '../utils/utils';
 import { createDummy, Series } from './series';
 
@@ -38,6 +39,7 @@ export class SeriesStorage {
     }
 
     public async saveToFile() {
+        console.log("SAVED!");
         await this.createFileIfNotExist();
         var data = {
             series: Object.fromEntries(this.seriesMap)
@@ -65,6 +67,11 @@ for (let i = 0; i < 3; i++) {
     seriesStorage.seriesMap.set(dummy.id, dummy);
 }
 seriesStorage.saveToFile();
+
+keyboardShortcutListener.shortcuts.push({
+    keys: ['s', KEY_CTRL],
+    callback: () => seriesStorage.saveToFile()
+})
 
 export default seriesStorage;
 
