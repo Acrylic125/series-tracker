@@ -17,7 +17,7 @@ export class KeyboardShortcutListener {
         if (event.altKey) this.currentKeysPressed.add(KEY_ALT);
         if (this.preparedForNextCycle) {
             this.preparedForNextCycle = false;
-            setTimeout(() => this.activateCycle(), 100);
+            setTimeout(() => this.activateCycle(), 350);
         }
     };
 

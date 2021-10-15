@@ -1,7 +1,7 @@
 import fs from 'fs';
 import { keyboardShortcutListener, KEY_CTRL } from '../html-loaded/keyboard-shortcut';
 import { createFileIfNotExist, JSON_FILE_CREATION_OPTIONS } from '../utils/utils';
-import { createDummy, Series } from './series';
+import { Series } from './series';
 import { seriesParser } from './series-parser';
 
 const STORE_COMPRESSED = 1;
@@ -72,8 +72,18 @@ const seriesStorage = new SeriesStorage();
 //     const dummy = createDummy("test-" + i);
 //     seriesStorage.seriesMap.set(dummy.id, dummy);
 // }
-seriesStorage.importSeries();
 // seriesStorage.saveToFile();
+
+(async function initStorage() {
+    
+    await seriesStorage.importSeries();
+    autoSave();
+
+    async function autoSave() {
+        await seriesStorage.saveToFile();
+        setTimeout(autoSave, 5000);
+    }
+})();
 
 keyboardShortcutListener.shortcuts.push({
     keys: ['s', KEY_CTRL],
