@@ -1,3 +1,4 @@
+import { keyboardShortcutListener } from "../html-loaded/keyboard-shortcut";
 import { stageRegistry } from "../registry/registries";
 import { ContentStage } from "./content-stage";
 
@@ -16,6 +17,7 @@ export async function useStage(stage: ContentStage) {
     clearStage();
     await stage.initialise();
     getContentStageElement().scrollTo(0, 0);
+    keyboardShortcutListener.reload();
 }
 
 export async function useStageByID(id: string) {

@@ -4,9 +4,8 @@ import { SeriesTracker } from "../../series/series";
 import { SeriesTrackerTemplate, SeriesTrackerTemplateData, SeriesTrackerTemplates } from "../../series/templates/series-tracker-template";
 import { Position } from "../../utils/html-utils";
 import { randInt } from "../../utils/utils";
-import { bindRightClickMenu, createDivWithClasses, createElementWithClasses, createInnerText } from "../global-components";
+import { createDivWithClasses, createElementWithClasses, createInnerText } from "../global-components";
 import { createTrackerModalDisplayer } from "./series-tracker-modal";
-import { SeriesTrackersDisplayer } from "../../content-stage/stages/series-trackers-stage";
 
 export function createSeriesTrackerStageTitle(title?: string) {
   const titleElement = 
@@ -25,9 +24,11 @@ export function createSeriesTrackerStageTitle(title?: string) {
   return titleElement;
 }
 
+const NO_TITLE = "No Title";
+
 // <header> </header>
 export function createSeriesTrackerHeader(title: string) {
-    return createInnerText('header', (title) ? title : 'No Title');
+  return createInnerText('header', (title) ? title : NO_TITLE);
 }
 
 export function createSeriesTrackerContent(seriesTracker: SeriesTracker) {
@@ -56,7 +57,7 @@ export function createSeriesTrackerContent(seriesTracker: SeriesTracker) {
     }
 
     async function updateTrackerContent() {
-      titleElement.innerText = seriesTracker.title;
+      titleElement.innerText = (seriesTracker.title) ? seriesTracker.title : NO_TITLE;
       tryUpdateTemplateData();
     };
 }

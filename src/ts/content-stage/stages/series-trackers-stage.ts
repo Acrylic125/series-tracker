@@ -1,4 +1,3 @@
-import { clear } from 'console';
 import { ActionButton, bindRightClickMenu, createBoundedStageContent, createColorLine, createColumn, createColumns, createDivWithClasses, createHorzCenteredActionButton, createInnerText } from '../../components/global-components';
 import { createSeriesTrackerComponent, createSeriesTrackerStageTitle, SeriesTrackerComponent } from '../../components/series-tracker/series-tracker-components';
 import { createTracker, Series, SeriesTracker, SeriesTrackerID } from '../../series/series';

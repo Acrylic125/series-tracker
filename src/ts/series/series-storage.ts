@@ -60,7 +60,7 @@ export class SeriesStorage {
 }
 
 const seriesStorage = new SeriesStorage();
-for (let i = 0; i < 100; i++) {
+for (let i = 0; i < 3; i++) {
     const dummy = createDummy("test-" + i);
     seriesStorage.seriesMap.set(dummy.id, dummy);
 }
