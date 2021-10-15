@@ -241,7 +241,7 @@ textarea::placeholder {
   top: 100%;
 }
 
-.tooltip::after {
+/* .tooltip::after {
   content: " ";
   position: absolute;
   bottom: 100%;
@@ -250,7 +250,7 @@ textarea::placeholder {
   border-width: 7px;
   border-style: solid;
   border-color: transparent transparent #1a1a1f transparent;
-}
+} */
 
 .tooltip__title {
   font-size: 1rem;
@@ -285,7 +285,7 @@ ol.right-click-menu > li > button {
   width: 100%;
   color: white;
   font-size: 75%;
-  padding: 0.35em 0.8em;
+  padding: 0.25em 0.75em;
   text-align: left;
   background-color: transparent;
   border: 0;

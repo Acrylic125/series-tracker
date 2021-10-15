@@ -27,7 +27,7 @@ export function createSeriesTrackerStageTitle(title?: string) {
 
 // <header> </header>
 export function createSeriesTrackerHeader(title: string) {
-    return createInnerText('header', title);
+    return createInnerText('header', (title) ? title : 'No Title');
 }
 
 export function createSeriesTrackerContent(seriesTracker: SeriesTracker) {

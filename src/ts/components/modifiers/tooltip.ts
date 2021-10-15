@@ -17,7 +17,9 @@ export async function addTooltipListener(tooltipRegion: HTMLElement) {
             var { x, y, width, height } = tooltipRegion.getBoundingClientRect();
             const toolTipBB = tooltip.getBoundingClientRect();
             x = (x + (width * 0.5) - (toolTipBB.width * 0.5));
-            y = y + height + 10;
+            const newY = y + height + 5;
+            y = ((newY + toolTipBB.height) > window.innerHeight) ? y - height - 5 : newY;
+            console.log(`${newY} ${window.innerHeight}`);
             setPosition(tooltip, { x, y });
         }
     }

@@ -1,7 +1,6 @@
 import { clear } from 'console';
 import { ActionButton, bindRightClickMenu, createBoundedStageContent, createColorLine, createColumn, createColumns, createDivWithClasses, createHorzCenteredActionButton, createInnerText } from '../../components/global-components';
 import { createSeriesTrackerComponent, createSeriesTrackerStageTitle, SeriesTrackerComponent } from '../../components/series-tracker/series-tracker-components';
-import { createTrackerModalDisplayer } from '../../components/series-tracker/series-tracker-modal';
 import { createTracker, Series, SeriesTracker, SeriesTrackerID } from '../../series/series';
 import { removeElementFromArray, shifElementtLeft, shifElementtRight } from '../../utils/utils';
 import { ContentStageElements, FragmentedContentStage } from '../content-stage';
@@ -21,11 +20,9 @@ function createAddSeriesTrackerButton(seriesTrackersDisplayer: SeriesTrackersDis
     const addSeriesTracker = createHorzCenteredActionButton(addSeriesTrackerButton);
     addSeriesTracker.classList.add('create-series-tracker');
     addSeriesTracker.onclick = () => {
-        for (let index = 0; index < 100; index++) {
-            const tracker = createTracker('No Title', {});
-            seriesTrackersDisplayer.series.trackers.push(tracker);
-            seriesTrackersDisplayer.appendTracker(tracker);
-        }
+        const tracker = createTracker('', {});
+        seriesTrackersDisplayer.series.trackers.push(tracker);
+        seriesTrackersDisplayer.appendTracker(tracker);
     };
     return addSeriesTracker;
 }
