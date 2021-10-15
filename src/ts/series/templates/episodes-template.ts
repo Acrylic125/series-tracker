@@ -11,8 +11,7 @@ export interface EpisodesTemplateDataItem {
 }
 
 export const episodesTemplateDataItemParser: Parser<EpisodesTemplateDataItem> = {
-    id: 'episodes-data-item',
-    parse(data) {
+    parse(data): EpisodesTemplateDataItem {
         return {
             title: data.title,
             currentEpisode: data.currentEpisode
@@ -22,11 +21,6 @@ export const episodesTemplateDataItemParser: Parser<EpisodesTemplateDataItem> = 
 
 export interface EpisodesTemplateData extends SeriesTrackerTemplateData {
     items: EpisodesTemplateDataItem[]
-}
-
-export function validateEpisodesTemplateData(data: EpisodesTemplateData) {
-    if (!data.items)
-        data.items = []; 
 }
 
 const createEpisodeButton: ActionButton = {
@@ -130,18 +124,31 @@ export function createEpisodesContainerDisplayer(items: EpisodesTemplateDataItem
     }
 }
 
+export const episodesTemplateID = 'episodes-template';
+export const newDefaultEpisodesData: () => EpisodesTemplateData = () => ({
+    templateID: episodesTemplateID,
+    items: []
+});
+export const episodesTemplateParser: Parser<EpisodesTemplateData> = {
+    parse(data: any): EpisodesTemplateData {
+        const episodesData = newDefaultEpisodesData();
+        const items= data.items,
+              episodesDataItems = episodesData.items;
+        if (items instanceof Array) {
+            items.forEach((item) => 
+                episodesDataItems.push(episodesTemplateDataItemParser.parse(item)));  
+        }
+        return episodesData;
+    }
+}
+
 export function createEpisodesTemplate(): SeriesTrackerTemplate<EpisodesTemplateData> {
     return {
         title: 'Episodes Template',
-        id: 'episodes-template',
-        newDefaultData() {
-            return {
-                templateID: 'episodes-template',
-                items: []
-            }
-        },
+        id: episodesTemplateID,
+        templateDataParser: episodesTemplateParser,
+        newDefaultData: newDefaultEpisodesData,
         createSeriesTrackerContent(templateData: EpisodesTemplateData) {
-            validateEpisodesTemplateData(templateData);
             const contentElement = document.createElement('ol');
             templateData.items.forEach((item) => 
                 contentElement.appendChild(createSeriesTrackerItem(undefinedOrDefault(item.title, 'No Title'),
@@ -151,7 +158,6 @@ export function createEpisodesTemplate(): SeriesTrackerTemplate<EpisodesTemplate
         // <button class="small-singular action-button center-horz rounded-1">&plus;</button>
         // <div class="template__episodes-container center-horz"> </div>
         async applyModalContent(trackerModalContent: HTMLElement, templateData: EpisodesTemplateData) {
-            validateEpisodesTemplateData(templateData);
             const containerDisplayer = createEpisodesContainerDisplayer(templateData.items);
             const containerDisplayerElement = containerDisplayer.containerElement;
             const buttonElement = createActionButton(createEpisodeButton);
@@ -159,7 +165,6 @@ export function createEpisodesTemplate(): SeriesTrackerTemplate<EpisodesTemplate
             trackerModalContent.appendChild(buttonElement);
             buttonElement.onclick = () => {
                 const containerItem = {};
-                validateEpisodesTemplateData(templateData);
                 templateData.items.push(containerItem);
                 containerDisplayerElement.appendChild(createEpisodesContainerItem(containerDisplayer, containerItem));
             };

@@ -1,8 +1,10 @@
 import { seriesTemplateRegistry } from "../../registry/registries";
+import { Parser } from "../../utils/parser";
 
 export interface SeriesTrackerTemplate<T extends SeriesTrackerTemplateData = SeriesTrackerTemplateData> {
     title: string
     id: string
+    templateDataParser: Parser<T>
     newDefaultData(): T
     createSeriesTrackerContent(templateData: T): HTMLElement
     applyModalContent(trackerModalContent: HTMLElement, templateData: T): Promise<void>
