@@ -64,7 +64,7 @@ function createSeriesCardsStageElements(): SeriesCardsStageElements {
 }
 
 // Planning to refactor.
-class SeriesCardsStageProcess {
+class SeriesCardsStageDisplayer {
     private filterString: string = '';
     private generator?: Generator<Series>;
 
@@ -138,15 +138,15 @@ class SeriesCardsStageProcess {
 }
 
 interface SeriesCardsStage extends FragmentedContentStage<SeriesCardsStageElements> {
-    state?: SeriesCardsStageProcess
+    displayer?: SeriesCardsStageDisplayer
 }
 
 const seriesCardsStage: SeriesCardsStage = {
     async initialise() {
         this.elements = createSeriesCardsStageElements();
         getContentStageElement().appendChild(this.elements.toFragment());
-        this.state = new SeriesCardsStageProcess(this.elements);
-        await this.state.freshLoad();
+        this.displayer = new SeriesCardsStageDisplayer(this.elements);
+        await this.displayer.freshLoad();
     }
 };
 export default seriesCardsStage;

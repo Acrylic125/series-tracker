@@ -87,6 +87,7 @@ export class SeriesTrackersDisplayer {
                 {
                     text: "Delete",
                     onClick() {
+                        displayer.trackerComponentMap.delete(tracker.id);
                         removeElementFromArray(displayer.series.trackers, tracker);
                         refresh();
                     }
