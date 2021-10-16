@@ -25,23 +25,25 @@ const createWindow = () => {
       preload: path.join(__dirname, 'js', 'preloader', 'preload.js'),
     },
   });
-  window.on('close', function(e) {
-    const choice = dialog.showMessageBoxSync(this,
-      {
-        type: 'question',
-        buttons: ['Yes', 'No'],
-        title: 'Confirm',
-        message: 'Are you sure you want to quit?'
-      });
+  
+  window.on('close', function (event) {
+    const choice = dialog.showMessageBoxSync(this, closeDialog);
     if (choice === 1) {
-      e.preventDefault();
-    } else {
-      window.webContents.send('save-to-storage-sync');
-    }
+      event.preventDefault();
+      return;
+    } 
+    window.webContents.send('save-to-storage-sync');
   });
 
   // and load the index.html of the app.
   window.loadFile(path.join(__dirname, 'index.html'));
+};
+
+const closeDialog = {
+  type: 'question',
+  buttons: ['Yes', 'No'],
+  title: 'Confirm',
+  message: 'Are you sure you want to quit?'
 };
 
 // This method will be called when Electron has finished
