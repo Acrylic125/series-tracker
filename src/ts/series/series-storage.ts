@@ -1,6 +1,7 @@
+import { app } from 'electron';
 import fs from 'fs';
 import { keyboardShortcutListener, KEY_CTRL } from '../html-loaded/keyboard-shortcut';
-import { createFileIfNotExist, JSON_FILE_CREATION_OPTIONS } from '../utils/utils';
+import { createFileIfNotExist, createFileIfNotExistSync, JSON_FILE_CREATION_OPTIONS } from '../utils/utils';
 import { Series } from './series';
 import { seriesParser } from './series-parser';
 
@@ -18,6 +19,10 @@ export class SeriesStorage {
 
     private async createFileIfNotExist() {
         await createFileIfNotExist(this.collectionFilePath, JSON_FILE_CREATION_OPTIONS);
+    }
+
+    private async createFileIfNotExistSync() {
+        await createFileIfNotExistSync(this.collectionFilePath, JSON_FILE_CREATION_OPTIONS);
     }
 
     public async getFileDataBuffer() {
@@ -54,6 +59,14 @@ export class SeriesStorage {
         this.readyToSave = true;
     }
 
+    public saveToFileSync() {
+        this.createFileIfNotExistSync();
+        var data = {
+            series: Object.fromEntries(this.seriesMap)
+        };
+        fs.writeFileSync(this.collectionFilePath, SeriesStorage.toStoredData(data));
+    }
+
     public static toStoredData(data: any) {
         switch (storageMode) {
             case STORE_COMPRESSED:
@@ -77,7 +90,7 @@ const seriesStorage = new SeriesStorage();
 (async function initStorage() {
     
     await seriesStorage.importSeries();
-    autoSave();
+    // autoSave();
 
     async function autoSave() {
         await seriesStorage.saveToFile();
@@ -88,7 +101,7 @@ const seriesStorage = new SeriesStorage();
 keyboardShortcutListener.shortcuts.push({
     keys: ['s', KEY_CTRL],
     callback: () => seriesStorage.saveToFile()
-})
+});
 
 export default seriesStorage;
 

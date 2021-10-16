@@ -1,5 +1,7 @@
 const { app, BrowserWindow } = require('electron');
 const path = require('path');
+const seriesStorage = require('./js/series/series-storage');
+const fs = require('fs');
 
 try {
 	require('electron-reloader')(module);
@@ -28,6 +30,10 @@ const createWindow = () => {
   // and load the index.html of the app.
   window.loadFile(path.join(__dirname, 'index.html'));
 };
+
+app.on('window-all-closed', (event) => {
+  seriesStorage.default.saveToFileSync();
+});
 
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.

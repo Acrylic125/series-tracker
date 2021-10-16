@@ -33,6 +33,15 @@ export const JSON_FILE_CREATION_OPTIONS: FileCreationOptions = {
     defaultContent: '{}'
 };
 
+export async function createFileSync(path: string, options: FileCreationOptions = DEFAULT_FILE_CREATION_OPTIONS) {
+    var deduced = deducePath(path);
+    if (deduced.directory !== '')
+        fs.mkdirSync(deduced.directory, {
+            recursive: true
+        });
+    fs.writeFileSync(path, options.defaultContent.toString());
+}
+
 export async function createFile(path: string, options: FileCreationOptions = DEFAULT_FILE_CREATION_OPTIONS) {
     var deduced = deducePath(path);
     if (deduced.directory !== '')
@@ -40,6 +49,11 @@ export async function createFile(path: string, options: FileCreationOptions = DE
             recursive: true
         });
     await fs.promises.writeFile(path, options.defaultContent);
+}
+
+export function createFileIfNotExistSync(path: string, options: FileCreationOptions = DEFAULT_FILE_CREATION_OPTIONS) {
+    if (!fs.existsSync(path)) 
+        createFileSync(path, options);
 }
 
 // Resolves whether a new file was created.
