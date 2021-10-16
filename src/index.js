@@ -1,7 +1,5 @@
-const { app, BrowserWindow } = require('electron');
+const { app, BrowserWindow, ipcMain } = require('electron');
 const path = require('path');
-const seriesStorage = require('./js/series/series-storage');
-const fs = require('fs');
 
 try {
 	require('electron-reloader')(module);
@@ -27,13 +25,24 @@ const createWindow = () => {
       preload: path.join(__dirname, 'js', 'preloader', 'preload.js'),
     },
   });
+  window.on('close', function(e) {
+    const choice = require('electron').dialog.showMessageBoxSync(this,
+      {
+        type: 'question',
+        buttons: ['Yes', 'No'],
+        title: 'Confirm',
+        message: 'Are you sure you want to quit?'
+      });
+    if (choice === 1) {
+      e.preventDefault();
+    } else {
+      window.webContents.send('save-to-storage-sync');
+    }
+  });
+
   // and load the index.html of the app.
   window.loadFile(path.join(__dirname, 'index.html'));
 };
-
-app.on('window-all-closed', (event) => {
-  seriesStorage.default.saveToFileSync();
-});
 
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.

@@ -1,5 +1,4 @@
-import { app, contextBridge } from 'electron';
-import seriesStorage from '../series/series-storage';
+import { contextBridge } from 'electron';
 import contentStages from './content-stage-preload';
 import './preload-imports';
 

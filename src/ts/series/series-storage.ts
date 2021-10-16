@@ -1,4 +1,4 @@
-import { app } from 'electron';
+import { ipcRenderer } from 'electron';
 import fs from 'fs';
 import { keyboardShortcutListener, KEY_CTRL } from '../html-loaded/keyboard-shortcut';
 import { createFileIfNotExist, createFileIfNotExistSync, JSON_FILE_CREATION_OPTIONS } from '../utils/utils';
@@ -21,8 +21,8 @@ export class SeriesStorage {
         await createFileIfNotExist(this.collectionFilePath, JSON_FILE_CREATION_OPTIONS);
     }
 
-    private async createFileIfNotExistSync() {
-        await createFileIfNotExistSync(this.collectionFilePath, JSON_FILE_CREATION_OPTIONS);
+    private createFileIfNotExistSync() {
+        createFileIfNotExistSync(this.collectionFilePath, JSON_FILE_CREATION_OPTIONS);
     }
 
     public async getFileDataBuffer() {
@@ -60,10 +60,12 @@ export class SeriesStorage {
     }
 
     public saveToFileSync() {
+        alert("HELLO");
         this.createFileIfNotExistSync();
         var data = {
             series: Object.fromEntries(this.seriesMap)
         };
+        console.log(this.seriesMap);
         fs.writeFileSync(this.collectionFilePath, SeriesStorage.toStoredData(data));
     }
 
@@ -102,6 +104,9 @@ keyboardShortcutListener.shortcuts.push({
     keys: ['s', KEY_CTRL],
     callback: () => seriesStorage.saveToFile()
 });
+
+
+ipcRenderer.on('save-to-storage-sync', () => seriesStorage.saveToFileSync());
 
 export default seriesStorage;
 
