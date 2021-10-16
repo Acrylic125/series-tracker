@@ -29,7 +29,7 @@ export const seriesParser: Parser<Series> = {
 const seriesTrackerParser: Parser<SeriesTracker> = {
     parse(data: any): SeriesTracker {
         var { id, title, baseColor, circleColor, templates } = data;
-        if ((!baseColor || isStringValidHexColor(baseColor)) || (!circleColor || isStringValidHexColor(circleColor))) {
+        if ((!baseColor || !isStringValidHexColor(baseColor)) || (!circleColor || !isStringValidHexColor(circleColor))) {
             const color = randColorByShade(DARK_SHADE);
             baseColor = color.toPrefixedHex();
             circleColor = color.clone().brighten(0.2).toPrefixedHex();
