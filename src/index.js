@@ -1,4 +1,4 @@
-const { app, BrowserWindow } = require('electron');
+const { app, BrowserWindow, dialog } = require('electron');
 const path = require('path');
 
 try {
@@ -26,7 +26,7 @@ const createWindow = () => {
     },
   });
   window.on('close', function(e) {
-    const choice = require('electron').dialog.showMessageBoxSync(this,
+    const choice = dialog.showMessageBoxSync(this,
       {
         type: 'question',
         buttons: ['Yes', 'No'],

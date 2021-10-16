@@ -60,12 +60,10 @@ export class SeriesStorage {
     }
 
     public saveToFileSync() {
-        alert("HELLO");
         this.createFileIfNotExistSync();
         var data = {
             series: Object.fromEntries(this.seriesMap)
         };
-        console.log(this.seriesMap);
         fs.writeFileSync(this.collectionFilePath, SeriesStorage.toStoredData(data));
     }
 
@@ -83,16 +81,11 @@ export class SeriesStorage {
 }
 
 const seriesStorage = new SeriesStorage();
-// for (let i = 0; i < 3; i++) {
-//     const dummy = createDummy("test-" + i);
-//     seriesStorage.seriesMap.set(dummy.id, dummy);
-// }
-// seriesStorage.saveToFile();
 
 (async function initStorage() {
     
     await seriesStorage.importSeries();
-    // autoSave();
+    autoSave();
 
     async function autoSave() {
         await seriesStorage.saveToFile();
@@ -101,7 +94,7 @@ const seriesStorage = new SeriesStorage();
 })();
 
 keyboardShortcutListener.shortcuts.push({
-    keys: ['s', KEY_CTRL],
+    keys: [KEY_CTRL, 's'],
     callback: () => seriesStorage.saveToFile()
 });
 
