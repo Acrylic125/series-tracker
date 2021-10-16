@@ -1,7 +1,7 @@
 import { useStage } from "../content-stage/content-stage-manager";
 import { createSeriesStage } from "../content-stage/stages/series-trackers-stage";
 import { Series } from "../series/series";
-import { bindRightClickMenu, createElementWithClasses, createTag } from "./global-components";
+import { createElementWithClasses, createInnerText, createTag } from "./global-components";
 
 // <span class="series-card__color-strip"></span>
 export function createSeriesCardColorStrip(color: string) {
@@ -12,9 +12,7 @@ export function createSeriesCardColorStrip(color: string) {
 
 // <p class="series-card__content--title"></p>
 export function createSeriesCardTitle(title: string) {
-    const titleElement = createElementWithClasses('p', 'series-card__content--title');
-    titleElement.innerText = title;
-    return titleElement;
+    return createInnerText('p', (title) ? title : 'No Title', 'series-card__content--title');
 }
 
 // <ol class="series-card__content--tags"> </ol>

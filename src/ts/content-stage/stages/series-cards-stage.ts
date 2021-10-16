@@ -1,4 +1,4 @@
-import { Series } from "../../series/series";
+import { createNewSeries, Series } from "../../series/series";
 import seriesStorage, { storageImporter } from "../../series/series-storage";
 import { testFilter } from "../../utils/filter";
 import { iteratorToGenerator, peekGenerator } from "../../utils/generator";
@@ -7,7 +7,7 @@ import { toComparableString } from "../../utils/utils";
 import { createSeriesCard } from "../../components/series-card-components";
 import { ContentStageElements, FragmentedContentStage } from "../content-stage";
 import { getContentStageElement } from '../content-stage-manager';
-import { ActionButton, bindRightClickMenu, createBoundedStageContent, createElementWithClasses, createHorzCenteredActionButton } from "../../components/global-components";
+import { ActionButton, bindRightClickMenu, createActionButton, createBoundedStageContent, createElementWithClasses, createHorzCenteredActionButton } from "../../components/global-components";
 
 // <ol class="series-cards"> </ol>
 export function createSeriesCards() {
@@ -30,7 +30,17 @@ const loadMoreActionButton: ActionButton = {
     innerText: '\u21E3',
     circular: true,
     singular: true
-}
+};
+
+const addSeriesCardButton: ActionButton = {
+    tooltip: {
+        title: "Add New Series Trackers",
+        text: "Click to create a new set of series trackers"
+    },
+    innerText: '\u002B',
+    circular: false,
+    singular: true
+};
 
 function createLoadMore() {
     return createHorzCenteredActionButton(loadMoreActionButton);
@@ -40,6 +50,7 @@ interface SeriesCardsStageElements extends ContentStageElements {
     readonly filterElement: HTMLInputElement
     readonly seriesCardsElement: HTMLElement
     readonly loadMoreElement: HTMLButtonElement
+    readonly addSeriesTrackersButton: HTMLElement
 }
 
 function createSeriesCardsStageElements(): SeriesCardsStageElements {
@@ -47,10 +58,12 @@ function createSeriesCardsStageElements(): SeriesCardsStageElements {
         filterElement: createSeriesCardsFilter(),
         seriesCardsElement: createSeriesCards(),
         loadMoreElement: createLoadMore(),
+        addSeriesTrackersButton: createActionButton(addSeriesCardButton),
         toFragment() {
             const fragment = new DocumentFragment(),
                   stageContent = createBoundedStageContent();
             stageContent.appendChild(this.filterElement);
+            stageContent.appendChild(this.addSeriesTrackersButton);
             stageContent.appendChild(this.seriesCardsElement);
             stageContent.appendChild(this.loadMoreElement);
             
@@ -73,7 +86,7 @@ class SeriesCardsStageDisplayer {
         const { loadMoreElement, filterElement } = this.elements;
         loadMoreElement.onclick = () =>
             this.loadMore();
-
+        
         var doFilterCheck = true;
         filterElement.onkeyup = () => {
             if (doFilterCheck) {
@@ -96,11 +109,8 @@ class SeriesCardsStageDisplayer {
     private async loadMore(resultsLimit = 10) {
         hideElement(this.elements.loadMoreElement);
         const { generator, filterString } = this;
-        const { seriesCardsElement } = this.elements;
         if (generator) {
             var searches = 0;
-            const seriesCardsFragmnet = new DocumentFragment();
-            
             const next = async () => {
                 if (searches >= resultsLimit)
                     return;
@@ -109,32 +119,34 @@ class SeriesCardsStageDisplayer {
                 if (!series || result.done)
                     return;
                 if (!filterString || testFilter(series, filterString)) {
-                    const { seriesCardElement, openEditSeries } = createSeriesCard(series);
-                    bindRightClickMenu(seriesCardElement, {
-                        buttons: [
-                            {
-                                text: "Edit",
-                                onClick: openEditSeries
-                            },
-                            {
-                                text: "Delete",
-                                onClick() {
-                                    seriesStorage.seriesMap.delete(series.id);
-                                    seriesCardElement.remove();
-                                }
-                            }
-                        ]
-                    });
-                    seriesCardsFragmnet.appendChild(seriesCardElement);
+                    this.addSeriesAsElement(series);
                     searches++;
                 }
                 next();
             };
-
             await next();
-            seriesCardsElement.appendChild(seriesCardsFragmnet);
         }
         this.checkLoadMoreComplete();
+    }
+
+    public addSeriesAsElement(series: Series) {
+        const { seriesCardElement, openEditSeries } = createSeriesCard(series);
+        bindRightClickMenu(seriesCardElement, {
+            buttons: [
+                {
+                    text: "Edit",
+                    onClick: openEditSeries
+                },
+                {
+                    text: "Delete",
+                    onClick() {
+                        seriesStorage.seriesMap.delete(series.id);
+                        seriesCardElement.remove();
+                    }
+                }
+            ]
+        });
+        this.elements.seriesCardsElement.appendChild(seriesCardElement);
     }
 
     private checkLoadMoreComplete() {
@@ -162,10 +174,13 @@ const seriesCardsStage: SeriesCardsStage = {
         getContentStageElement().appendChild(this.elements.toFragment());
         const displayer = new SeriesCardsStageDisplayer(this.elements);
         this.displayer = displayer;
-        storageImporter.call(() => {
-            console.log("Test");
-            displayer.freshLoad();
+        this.elements.addSeriesTrackersButton.addEventListener('click', () => {
+            const series = createNewSeries('');
+            seriesStorage.seriesMap.set(series.id, series);
+            displayer.addSeriesAsElement(series);
         });
+        storageImporter.call(() => 
+            displayer.freshLoad());
     }
 };
 export default seriesCardsStage;

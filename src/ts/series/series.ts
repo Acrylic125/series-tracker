@@ -26,12 +26,10 @@ export interface SeriesTracker {
     templates: SeriesTrackerTemplates
 }
 
-export function createTracker(title: string, ...items: EpisodesTemplateDataItem[]): SeriesTracker {
+export function createTrackerWithEpisodesTemplate(title: string, ...items: EpisodesTemplateDataItem[]): SeriesTracker {
     const color = randColorByShade(DARK_SHADE);
     const templates = new SeriesTrackerTemplates();
-    templates.addTemplateDataForTemplate(episodesTemplate, {
-        items
-    });
+    templates.addTemplateDataForTemplate(episodesTemplate, { items });
     templates.selectedTemplateID = episodesTemplate.id;
     return {
         id: v4(),
@@ -43,14 +41,13 @@ export function createTracker(title: string, ...items: EpisodesTemplateDataItem[
     };
 }
 
-export function createDummy(title: string): Series {
-    // const colors = randColorsSameCase(BRIGHT_DEFAULT, DARK_DEFAULT);
+export function createNewSeries(title: string): Series {
     return {
         id: v4(),
-        title: "A REALLY long title " + title,
+        title,
         colorStripColor: randColorByShade(BRIGHT_SHADE).toPrefixedHex(),
         trackers: [ 
-            createTracker('Seasons', {
+            createTrackerWithEpisodesTemplate('Seasons', {
                 title: "Season 1", currentEpisode: 24
             }, {
                 title: "Season 2", currentEpisode: 24
