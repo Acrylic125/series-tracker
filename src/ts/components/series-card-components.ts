@@ -32,6 +32,10 @@ export function createSeriesCardContent(title: string, ...tags: string[]) {
     return contentElement;
 }
 
+export function createOpenEditSeriesCallback(series: Series) {
+    return async () => useStage(createSeriesStage(series));
+}
+
 // <li class="series-card">
 //   <span class="series-card__color-strip"> </span>
 //   <span class="series-card__content"> </span>
@@ -41,7 +45,5 @@ export function createSeriesCard(series: Series) {
     seriesCardElement.id = series.id;
     seriesCardElement.appendChild(createSeriesCardColorStrip(series.colorStripColor));
     seriesCardElement.appendChild(createSeriesCardContent(series.title, ...series.tags));
-    const openEditSeries = async () => useStage(createSeriesStage(series));
-    seriesCardElement.addEventListener('click', openEditSeries);
-    return { seriesCardElement, openEditSeries };
+    return seriesCardElement;
 }

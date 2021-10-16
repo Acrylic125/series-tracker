@@ -4,7 +4,7 @@ import { testFilter } from "../../utils/filter";
 import { iteratorToGenerator, peekGenerator } from "../../utils/generator";
 import { hideElement, showElement } from "../../utils/html-utils";
 import { toComparableString } from "../../utils/utils";
-import { createSeriesCard } from "../../components/series-card-components";
+import { createOpenEditSeriesCallback, createSeriesCard } from "../../components/series-card-components";
 import { ContentStageElements, FragmentedContentStage } from "../content-stage";
 import { getContentStageElement } from '../content-stage-manager';
 import { ActionButton, bindRightClickMenu, createActionButton, createBoundedStageContent, createElementWithClasses, createHorzCenteredActionButton } from "../../components/global-components";
@@ -62,6 +62,7 @@ function createSeriesCardsStageElements(): SeriesCardsStageElements {
         toFragment() {
             const fragment = new DocumentFragment(),
                   stageContent = createBoundedStageContent();
+            this.addSeriesTrackersButton.classList.add('center-horz');
             stageContent.appendChild(this.filterElement);
             stageContent.appendChild(this.addSeriesTrackersButton);
             stageContent.appendChild(this.seriesCardsElement);
@@ -130,12 +131,13 @@ class SeriesCardsStageDisplayer {
     }
 
     public addSeriesAsElement(series: Series) {
-        const { seriesCardElement, openEditSeries } = createSeriesCard(series);
+        const seriesCardElement = createSeriesCard(series);
+        const onClick = createOpenEditSeriesCallback(series);
+        seriesCardElement.addEventListener('click', onClick);
         bindRightClickMenu(seriesCardElement, {
             buttons: [
                 {
-                    text: "Edit",
-                    onClick: openEditSeries
+                    text: "Edit", onClick
                 },
                 {
                     text: "Delete",
@@ -176,8 +178,9 @@ const seriesCardsStage: SeriesCardsStage = {
         this.displayer = displayer;
         this.elements.addSeriesTrackersButton.addEventListener('click', () => {
             const series = createNewSeries('');
+            const seriesCardElement = createOpenEditSeriesCallback(series);
             seriesStorage.seriesMap.set(series.id, series);
-            displayer.addSeriesAsElement(series);
+            seriesCardElement();
         });
         storageImporter.call(() => 
             displayer.freshLoad());
