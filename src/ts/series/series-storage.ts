@@ -9,7 +9,7 @@ import { seriesParser } from './series-parser';
 const STORE_COMPRESSED = 1;
 const STORE_READ = 2;
 
-const storageMode: number = STORE_READ;
+const storageMode: number = STORE_COMPRESSED;
 
 export class SeriesStorage {
 
