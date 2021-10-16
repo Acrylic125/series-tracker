@@ -1,6 +1,7 @@
 import { ipcRenderer } from 'electron';
 import fs from 'fs';
 import { keyboardShortcutListener, KEY_CTRL } from '../html-loaded/keyboard-shortcut';
+import { AsyncLoader } from '../utils/async-loader';
 import { createFileIfNotExist, createFileIfNotExistSync, JSON_FILE_CREATION_OPTIONS } from '../utils/utils';
 import { Series } from './series';
 import { seriesParser } from './series-parser';
@@ -81,23 +82,22 @@ export class SeriesStorage {
 }
 
 const seriesStorage = new SeriesStorage();
-
-(async function initStorage() {
-    
+export const storageImporter = new AsyncLoader(async () => {
     await seriesStorage.importSeries();
-    autoSave();
+    return seriesStorage;
+});
 
-    async function autoSave() {
-        await seriesStorage.saveToFile();
-        setTimeout(autoSave, 5000);
-    }
-})();
+storageImporter.call(autoSave);
+
+async function autoSave() {
+    await seriesStorage.saveToFile();
+    setTimeout(autoSave, 5000);
+}
 
 keyboardShortcutListener.shortcuts.push({
     keys: [KEY_CTRL, 's'],
     callback: () => seriesStorage.saveToFile()
 });
-
 
 ipcRenderer.on('save-to-storage-sync', () => seriesStorage.saveToFileSync());
 

@@ -1,5 +1,5 @@
 import { Series } from "../../series/series";
-import seriesStorage from "../../series/series-storage";
+import seriesStorage, { storageImporter } from "../../series/series-storage";
 import { testFilter } from "../../utils/filter";
 import { iteratorToGenerator, peekGenerator } from "../../utils/generator";
 import { hideElement, showElement } from "../../utils/html-utils";
@@ -160,8 +160,12 @@ const seriesCardsStage: SeriesCardsStage = {
     async initialise() {
         this.elements = createSeriesCardsStageElements();
         getContentStageElement().appendChild(this.elements.toFragment());
-        this.displayer = new SeriesCardsStageDisplayer(this.elements);
-        await this.displayer.freshLoad();
+        const displayer = new SeriesCardsStageDisplayer(this.elements);
+        this.displayer = displayer;
+        storageImporter.call(() => {
+            console.log("Test");
+            displayer.freshLoad();
+        });
     }
 };
 export default seriesCardsStage;
