@@ -130,8 +130,7 @@ export function createChecklistContainerDisplayer(items: ChecklistTemplateDataIt
 
     async function refresh() {
         containerElement.innerHTML = '';
-        items.forEach((item) => 
-            addItemToDisplay(item));
+        items.forEach(addItemToDisplay);
     }
 }
 

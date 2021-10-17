@@ -58,7 +58,7 @@ export function createEpisodesContainerItemInput(currentEpisode?: number) {
 // <div class="template__episodes-container-item rounded-1">
 //   <p class="text-lighter">Last Watched<br>Episode:</p>
 // </div>
-export function createEpisodesContainerItem(displayer: EpisodeContainerDisplayer, item: EpisodesTemplateDataItem) {
+export function createEpisodesContainerItem(item: EpisodesTemplateDataItem) {
     const itemElement = createDivWithClasses('template__episodes-container-item', 'rounded-1');
     const { dynamicElement, heightAsText } = createEpisodesContainerItemTitle(item.title, () => {
         item.title = heightAsText.value;
@@ -69,52 +69,49 @@ export function createEpisodesContainerItem(displayer: EpisodeContainerDisplayer
     itemElement.appendChild(dynamicElement);
     itemElement.appendChild(createInnerText('p', 'Last Watched\nEpisode:', 'text-lighter', 'template__episodes-container-item--last-watched'));
     itemElement.appendChild(currentEpisodeElement);
-
-    bindRightClickMenu(itemElement, {
-        buttons: [
-            {
-                text: "Delete",
-                onClick() {
-                    removeElementFromArray(displayer.items, item);
-                    displayer.refresh();
-                }
-            },
-            {
-                text: "Shift Left",
-                onClick() {
-                    shifElementtLeft(displayer.items, item);
-                    displayer.refresh();
-                }
-            },
-            {
-                text: "Shift Right",
-                onClick() {
-                    shifElementtRight(displayer.items, item);
-                    displayer.refresh();
-                }
-            }
-        ]
-    });
     return itemElement;
 }
 
-export interface EpisodeContainerDisplayer {
-    refresh(): Promise<void>
-    items: EpisodesTemplateDataItem[]
-    containerElement: HTMLElement
-}
-
 // <div class="template__episodes-container center-horz"> </div>
-export function createEpisodesContainerDisplayer(items: EpisodesTemplateDataItem[]): EpisodeContainerDisplayer {
+export function createEpisodesContainerDisplayer(items: EpisodesTemplateDataItem[]) {
     const containerElement = createDivWithClasses('template__episodes-container', 'center-horz');
-    const displayer = { containerElement, items, refresh };
+    const displayer = { containerElement, items, addItemToDisplayer, refresh };
     refresh();
     return displayer;
 
+    async function addItemToDisplayer(item: EpisodesTemplateDataItem) {
+        const itemElement = createEpisodesContainerItem(item);
+        containerElement.appendChild(itemElement);
+        bindRightClickMenu(itemElement, {
+            buttons: [
+                {
+                    text: "Delete",
+                    onClick() {
+                        removeElementFromArray(displayer.items, item);
+                        displayer.refresh();
+                    }
+                },
+                {
+                    text: "Shift Left",
+                    onClick() {
+                        shifElementtLeft(displayer.items, item);
+                        displayer.refresh();
+                    }
+                },
+                {
+                    text: "Shift Right",
+                    onClick() {
+                        shifElementtRight(displayer.items, item);
+                        displayer.refresh();
+                    }
+                }
+            ]
+        });
+    }
+
     async function refresh() {
         containerElement.innerHTML = '';
-        items.forEach((item) => 
-            containerElement.appendChild(createEpisodesContainerItem(displayer, item)));
+        items.forEach(addItemToDisplayer);
     }
 }
 
@@ -159,7 +156,7 @@ export function createEpisodesTemplate(): SeriesTrackerTemplate<EpisodesTemplate
             buttonElement.onclick = () => {
                 const containerItem = {};
                 templateData.items.push(containerItem);
-                containerDisplayerElement.appendChild(createEpisodesContainerItem(containerDisplayer, containerItem));
+                containerDisplayer.addItemToDisplayer(containerItem);
             };
             trackerModalContent.appendChild(containerDisplayerElement);
         }
