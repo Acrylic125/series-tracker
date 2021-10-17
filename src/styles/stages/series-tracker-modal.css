@@ -65,6 +65,7 @@
 }
 
 /* Templates */
+/* Episodes Template */
 .template__episodes-container {
   margin-top: 2em;
   display: grid;
@@ -101,4 +102,35 @@
   color: white;
   font-size: 150%;
   margin-top: 0.5em;
+}
+
+/* Checklist Template */
+.template__checklist-container {
+  margin-top: 2em;
+  display: flex;
+  flex-direction: column;
+  row-gap: 0.5em;
+  padding: 1em;
+}
+
+.template__checklist-container-item {
+  width: 100%;
+  background-color: var(--template-item-color);
+  display: flex;
+  column-gap: 1em;
+  padding: 1em 0;
+}
+
+.template__checklist-container-item > input[type="checkbox"] {
+  display: block;
+  width: 2em;
+  height: 2em;
+  margin-left: 2em;
+}
+
+.template__checklist-container-item > textarea {
+  width: 70%;
+  color: white;
+  font-size: 100%;
+  margin-right: 2em;
 }

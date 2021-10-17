@@ -1,8 +1,9 @@
 import iro from "@jaames/iro";
-import { text } from "stream/consumers";
+import { addTextAsHeightListener } from './modifiers/text-as-height';
 import { addTooltipListener } from "./modifiers/tooltip";
 import { hideElement, hideOrShowElement, setPosition } from "../utils/html-utils";
 import { undefinedOrDefault } from "../utils/utils";
+import { throws } from "assert";
 
 const ACTIVE = 'active';
 const TAG = 'tag';
@@ -359,4 +360,61 @@ export function bindRightClickMenu(element: HTMLElement, rightClickMenu: RightCl
             rightClickMenuElement.remove());
         document.body.appendChild(rightClickMenuElement);
     });
+}
+
+export interface HeightAsText {
+    value?: string
+    placeholder?: string
+    classes?: string[]
+    oninputcomplete?: (event: Event) => void
+}
+
+export function createTextAsHeightComponent(heightAsText: HeightAsText) {
+    var element: HTMLElement = toRawTextElement();
+
+    function toRawTextElement() {
+        const rawTextElement: HTMLElement = document.createElement('p');
+        rawTextElement.addEventListener('click', toEditElement);
+        heightAsText.classes && rawTextElement.classList.add('height-as-text', ...heightAsText.classes);
+        if (heightAsText.value) {
+            rawTextElement.innerText = heightAsText.value;
+        } else {
+            rawTextElement.classList.add('with-placeholder');
+            rawTextElement.innerText = undefinedOrDefault(heightAsText.placeholder, '');
+        }
+        (element) && element.replaceWith(rawTextElement);
+        element = rawTextElement;
+        return element;
+    }
+
+    function toEditElement() {
+        const editElement = createElementWithClasses('textarea', 'text-as-height') as HTMLTextAreaElement;
+        editElement.placeholder = undefinedOrDefault(heightAsText.placeholder, '');
+        editElement.value = undefinedOrDefault(heightAsText.value, '');
+        heightAsText.classes && editElement.classList.add('height-as-text', ...heightAsText.classes);
+        setTimeout(() => editElement.focus(), 0);
+        editElement.addEventListener('focusout', (event) => {
+            heightAsText.value = editElement.value;
+            heightAsText.oninputcomplete && heightAsText.oninputcomplete(event);
+            toRawTextElement();
+        });
+        addTextAsHeightListener(editElement);
+
+        (element) && element.replaceWith(editElement);
+        element = editElement;
+        return element;
+    }
+
+    return {
+        dynamicElement: element,
+        heightAsText,
+        setValue(value: string | undefined) {
+            heightAsText.value = value;
+            if (this.dynamicElement instanceof HTMLTextAreaElement) {
+                this.dynamicElement.value = undefinedOrDefault(heightAsText.value, '');
+            } else {
+                this.dynamicElement.innerText = undefinedOrDefault(heightAsText.value, '');
+            }
+        }
+    };
 }

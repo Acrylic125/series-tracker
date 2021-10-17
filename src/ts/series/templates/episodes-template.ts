@@ -1,4 +1,4 @@
-import { ActionButton, bindRightClickMenu, createActionButton, createDivWithClasses, createElementWithClasses, createInnerText } from "../../components/global-components";
+import { ActionButton, bindRightClickMenu, createActionButton, createDivWithClasses, createElementWithClasses, createTextAsHeightComponent, createInnerText } from "../../components/global-components";
 import { createSeriesTrackerItem } from "../../components/series-tracker/series-tracker-content-item";
 import { addTextAsHeightListener } from "../../components/modifiers/text-as-height";
 import { Parser } from "../../utils/parser";
@@ -35,19 +35,14 @@ const createEpisodeButton: ActionButton = {
 
 // <textarea class="text-as-height title input-focus-indicator no-border no-outline" type="text"
 //   placeholder="Title"></textarea>
-export function createEpisodesContainerItemTitle(title?: string) {
-    const titleElement = 
-    createElementWithClasses('textarea',
-        'text-as-height', 
-        'title',
-        'input-focus-indicator',
-        'no-border',
-        'no-outline') as HTMLTextAreaElement;
-    titleElement.placeholder = 'Title';
-    if (title) 
-        titleElement.value = title;
-    addTextAsHeightListener(titleElement);
-    return titleElement;
+export function createEpisodesContainerItemTitle(title?: string, oninputcomplete?: (event: Event) => void) {
+    const titleComponent = createTextAsHeightComponent({
+        value: title,
+        placeholder: "No Title",
+        classes: [ 'w-60', 'title', 'center-horz', 'input-focus-indicator' ],
+        oninputcomplete
+    });
+    return titleComponent;
 }
 
 // <input class="ol-input" placeholder="0" min="0" type="number">
@@ -66,13 +61,14 @@ export function createEpisodesContainerItemInput(currentEpisode?: number) {
 // </div>
 export function createEpisodesContainerItem(displayer: EpisodeContainerDisplayer, item: EpisodesTemplateDataItem) {
     const itemElement = createDivWithClasses('template__episodes-container-item', 'rounded-1');
-    const titleElement = createEpisodesContainerItemTitle(item.title),
-          currentEpisodeElement = createEpisodesContainerItemInput(item.currentEpisode);
+    const { dynamicElement, heightAsText } = createEpisodesContainerItemTitle(item.title, () => {
+        item.title = heightAsText.value;
+    });
+    const currentEpisodeElement = createEpisodesContainerItemInput(item.currentEpisode);
 
-    titleElement.addEventListener('input', () => item.title = (titleElement.value === '') ? undefined : titleElement.value);
     currentEpisodeElement.addEventListener('input', () => item.currentEpisode = (currentEpisodeElement.value) ? parseInt(currentEpisodeElement.value) : 0);
 
-    itemElement.appendChild(titleElement);
+    itemElement.appendChild(dynamicElement);
     itemElement.appendChild(createInnerText('p', 'Last Watched\nEpisode:', 'text-lighter'));
     itemElement.appendChild(currentEpisodeElement);
 

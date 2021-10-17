@@ -310,6 +310,19 @@ ol.right-click-menu > li:hover {
   height: 0;
 }
 
+.height-as-text.with-placeholder {
+  color: #666;
+}
+
+.height-as-text {
+  display: block;
+  width: 30em;
+  min-width: 4em;
+  min-height: 1em;
+  font-size: 100%;
+  word-wrap: break-word;
+}
+
 @media only screen and (min-width: 500px) {
   :root {
     font-size: 75%;
