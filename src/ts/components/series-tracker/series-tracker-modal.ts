@@ -41,7 +41,7 @@
 
 import { addTextAsHeightListener } from "../modifiers/text-as-height";
 import { seriesTemplateRegistry } from "../../registry/registries";
-import { SeriesTracker } from "../../series/series";
+import { SeriesTracker, SeriesTrackerID } from "../../series/series";
 import { episodesTemplate } from "../../series/templates/episodes-template";
 import { SeriesTrackerTemplate } from "../../series/templates/series-tracker-template";
 import { Position } from "../../utils/html-utils";
@@ -123,10 +123,7 @@ export function createModalHeader(seriesTracker: SeriesTracker) {
 // </select>
 export function createTrackerSelector(trackerModal: TrackerModalDisplayer) {
     const selector = createElementWithClasses('select', 'modal__tracker-template-selector', 'title') as HTMLSelectElement;
-    selector.addEventListener('change', () => {
-        const selectedTemplate = seriesTemplateRegistry.get(selector.value);
-        selectedTemplate && trackerModal.useTemplate(selectedTemplate);
-    });
+    selector.addEventListener('change', () => trackerModal.useTemplateByID(selector.value));
     seriesTemplateRegistry.getRegistry().forEach((template) => {
         const option = createInnerText('option', template.title) as HTMLInputElement;
         option.value = template.id;
@@ -144,12 +141,7 @@ export function createTrackerContent(trackerModal: TrackerModalDisplayer) {
     content.appendChild(trackerModal.templateSelectorElement);
     content.appendChild(createInnerText('p', 'Select a template to use. The selected template will be displayed.', 'subtitle', 'w-60', 'center-horz'));
     content.appendChild(trackerModal.templateContentElement);
-    const selectedTemplateID = trackerModal.seriesTracker.templates.selectedTemplateID;
-    if (selectedTemplateID) {
-        const selectedTemplate = seriesTemplateRegistry.get(selectedTemplateID);
-        trackerModal.useTemplate((selectedTemplate) ? selectedTemplate : episodesTemplate);
-    } else
-        trackerModal.useTemplate(episodesTemplate);
+    trackerModal.useTemplateByID(trackerModal.seriesTracker.templates.selectedTemplateID);
     return content;
 }
 
@@ -166,6 +158,15 @@ export class TrackerModalDisplayer {
             },
             deleteOnDeactivate: true
         });
+    }
+
+    public useTemplateByID(selectedTemplateID: SeriesTrackerID | undefined) {
+        if (!selectedTemplateID) {
+            this.useTemplate(episodesTemplate);
+            return;
+        }
+        const selectedTemplate = seriesTemplateRegistry.get(selectedTemplateID);
+        this.useTemplate((selectedTemplate) ? selectedTemplate : episodesTemplate);
     }
 
     public useTemplate(seriesTemplate: SeriesTrackerTemplate) {
