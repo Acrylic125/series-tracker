@@ -89,7 +89,8 @@
   color: white;
 }
 
-.template__episodes-container-item > p {
+.template__episodes-container-item
+  > .template__episodes-container-item--last-watched {
   width: 100%;
   color: white;
   margin-top: 1em;

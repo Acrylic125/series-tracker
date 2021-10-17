@@ -2,7 +2,7 @@ import { createInnerText } from "../global-components";
 
 // <p class="series-tracker__content-item--title"> </p>
 export function createSeriesTrackerContentItemTitle(title: string) {
-    return createInnerText('p', title, 'series-tracker__content-item--title');
+    return createInnerText('p', (title) ? title : 'No Title', 'series-tracker__content-item--title');
 }
 
 // <p class="series-tracker__content-item--status"> </p>

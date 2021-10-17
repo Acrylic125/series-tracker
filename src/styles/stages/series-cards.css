@@ -32,6 +32,7 @@
 }
 
 .series-card__content--title {
+  width: 60%;
   margin-top: 1em;
   font-weight: bold;
   font-size: 120%;

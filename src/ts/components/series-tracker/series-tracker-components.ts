@@ -4,31 +4,22 @@ import { SeriesTracker } from "../../series/series";
 import { SeriesTrackerTemplate, SeriesTrackerTemplateData, SeriesTrackerTemplates } from "../../series/templates/series-tracker-template";
 import { Position } from "../../utils/html-utils";
 import { randInt } from "../../utils/utils";
-import { createDivWithClasses, createElementWithClasses, createInnerText } from "../global-components";
+import { createDivWithClasses, createElementWithClasses, createInnerText, createTextAsHeightComponent } from "../global-components";
 import { createTrackerModalDisplayer } from "./series-tracker-modal";
 
-export function createSeriesTrackerStageTitle(title?: string) {
-  const titleElement = 
-  createElementWithClasses('textarea',
-    'text-as-height', 
-    'title',
-    'w-60',
-    'font-size-2',
-    'input-focus-indicator',
-    'no-border',
-    'no-outline') as HTMLTextAreaElement;
-  titleElement.placeholder = 'Title';
-  if (title) 
-      titleElement.value = title;
-  addTextAsHeightListener(titleElement);
-  return titleElement;
+export function createSeriesTrackerStageTitle(title?: string, oninputcomplete?: (event: Event) => void) {
+  const titleComponent = createTextAsHeightComponent({
+    value: title,
+    placeholder: "No Title",
+    classes: [ 'series-trackers__title', 'title', 'input-focus-indicator' ],
+    oninputcomplete
+  });
+  return titleComponent;
 }
-
-const NO_TITLE = "No Title";
 
 // <header> </header>
 export function createSeriesTrackerHeader(title: string) {
-  return createInnerText('header', (title) ? title : NO_TITLE);
+  return createInnerText('header', (title) ? title : "No Title");
 }
 
 export function createSeriesTrackerContent(seriesTracker: SeriesTracker) {
@@ -57,7 +48,7 @@ export function createSeriesTrackerContent(seriesTracker: SeriesTracker) {
     }
 
     async function updateTrackerContent() {
-      titleElement.innerText = (seriesTracker.title) ? seriesTracker.title : NO_TITLE;
+      titleElement.innerText = (seriesTracker.title) ? seriesTracker.title : "No Title";
       tryUpdateTemplateData();
     };
 }

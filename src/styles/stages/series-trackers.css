@@ -12,6 +12,12 @@
   column-gap: 1em;
 }
 
+.series-trackers__title {
+  width: 80%;
+  font-size: 120%;
+  margin-bottom: 1em;
+}
+
 .series-trackers > .column {
   width: 100%;
   display: flex;

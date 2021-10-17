@@ -1,6 +1,5 @@
 import { ActionButton, bindRightClickMenu, createActionButton, createDivWithClasses, createElementWithClasses, createTextAsHeightComponent, createInnerText } from "../../components/global-components";
 import { createSeriesTrackerItem } from "../../components/series-tracker/series-tracker-content-item";
-import { addTextAsHeightListener } from "../../components/modifiers/text-as-height";
 import { Parser } from "../../utils/parser";
 import { removeElementFromArray, shifElementtLeft, shifElementtRight, undefinedOrDefault } from "../../utils/utils";
 import { SeriesTrackerTemplate, SeriesTrackerTemplateData } from "./series-tracker-template";
@@ -65,11 +64,10 @@ export function createEpisodesContainerItem(displayer: EpisodeContainerDisplayer
         item.title = heightAsText.value;
     });
     const currentEpisodeElement = createEpisodesContainerItemInput(item.currentEpisode);
-
     currentEpisodeElement.addEventListener('input', () => item.currentEpisode = (currentEpisodeElement.value) ? parseInt(currentEpisodeElement.value) : 0);
 
     itemElement.appendChild(dynamicElement);
-    itemElement.appendChild(createInnerText('p', 'Last Watched\nEpisode:', 'text-lighter'));
+    itemElement.appendChild(createInnerText('p', 'Last Watched\nEpisode:', 'text-lighter', 'template__episodes-container-item--last-watched'));
     itemElement.appendChild(currentEpisodeElement);
 
     bindRightClickMenu(itemElement, {

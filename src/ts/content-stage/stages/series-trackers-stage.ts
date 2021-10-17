@@ -1,7 +1,7 @@
 import { ActionButton, bindRightClickMenu, createBoundedStageContent, createColorLine, createColumn, createColumns, createDivWithClasses, createHorzCenteredActionButton, createInnerText } from '../../components/global-components';
 import { createSeriesTrackerComponent, createSeriesTrackerStageTitle, SeriesTrackerComponent } from '../../components/series-tracker/series-tracker-components';
 import { createTrackerWithEpisodesTemplate, Series, SeriesTracker, SeriesTrackerID } from '../../series/series';
-import { removeElementFromArray, shifElementtLeft, shifElementtRight } from '../../utils/utils';
+import { removeElementFromArray, shifElementtLeft, shifElementtRight, undefinedOrDefault } from '../../utils/utils';
 import { ContentStageElements, FragmentedContentStage } from '../content-stage';
 import { getContentStageElement } from '../content-stage-manager';
 
@@ -128,15 +128,13 @@ function createSeriesTrackerStageElements(series: Series): SeriesTrackerStageEle
         toFragment() {
             const fragment = new DocumentFragment(),
                   stageContent = createBoundedStageContent(),
-                  titleELement = createSeriesTrackerStageTitle(series.title);
+                  { dynamicElement, heightAsText } = createSeriesTrackerStageTitle(series.title, () => {
+                    series.title = undefinedOrDefault(heightAsText.value, 'No Title');
+                  });
             
             this.seriesTrackersDisplayer.refreshTrackers();
-            // Initialise event listeners
-            titleELement.addEventListener('input', () => 
-                series.title = titleELement.value);
-            
             // Append elements to stageContent
-            stageContent.appendChild(titleELement);
+            stageContent.appendChild(dynamicElement);
             stageContent.appendChild(this.colorLine);
             stageContent.appendChild(createAddSeriesTrackerButton(this.seriesTrackersDisplayer));
             stageContent.appendChild(this.seriesTrackersDisplayer.element);
