@@ -1,4 +1,4 @@
-import { ActionButton } from "../../components/global-components";
+import { ActionButton, createDivWithClasses, createElementWithClasses, createTextAsHeightComponent } from "../../components/global-components";
 import { SeriesTrackerTemplateData } from "./series-tracker-template";
 
 // <div class="modal__tracker-template-content">
@@ -29,4 +29,33 @@ const createChecklistItemButton: ActionButton = {
     innerText: '\u002B',
     circular: false,
     singular: true
+}
+
+export function createCheclistItemTitle(title?: string, oninputcomplete?: (event: Event) => void) {
+    const titleComponent = createTextAsHeightComponent({
+        value: title,
+        placeholder: "No Title",
+        classes: [ 'title' ],
+        oninputcomplete
+    });
+    return titleComponent;
+}
+
+// <div class="template__checklist-container-item rounded-1">
+//   <input type="checkbox" name="vehicle3" value="Boat">
+//   <textarea class="text-as-height title input-focus-indicator no-border no-outline" type="text"
+//     placeholder="Title"></textarea>
+// </div>
+export function createChecklistContainerItem(dataItem: ChecklistTemplateDataItem) {
+    const { dynamicElement, heightAsText } = createCheclistItemTitle(dataItem.title, () => {
+        dataItem.title = heightAsText.value;
+    })
+    const itemElement = createDivWithClasses('template__checklist-container-item', 'rounded-1');
+    const checkboxElement = document.createElement('input');
+    checkboxElement.type = 'checkbox';
+    checkboxElement.addEventListener('change', () => {
+        dataItem.watched = checkboxElement.checked;
+    });
+    itemElement.appendChild(dynamicElement);
+    itemElement.appendChild(checkboxElement);
 }

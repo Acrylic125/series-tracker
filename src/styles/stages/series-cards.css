@@ -33,7 +33,9 @@
 
 .series-card__content--title {
   width: 60%;
+  overflow-x: hidden;
   margin-top: 1em;
+  word-wrap: break-word;
   font-weight: bold;
   font-size: 120%;
 }

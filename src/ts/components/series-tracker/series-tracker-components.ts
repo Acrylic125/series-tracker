@@ -1,5 +1,4 @@
 import adaptiveResizers, { createPositionAdaptableElement } from "../modifiers/adaptive-size";
-import { addTextAsHeightListener } from "../modifiers/text-as-height";
 import { SeriesTracker } from "../../series/series";
 import { SeriesTrackerTemplate, SeriesTrackerTemplateData, SeriesTrackerTemplates } from "../../series/templates/series-tracker-template";
 import { Position } from "../../utils/html-utils";
