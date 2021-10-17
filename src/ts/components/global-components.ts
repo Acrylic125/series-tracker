@@ -6,15 +6,6 @@ import { undefinedOrDefault } from "../utils/utils";
 import { throws } from "assert";
 
 const ACTIVE = 'active';
-const TAG = 'tag';
-
-//  <span class="series-card__tag"> </span>
-export function createTag(tagName: string) {
-    const tagElement = createElementWithClasses('span', TAG);
-    tagElement.innerText = tagName;
-    return tagElement;
-}
-
 const TOOLTIP = 'tooltip';
 const TOOLTIP_TITLE = 'tooltip__title';
 const TOOLTIP_TEXT = 'tooltip__text';
@@ -350,7 +341,6 @@ export const globalRightClickMenuState = new RightClickMenuState();
 
 export function bindRightClickMenu(element: HTMLElement, rightClickMenu: RightClickMenu, rightClickMenuState: RightClickMenuState = globalRightClickMenuState) {
     element.addEventListener('contextmenu', (event) => {
-        console.log("TEST");
         var rightClickMenuElement = createRightClickMenu(rightClickMenu);
         rightClickMenuState.useRightClickMenu(rightClickMenuElement);
         setPosition(rightClickMenuElement, {
@@ -418,4 +408,22 @@ export function createTextAsHeightComponent(heightAsText: HeightAsText) {
             }
         }
     };
+}
+
+export interface Tag {
+    text: string
+    color: string
+}
+
+// <span class="tag"> </span>
+export function createTag(tag: Tag) {
+    const tagElement = createInnerText('span', tag.text, 'tag');
+    tagElement.style.backgroundColor = tag.color;
+    return tagElement;
+}
+
+export function createTagCollection(...tags: Tag[]) {
+    const tagCollectionElement = createDivWithClasses('tag-collection');
+    tags.forEach((tag) => tagCollectionElement.appendChild(createTag(tag)));
+    return tagCollectionElement;
 }

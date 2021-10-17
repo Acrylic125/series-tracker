@@ -1,5 +1,5 @@
-import { ActionButton, bindRightClickMenu, createActionButton, createDivWithClasses, createElementWithClasses, createTextAsHeightComponent } from "../../components/global-components";
-import { createSeriesTrackerItem } from "../../components/series-tracker/series-tracker-content-item";
+import { ActionButton, bindRightClickMenu, createActionButton, createDivWithClasses, createElementWithClasses, createTextAsHeightComponent, Tag } from "../../components/global-components";
+import { createSeriesTrackerItem, createSeriesTrackerItemWithTag } from "../../components/series-tracker/series-tracker-content-item";
 import { Parser } from "../../utils/parser";
 import { removeElementFromArray, shifElementtLeft, shifElementtRight, undefinedOrDefault } from "../../utils/utils";
 import { SeriesTrackerTemplate, SeriesTrackerTemplateData } from "./series-tracker-template";
@@ -67,9 +67,8 @@ export function createChecklistContainerItem(dataItem: ChecklistTemplateDataItem
     const checkboxElement = document.createElement('input');
     checkboxElement.type = 'checkbox';
     checkboxElement.checked = undefinedOrDefault(dataItem.watched, false);
-    checkboxElement.addEventListener('change', () => {
-        dataItem.watched = checkboxElement.checked;
-    });
+    checkboxElement.addEventListener('change', () => 
+        dataItem.watched = checkboxElement.checked);
     itemElement.appendChild(checkboxElement);
     itemElement.appendChild(dynamicElement);
     return itemElement;
@@ -134,6 +133,18 @@ export function createChecklistContainerDisplayer(items: ChecklistTemplateDataIt
     }
 }
 
+export const notWatchedTag: Tag = {
+    text: "Not Watched",
+    color: "#c83131"
+};
+
+export const watchedTag: Tag = {
+    text: "Watched",
+    color: "#4FC831"
+};
+
+
+
 export function createChecklistTemplate(): SeriesTrackerTemplate<ChecklistTemplateData> {
     return {
         title: 'Checklist Template',
@@ -143,8 +154,8 @@ export function createChecklistTemplate(): SeriesTrackerTemplate<ChecklistTempla
         createSeriesTrackerContent(templateData: ChecklistTemplateData) {
             const contentElement = document.createElement('ol');
             templateData.items.forEach((item) => 
-                contentElement.appendChild(createSeriesTrackerItem(undefinedOrDefault(item.title, 'No Title'),
-                                                                   'Watched: ' + undefinedOrDefault(item.watched, false))));
+                contentElement.appendChild(createSeriesTrackerItemWithTag(undefinedOrDefault(item.title, 'No Title'),
+                                                                          (item.watched) ? watchedTag : notWatchedTag)));
             return contentElement;
         },
         // <button class="small-singular action-button center-horz rounded-1">&plus;</button>

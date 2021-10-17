@@ -1,4 +1,4 @@
-import { createInnerText } from "../global-components";
+import { createInnerText, createTag, createTagCollection, Tag } from "../global-components";
 
 // <p class="series-tracker__content-item--title"> </p>
 export function createSeriesTrackerContentItemTitle(title: string) {
@@ -14,5 +14,12 @@ export function createSeriesTrackerItem(title: string, status: string) {
     const itemElement = document.createElement('li');
     itemElement.appendChild(createSeriesTrackerContentItemTitle(title));
     itemElement.appendChild(createSeriesTrackerContentItemStatus(status));
+    return itemElement;
+}
+
+export function createSeriesTrackerItemWithTag(title: string, tag: Tag) {
+    const itemElement = document.createElement('li');
+    itemElement.appendChild(createSeriesTrackerContentItemTitle(title));
+    itemElement.appendChild(createTagCollection(tag));
     return itemElement;
 }

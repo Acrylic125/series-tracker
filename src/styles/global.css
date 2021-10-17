@@ -228,6 +228,14 @@ textarea::placeholder {
   border-radius: 0.5em;
 }
 
+.tag-collection {
+  margin-top: 1em;
+  display: flex;
+  flex-direction: row;
+  row-gap: 0.5em;
+  column-gap: 0.5em;
+}
+
 .tooltip-region .tooltip {
   visibility: hidden;
   position: absolute;
