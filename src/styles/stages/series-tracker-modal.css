@@ -129,9 +129,10 @@
   margin-left: 2em;
 }
 
-.template__checklist-container-item > textarea {
+.template__checklist-container-item > .title {
   width: 70%;
   color: white;
   font-size: 100%;
   margin-right: 2em;
+  text-align: left;
 }

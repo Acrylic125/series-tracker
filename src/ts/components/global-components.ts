@@ -350,6 +350,7 @@ export const globalRightClickMenuState = new RightClickMenuState();
 
 export function bindRightClickMenu(element: HTMLElement, rightClickMenu: RightClickMenu, rightClickMenuState: RightClickMenuState = globalRightClickMenuState) {
     element.addEventListener('contextmenu', (event) => {
+        console.log("TEST");
         var rightClickMenuElement = createRightClickMenu(rightClickMenu);
         rightClickMenuState.useRightClickMenu(rightClickMenuElement);
         setPosition(rightClickMenuElement, {

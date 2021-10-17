@@ -167,6 +167,3 @@ export function createEpisodesTemplate(): SeriesTrackerTemplate<EpisodesTemplate
 }
 
 export const episodesTemplate = createEpisodesTemplate();
-export const episodesTemplate2 = createEpisodesTemplate();
-episodesTemplate2.id = 'template2';
-episodesTemplate2.title = "Template 2";
